@@ -1,0 +1,11 @@
+ ✔ creating a slim framework workflow and directory structure @done (14-02-21 11:00)
+ ☐ creating an api controller with slim
+ ✔ creating a configuration file, managing environments @done (14-02-21 11:00)
+ ✔ app directory structure posts @done (14-02-21 11:00)
+    http://www.littlehart.net/atthekeyboard/2012/02/14/organizing-slim-framework-apps/
+    http://www.slimframework.com/news/how-to-organize-a-large-slim-framework-application
+    http://blog.sourcing.io/structuring-sinatra
+ ✔ connect to wordpress and do xmlrpc calls @done (14-02-24 11:07)
+ ☐ logging capability of the api
+ ☐ generate api keys dynamically
+ ☐ /logout and delete the current token
