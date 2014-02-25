@@ -9,3 +9,4 @@
  ☐ logging capability of the api
  ☐ generate api keys dynamically
  ☐ /logout and delete the current token
+ ☐ revisit the update section and return a map of all fields
