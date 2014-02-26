@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "collections": [
+    {
+      "id": "d5a1b861-ccde-b762-33e7-3c359190d237",
+      "name": "Timby Endpoints",
+      "timestamp": 1393333322684,
+      "requests": [
+        {
+          "collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
+          "id": "111a05c7-fb1b-78c7-47f7-b91e57fd1c42",
+          "name": "Delete Report",
+          "description": "Delete an existing report",
+          "url": "{{api}}/deletereport",
+          "method": "POST",
+          "headers": "Accept: application/json\n",
+          "data": [
+            {
+              "key": "user_id",
+              "value": "3",
+              "type": "text"
+            },
+            {
+              "key": "token",
+              "value": "09e89340660f74",
+              "type": "text"
+            },
+            {
+              "key": "key",
+              "value": "6b239b3568b209",
+              "type": "text"
+            },
+            {
+              "key": "report_id",
+              "value": "3873",
+              "type": "text"
+            }
+          ],
+          "dataMode": "urlencoded",
+          "timestamp": 0,
+          "version": 2,
+          "time": 1393338200851
+        },
+        {
+          "collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
+          "id": "3a6a9300-434c-a6a7-9df9-3f98efbaab5f",
+          "name": "Create Report",
+          "description": "Create a new report\n",
+          "url": "{{api}}/createreport",
+          "method": "POST",
+          "headers": "Accept: application/json\n",
+          "data": [
+            {
+              "key": "user_id",
+              "value": "3",
+              "type": "text"
+            },
+            {
+              "key": "token",
+              "value": "PASTE TOKEN HERE",
+              "type": "text"
+            },
+            {
+              "key": "key",
+              "value": "6b239b3568b209",
+              "type": "text"
+            },
+            {
+              "key": "title",
+              "value": "This is a sample title from the api",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "Sample description from the api",
+              "type": "text"
+            },
+            {
+              "key": "report_date",
+              "value": "2014-02-25 21:12:21",
+              "type": "text"
+            },
+            {
+              "key": "sector",
+              "value": "1",
+              "type": "text"
+            }
+          ],
+          "dataMode": "urlencoded",
+          "timestamp": 0,
+          "version": 2,
+          "time": 1393337562176
+        },
+        {
+          "collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
+          "id": "6952f6d8-97ad-cd51-e8b1-621821880afa",
+          "name": "Login",
+          "description": "Log the user into the application",
+          "url": "{{api}}/login",
+          "method": "POST",
+          "headers": "Accept: application/json\n",
+          "data": [
+            {
+              "key": "user_name",
+              "value": "test",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "timbytest",
+              "type": "text"
+            }
+          ],
+          "dataMode": "urlencoded",
+          "timestamp": 0,
+          "version": 2,
+          "time": 1393336720013
+        },
+        {
+          "collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
+          "id": "c1a92892-e3f7-7a76-2674-1bcf9215d867",
+          "name": "Token Check",
+          "description": "Check if a token is valid, before checking a token, login and copy the token, paste it in the token parameter on this request\n",
+          "url": "{{api}}/tokencheck",
+          "method": "POST",
+          "headers": "Accept: application/json\n",
+          "data": [
+            {
+              "key": "user_id",
+              "value": "3",
+              "type": "text"
+            },
+            {
+              "key": "token",
+              "value": "PASTE TOKEN HERE",
+              "type": "text"
+            }
+          ],
+          "dataMode": "urlencoded",
+          "timestamp": 0,
+          "version": 2,
+          "time": 1393337805235
+        },
+        {
+          "collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
+          "id": "e845b3a2-9b74-8f82-c060-fe3d1528b098",
+          "name": "Logout",
+          "description": "Deletes current tokens and logs users out\n",
+          "url": "{{api}}/logout",
+          "method": "POST",
+          "headers": "Accept: application/json\n",
+          "data": [
+            {
+              "key": "user_name",
+              "value": "test",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "timbytest",
+              "type": "text"
+            }
+          ],
+          "dataMode": "urlencoded",
+          "timestamp": 0,
+          "version": 2,
+          "time": 1393337930224
+        },
+        {
+          "collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
+          "id": "ed5957aa-d0d8-7a51-ac67-7448f75debd7",
+          "name": "Update Report",
+          "description": "Update an existing report",
+          "url": "{{api}}/updatereport",
+          "method": "POST",
+          "headers": "Accept: application/json\n",
+          "data": [
+            {
+              "key": "user_id",
+              "value": "3",
+              "type": "text"
+            },
+            {
+              "key": "token",
+              "value": "PASTE TOKEN HERE",
+              "type": "text"
+            },
+            {
+              "key": "key",
+              "value": "6b239b3568b209",
+              "type": "text"
+            },
+            {
+              "key": "report_id",
+              "value": "A VALID PUBLISHED POST ID HERE",
+              "type": "text"
+            },
+            {
+              "key": "title",
+              "value": "Hello we have a new title",
+              "type": "text"
+            }
+          ],
+          "dataMode": "urlencoded",
+          "timestamp": 0,
+          "version": 2,
+          "time": 1393338159345
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "id": "090c9117-ef15-9ce0-41b3-c31f92b09e2e",
+      "name": "Localhost",
+      "values": [
+        {
+          "key": "api",
+          "value": "http://localhost/timbyweb/server/public/api",
+          "type": "text"
+        }
+      ],
+      "timestamp": 1393339469568
+    },
+    {
+      "id": "12f49b7d-1aa9-06e0-9ea0-4a1b83a41bab",
+      "name": "UAT",
+      "values": [
+        {
+          "key": "api",
+          "value": "http://uat.circle.co.ke/timbyweb/server/public/api",
+          "type": "text"
+        }
+      ],
+      "timestamp": 1393342525002
+    }
+  ],
+  "headerPresets": [
+    
+  ],
+  "globals": [
+    
+  ]
+}

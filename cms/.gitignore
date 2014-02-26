@@ -1,0 +1,23 @@
+# WORDPRESS CORE IGNORE
+
+# Ignore everything in the root except the "wp-content" directory.
+/*
+!.gitignore
+!wp-content/
+
+# Ignore everything in the "wp-content" directory, except the "plugins"
+# and "themes" directories.
+wp-content/*
+!wp-content/plugins/
+!wp-content/themes/
+
+# Ignore everything in the "plugins" directory, except the
+# json-api plugin
+wp-content/plugins/*
+!wp-content/plugins/json-api
+!wp-content/plugins/json-api
+
+
+# Ignore everything in the "themes" directory, except the timbyweb theme
+wp-content/themes/*
+!wp-content/themes/timbyweb/

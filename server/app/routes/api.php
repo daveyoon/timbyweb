@@ -28,6 +28,7 @@ function error($message, $code = '102'){
   $app->response->setBody(
     json_encode(
       array(
+        'wp_site_url' => $app->config('wordpress_site_url'), 
         'status'  => 'NOK',
         'error'   => $code,
         'message' => $message
@@ -65,11 +66,13 @@ $app->group('/api', function () use ($app) {
     );
 
     $data = json_decode($response->body);
+
     if( isset($data->user_id) ) {
       success(
         array(
           "user_id" => $data->user_id,
-          "token" => $data->token
+          "key"     => $data->api_key,
+          "token"   => $data->api_token
         )
       );
     } else {
@@ -123,13 +126,15 @@ $app->group('/api', function () use ($app) {
       )
     );
 
-    $data = json_decode($response->body);
-    if( isset($data->post) ) {
+    $responsebody = json_decode($response->body);
+    if( isset($responsebody->post) ) {
       success(
         array(
-          'id' => $data->post->id
+          'id' => $responsebody->post->id
         )
       );
+    } else {
+      error($responsebody->error);
     }
 
   });
@@ -284,7 +289,7 @@ $app->group('/api', function () use ($app) {
     );
 
     $params['post_type'] = 'report';
-    
+
     // response
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/posts/delete_post',
@@ -298,7 +303,43 @@ $app->group('/api', function () use ($app) {
     } else {
       error($responsebody->error);
     }
+  }); 
 
+
+  /**
+   * Get categories
+   *
+   * Params
+   *   user_id
+   *   key
+   *   token
+   */
+  $app->post('/getcategories', function() use($app){
+    // grab the params but we don't actually use them
+    // this call doesn't require authenticating the user
+    // since categories are basically available to the public
+    $params = array(
+      'user_id' => $_POST['user_id'],
+      'key'     => $_POST['key'],
+      'token'   => $_POST['token']
+    );
+
+    $response = Requests::post(
+      $app->config('wordpress_site_url').'/api/get_category_index',
+      array('Accept' => 'application/json'),
+      array(
+        'hide_empty' => 0
+      )
+    );
+
+    $responsebody = json_decode($response->body);
+    if( $responsebody->categories){
+      success(
+        array( 
+          'categories' => $responsebody->categories
+        )
+      );
+    }
 
   });
 
