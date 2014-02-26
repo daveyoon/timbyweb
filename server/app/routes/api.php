@@ -325,15 +325,18 @@ $app->group('/api', function () use ($app) {
     );
 
     $response = Requests::post(
-      $app->config('wordpress_site_url').'/api/get_category_index',
-      array('Accept' => 'application/json')
+      $app->config('wordpress_site_url').'/api/get_all_terms_for_taxonomy',
+      array('Accept' => 'application/json'),
+      array(
+        'taxonomy' => 'category'
+      )
     );
 
     $responsebody = json_decode($response->body);
-    if( $responsebody->categories){
+    if( $responsebody->terms){
       success(
         array( 
-          'categories' => $responsebody->categories
+          'categories' => $responsebody->terms
         )
       );
     }
@@ -360,10 +363,10 @@ $app->group('/api', function () use ($app) {
     );
 
     $responsebody = json_decode($response->body);
-    if( $responsebody ){
+    if( $responsebody->terms ){
       success(
         array( 
-          'sectors' => $responsebody
+          'sectors' => $responsebody->terms
         )
       );
     }
