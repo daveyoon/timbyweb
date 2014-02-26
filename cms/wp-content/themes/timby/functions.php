@@ -43,3 +43,17 @@ if ( ! function_exists( 'timbyweb_setup' ) ) :
   }
 endif; // timbyweb_setup
 add_action( 'after_setup_theme', 'timbyweb_setup' );
+
+/**
+ * Initialize the metabox class.
+ */
+function cmb_initialize_cmb_meta_boxes() {
+  if ( ! class_exists( 'cmb_Meta_Box' ) )
+    require_once 'lib/metabox/init.php';
+}
+add_action( 'init', 'cmb_initialize_cmb_meta_boxes', 9999 );
+
+/**
+ * Custom Meta boxes
+ */
+require get_template_directory() . '/inc/custom-meta-boxes.php';
