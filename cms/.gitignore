@@ -20,4 +20,4 @@ wp-content/plugins/*
 
 # Ignore everything in the "themes" directory, except the timbyweb theme
 wp-content/themes/*
-!wp-content/themes/timbyweb/
+!wp-content/themes/timby/
