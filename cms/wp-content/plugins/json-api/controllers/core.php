@@ -206,24 +206,28 @@ class JSON_API_Core_Controller {
     );
   }
   
-  public function get_category_index() {
+  public function get_all_terms_for_taxonomy() {
     global $json_api;
-    $args = null;
+    $args = array();
     if (!empty($json_api->query->parent)) {
-      $args = array(
-        'parent' => $json_api->query->parent
-      );
+      $args['parent'] = $json_api->query->parent;
+    }
+    // default get terms for 'category' taxonomy
+    if( empty($json_api->query->taxonomy) ) {
+      $json_api->query->taxonomy = 'category';
     }
 
     $args['hide_empty'] = 0; //do not hide empty args
 
-    $categories = $json_api->introspector->get_categories($args);
+    $terms = $json_api->introspector->get_terms_for($json_api->query->taxonomy, $args);
+
     return array(
-      'count' => count($categories),
-      'categories' => $categories
+      'count' => count($terms),
+      'terms' => $terms
     );
   }
-  
+
+
   public function get_tag_index() {
     global $json_api;
     $tags = $json_api->introspector->get_tags();

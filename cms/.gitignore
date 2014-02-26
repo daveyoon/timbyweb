@@ -1,7 +1,8 @@
 # WORDPRESS CORE IGNORE
 
-# Ignore everything in the root except the "wp-content" directory.
+# Ignore everything in the root except the readme.md, gitignore and the "wp-content" directory.
 /*
+!.readme.md
 !.gitignore
 !wp-content/
 

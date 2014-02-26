@@ -326,10 +326,7 @@ $app->group('/api', function () use ($app) {
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/get_category_index',
-      array('Accept' => 'application/json'),
-      array(
-        'hide_empty' => 0
-      )
+      array('Accept' => 'application/json')
     );
 
     $responsebody = json_decode($response->body);
@@ -337,6 +334,36 @@ $app->group('/api', function () use ($app) {
       success(
         array( 
           'categories' => $responsebody->categories
+        )
+      );
+    }
+
+  });
+
+
+  /**
+   * Get sectors, similar to /getcategories
+   *
+   * Params
+   *   user_id
+   *   key
+   *   token
+   */
+  $app->post('/getsectors', function() use($app){
+
+    $response = Requests::post(
+      $app->config('wordpress_site_url').'/api/get_all_terms_for_taxonomy',
+      array('Accept' => 'application/json'),
+      array(
+        'taxonomy' => 'sector'
+      )
+    );
+
+    $responsebody = json_decode($response->body);
+    if( $responsebody ){
+      success(
+        array( 
+          'sectors' => $responsebody
         )
       );
     }

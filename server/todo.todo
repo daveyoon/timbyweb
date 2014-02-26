@@ -8,5 +8,6 @@
  ✔ connect to wordpress and do xmlrpc calls @done (14-02-24 11:07)
  ☐ logging capability of the api
  ☐ generate api keys dynamically
- ☐ /logout and delete the current token
+ ✔ /logout and delete the current token @done (14-02-26 12:46)
  ☐ revisit the update section and return a map of all fields
+ ☐ add the authorized keys step to git deployhq manuals http://circle.co.ke/git/?p=22
