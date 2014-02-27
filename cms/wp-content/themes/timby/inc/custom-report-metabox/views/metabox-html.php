@@ -8,4 +8,4 @@ Type a location to navigate:
 <br />
 <br />
 Select the desired location below:
-<div id="map-canvas" style="height:300px;min-width:900px;"></div>
+<div id="map-canvas" style="min-height:300px;min-width:900px;width:100%;height:100%"></div>
