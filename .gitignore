@@ -1,17 +1,2 @@
 server/vendor
-
-# Folders
-wp-admin
-wp-includes
-
-# Files
-.htaccess
-wp-config.php
-/nbproject/private/
-
-# Grunt files
-package.json
-Gruntfile.js
-
-# sass cache
-wp-content/themes/timby/css/.sass-cache/
+tests/config.php

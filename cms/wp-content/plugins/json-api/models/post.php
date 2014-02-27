@@ -32,7 +32,7 @@ class JSON_API_Post {
     }
     do_action("json_api_{$this->type}_constructor", $this);
   }
-  
+
   function create($values = null) {
     unset($values['id']);
     if (empty($values) || empty($values['title'])) {

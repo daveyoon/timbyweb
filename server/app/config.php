@@ -6,7 +6,7 @@ switch ($_SERVER['HTTP_HOST']) {
     break;
   
   case 'uat.circle.co.ke':
-    $_ENV['SLIM_MODE'] = 'test';
+    $_ENV['SLIM_MODE'] = 'uat';
     break;
 
   case 'timby.org':
@@ -19,22 +19,23 @@ $app->configureMode('development', function () use ($app) {
   $app->config(array(
     'log.enable' => false,
     'debug' => true,
-    'wordpress_site_url' => 'http://localhost/timbyweb/cms',
-    'wordpress_site_username' => 'admin',
-    'wordpress_site_password' => 'admin'
+    'wordpress_site_url' => 'http://localhost/timbyweb/cms'
   ));
 });
 
-// Only invoked if mode is "production"
-$app->configureMode('test', function () use ($app) {
+// Only invoked if mode is "uat"
+$app->configureMode('uat', function () use ($app) {
   $app->config(array(
     'log.enable' => true,
     'debug' => false,
-    'wordpress_site_url' => 'http://uat.circle.co.ke/timbyweb/cms',
-    'wordpress_site_username' => '',
-    'wordpress_site_password' => ''
+    'wordpress_site_url' => 'http://uat.circle.co.ke/timbyweb/cms'
   ));
 });
+
+
+
+
+
 
 
 

@@ -25,6 +25,34 @@ class JSON_API_Posts_Controller {
     );
   }
   
+  public function create_attachment(){
+    if (!$this->author_has_valid_token($_POST['author'], $_POST['token'])) {
+      $json_api->error("Your token has expired, please try logging in again");
+    }   
+
+    $post_data = array(
+      'post_parent'  => $_POST['id'],
+      'post_title'   => $_POST['title'],
+      'post_content' => $_POST['content']
+    );
+    return $_FILES['attachment'];
+    if (!empty($_FILES['attachment'])) {
+
+      include_once ABSPATH . '/wp-admin/includes/file.php';
+      include_once ABSPATH . '/wp-admin/includes/media.php';
+      include_once ABSPATH . '/wp-admin/includes/image.php';
+      $attachment_id = media_handle_upload('attachment', $_POST['id'], $post_data);
+      unset($_FILES['attachment']);
+
+      return array(
+        'id' => $attachment_id
+      );
+    } else {
+      $json_api->error("Please attach a file to upload.");
+    }
+  }
+
+
   public function update_post() {
     global $json_api;
 

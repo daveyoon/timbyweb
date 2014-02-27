@@ -5,17 +5,17 @@
  * @param  $message response message
  * @return null
  */
-function success($message){
-  global $app;
-  $app->response->setBody(
-    json_encode(
-      array(
-        'status' => 'OK',
-        'message' => $message
-      )
-    )
-  );
+if( !function_exists('success')){
+  function success($message){
+    echo  json_encode(
+            array(
+              'status' => 'OK',
+              'message' => $message
+            )
+          );
+  }  
 }
+
 
 /**
  * Error response
@@ -23,19 +23,18 @@ function success($message){
  * @param  $code error code
  * @return null
  */
-function error($message, $code = '102'){
-  global $app;
-  $app->response->setBody(
-    json_encode(
-      array(
-        'wp_site_url' => $app->config('wordpress_site_url'), 
-        'status'  => 'NOK',
-        'error'   => $code,
-        'message' => $message
-      )
-    )
-  );
+if( !function_exists('error')){
+  function error($message, $code = '102'){
+    echo  json_encode(
+            array(
+              'status'  => 'NOK',
+              'error'   => $code,
+              'message' => $message
+            )
+          );
+  }
 }
+
 
 // API group
 $app->group('/api', function () use ($app) {
@@ -53,8 +52,8 @@ $app->group('/api', function () use ($app) {
    *   
    */
   $app->post('/login', function() use ($app) {
-    $user_name = $app->request->post('user_name');
-    $password = $app->request->post('password');
+    $user_name = $app->request->params('user_name');
+    $password = $app->request->params('password');
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.authenticate', 
@@ -81,7 +80,6 @@ $app->group('/api', function () use ($app) {
 
   });
 
-
   /**
    * Create Report
    * 
@@ -100,16 +98,16 @@ $app->group('/api', function () use ($app) {
    */
   $app->post('/createreport', function() use($app) {
     // check the params provided against required params
-    $token = $app->request->post('token');
-    $user_id = $app->request->post('user_id');
-    $key = $app->request->post('key');
+    $token = $app->request->params('token');
+    $user_id = $app->request->params('user_id');
+    $key = $app->request->params('key');
 
-    $title = $app->request->post('title');
-    $description = $app->request->post('description');
-    $sector = $app->request->post('sector');
-    $report_date = $app->request->post('report_date');
-    $lat = $app->request->post('lat') != false ? $app->request->post('lat') : 0;
-    $long = $app->request->post('long') != false ? $app->request->post('long') : 0;
+    $title = $app->request->params('title');
+    $description = $app->request->params('description');
+    $sector = $app->request->params('sector');
+    $report_date = $app->request->params('report_date');
+    $lat = $app->request->params('lat') != false ? $app->request->params('lat') : 0;
+    $long = $app->request->params('long') != false ? $app->request->params('long') : 0;
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/posts/create_post',
@@ -121,7 +119,6 @@ $app->group('/api', function () use ($app) {
         'date'    => date('c', strtotime($report_date)),
         'type'    => 'report',
         'status'  => 'pending',
-        
         'token'   => $token
       )
     );
@@ -149,8 +146,8 @@ $app->group('/api', function () use ($app) {
    */
   $app->post('/logout', function() use($app) {
 
-    $username = $app->request->post('user_name');
-    $password = $app->request->post('password');
+    $username = $app->request->params('user_name');
+    $password = $app->request->params('password');
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.logout',
@@ -182,8 +179,8 @@ $app->group('/api', function () use ($app) {
    */
   $app->post('/tokencheck', function() use($app) {
 
-    $user_id = $app->request->post('user_id');
-    $token = $app->request->post('token');
+    $user_id = $app->request->params('user_id');
+    $token = $app->request->params('token');
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.tokenstatus',
@@ -373,7 +370,57 @@ $app->group('/api', function () use ($app) {
 
   });
 
-});
 
+
+
+  /**
+   * Insert an object, creates a wordpress media object
+   * 
+   * user_id
+   * key
+   * token
+   * title (optional)
+   * object_type : one of (“narrative”, “image”, “video”, “audio”, “entity”)
+   * narrative
+   * report_id
+   * (The object to upload - if it is uploadable)
+   */
+  $app->post('/insertobject', function() use($app){
+    $params = array(
+      'author'     => $_POST['user_id'],
+      'key'        => $_POST['key'],
+      'token'      => $_POST['token'],
+      'title'      => $_POST['title'],
+      'content'    => $_POST['narrative'],
+      'id'         => $_POST['report_id']
+    );
+
+    if( $_POST['object_type'] = 'image' ) {
+      //upload the attachment
+      $response = Requests::post(
+        $app->config('wordpress_site_url').'/api/posts/create_attachment',
+        array('Accept' => 'application/json'),
+        $params
+      );
+
+      $responsebody = json_decode($response->body);
+
+      echo $response->body;
+
+      // if( $responsebody->status = 'ok' ){
+      //   success(
+      //     array( 
+      //       'id' => $responsebody->id
+      //     )
+      //   );
+      // } else {
+      //   error($responsebody->error);
+      // }
+
+    }
+
+  });
+
+});
 
 
