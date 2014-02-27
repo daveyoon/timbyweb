@@ -12,7 +12,6 @@ function initialize() {
       lat = _lat;
       lng = _lng;
     }
-    console.log(latlng);
   var mapOptions = {
     zoom: 7,
     center: new google.maps.LatLng(lat,lng)
