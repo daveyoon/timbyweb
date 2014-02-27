@@ -2,9 +2,20 @@ var marker,
     map;
 
 function initialize() {
+  var _lat = document.getElementById('_latitude').value;
+  var _lng = document.getElementById('_longitude').value;
+  var latlng = {};
+  if(_lat == ''){
+      lat = 6.593820;
+      lng = -9.394627;
+    }else{
+      lat = _lat;
+      lng = _lng;
+    }
+    console.log(latlng);
   var mapOptions = {
-    zoom: 8,
-    center: new google.maps.LatLng(6.593820, -9.394627)
+    zoom: 7,
+    center: new google.maps.LatLng(lat,lng)
   };
 
   // initialize map only if the element exists in the DOM
