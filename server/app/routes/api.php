@@ -106,8 +106,10 @@ $app->hook('slim.after', function() use($app){
   $app->config('app.log', $logdata);
 
   // write log to file or database
-  $file = fopen( $app->config('PUBLIC_FOLDER') . '/log.txt', 'a');
-  fwrite($file, json_encode($logdata) ."\r\n");
+  if(  $file = fopen( $app->config('PUBLIC_FOLDER') . '/log.txt', 'a' ) ) {
+    fwrite($file, json_encode($logdata) ."\r\n");
+  }
+  
 
 });
 
