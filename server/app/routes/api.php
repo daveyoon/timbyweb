@@ -80,10 +80,46 @@ $app->hook('upload', function ($params) use($app) {
 
 });
 
-// API group
+
+$app->hook('slim.before', function() use($app){
+  $logdata = array(
+    'request' => array(
+      'url'        => $_SERVER['REQUEST_URI'],
+      'method'     => $_SERVER['REQUEST_METHOD'],
+      'parameters' => $_REQUEST,
+      'time'       => time(),
+      'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+      'ip'         => $_SERVER['SERVER_ADDR'],
+    )
+  );
+  $app->config('app.log', $logdata);
+});
+
+$app->hook('slim.after', function() use($app){
+  global $http_response_header;
+  $logdata = $app->config('app.log');
+  $logdata['response'] = array(
+                            'body'    => $app->response->body(),
+                            'headers' => $http_response_header,
+                            'time'    => time(),
+                        );
+  $app->config('app.log', $logdata);
+
+  // write log to file or database
+  $file = fopen( $app->config('PUBLIC_FOLDER') . '/log.txt', 'a');
+  fwrite($file, json_encode($logdata) ."\r\n");
+
+});
+
+
+/**
+*  
+*         THE API
+*  Api calls are grouped in /api
+*                                                 
+**********************************************/
+
 $app->group('/api', function () use ($app) {
-
-
 
   $app->response->headers->set('Content-Type', 'application/json'); //always return json
 

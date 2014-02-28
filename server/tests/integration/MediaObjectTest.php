@@ -55,7 +55,6 @@
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($ch);
-        echo $response;
 
         $this->assertObjectHasAttribute('object_id', json_decode($response)->message);
         

@@ -37,5 +37,3 @@ $app->configureMode('uat', function () use ($app) {
 
 
 
-
-
