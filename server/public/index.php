@@ -8,5 +8,10 @@ foreach ($routers as $router) {
     require $router;
 }
 
+# Configure the uploads directory
+$app->config(array(
+  'UPLOADS_DIR' => dirname(__FILE__) . '/temp_uploads/',
+));
+
 $app->run();
 
