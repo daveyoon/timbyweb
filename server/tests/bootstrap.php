@@ -17,10 +17,11 @@ class Slim_Framework_TestCase extends PHPUnit_Framework_TestCase{
 
     //bootstrap slim and configure
     $app = new \Slim\Slim(array(
-      'version'            => '0.0.0',
-      'debug'              => false,
-      'mode'               => 'testing',
-      'wordpress_site_url' => $testconfig['url']
+      'version'               => '0.0.0',
+      'debug'                 => false,
+      'mode'                  => 'testing',
+      'wordpress_site_url'    => $testconfig['url'],
+      'TEMPORARY_UPLOADS_DIR' => __DIR__ . '/temp_uploads/'
     ));
 
     require __DIR__ . '/../app/routes/api.php';

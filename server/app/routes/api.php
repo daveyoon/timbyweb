@@ -36,7 +36,8 @@ if( !function_exists('error')){
 }
 
 /**
- * Upload
+ * Upload hook
+ * 
  *  Does a few things here
  *  1. Uploading the file to a temporary location
  *  2. Forwarding the uploaded file to the Wordpress api
@@ -45,40 +46,40 @@ if( !function_exists('error')){
  *   
  * @return null
  */
-if( !function_exists('upload')){
-  function upload($params = array()){
-    global $app;
-    
-    // upload the file
-    $upload_file_path = $app->config('UPLOADS_DIR') . $_FILES['attachment']['name'];
 
-    if(move_uploaded_file($_FILES['attachment']['tmp_name'], $upload_file_path)){
-      $params['attachment'] = '@'. $upload_file_path; // attachment will be available to wordpress in $_FILES
+$app->hook('upload', function ($params) use($app) {
 
-      //upload the attachment
-      $ch = curl_init($app->config('wordpress_site_url').'/api/posts/create_attachment');
-      curl_setopt($ch, CURLOPT_POST, true);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      $response = curl_exec($ch);
+  // upload the file
+  $upload_file_path = $app->config('TEMPORARY_UPLOADS_DIR') . $_FILES['attachment']['name'];
 
-      $responsebody = json_decode($response);
-      if( $responsebody->status == 'ok' ){
-        success(
-          array( 
-            'id' => $responsebody->id
-          )
-        );
-      } else {
-        error($responsebody->error);
-      }
+  if(move_uploaded_file($_FILES['attachment']['tmp_name'], $upload_file_path)){
+    $params['attachment'] = '@'. $upload_file_path; // attachment will be available to wordpress in $_FILES
+
+    //upload the attachment
+    $ch = curl_init($app->config('wordpress_site_url').'/api/posts/create_attachment');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec($ch);
+
+    $responsebody = json_decode($response);
+    if( $responsebody->status == 'ok' ){
+      success(
+        array( 
+          'object_id' => $responsebody->id
+        )
+      );
     } else {
-      error('Unable to upload the file');
+      error($responsebody->error);
     }
     // unset the temporarily uploaded file
     unlink($upload_file_path);
+  } else {
+    error('Unable to upload the file');
   }
-}
+
+});
+
 // API group
 $app->group('/api', function () use ($app) {
 
@@ -431,24 +432,23 @@ $app->group('/api', function () use ($app) {
   $app->post('/insertobject', function() use($app){
 
     $params = array(
-      'author'     => $_POST['user_id'],
-      'key'        => $_POST['key'],
-      'token'      => $_POST['token'],
-      'title'      => $_POST['title'],
-      'content'    => $_POST['narrative'],
-      'id'         => $_POST['report_id']
+      'author'     => $app->request->params('user_id'),
+      'key'        => $app->request->params('key'),
+      'token'      => $app->request->params('token'),
+      'title'      => $app->request->params('title'),
+      'content'    => $app->request->params('narrative'),
+      'id'         => $app->request->params('report_id')
     );
 
     // we have to upload the file here before passing it on to wordpress
     // see http://stackoverflow.com/questions/13928747/sending-files-information-to-another-script-using-curl
-    if( in_array($_POST['object_type'], array('image','audio','video')) )
+    if( in_array($app->request->params('object_type'), array('application/octet-stream','image','audio','video')))
     {
-      switch( $_POST['object_type'] )
+      switch( $app->request->params('object_type'))
       {
         case 'image':
-          
-          if( in_array($_FILES['attachment']['type'], array('image/jpeg', 'image/png') ) )
-            upload($params);
+          if( in_array($_FILES['attachment']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
+            $app->applyHook('upload', $params);
           else
             error('Please upload a valid image type');
             return;
@@ -456,8 +456,8 @@ $app->group('/api', function () use ($app) {
           break;
         case 'video':
           
-          if( in_array($_FILES['attachment']['type'], array('video/mp4', 'video/ogg','video/webm', 'video/x-flv') ) )
-            upload($params);
+          if( in_array($_FILES['attachment']['type'], array('application/octet-stream','video/mp4', 'video/ogg','video/webm', 'video/x-flv') ) )
+            $app->applyHook('upload', $params);
           else 
             error('Please upload a valid video type');
             return;
@@ -466,7 +466,7 @@ $app->group('/api', function () use ($app) {
         case 'audio':
 
           if( in_array($_FILES['attachment']['type'], array('audio/mp3','audio/mp4', 'audio/ogg') ) )
-            upload($params);
+            $app->applyHook('upload', $params);
           else
             error('Please upload a valid audio type');
             return;
@@ -477,8 +477,6 @@ $app->group('/api', function () use ($app) {
       }
 
     }
-
-
 
   });
 

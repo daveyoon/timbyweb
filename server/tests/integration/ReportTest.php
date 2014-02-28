@@ -32,9 +32,6 @@
           'key'         => $user->key
         )
       );
-      var_dump($this->response->body());
-
-
       $this->assertEquals(200, $this->response->status());
 
       $this->assertObjectHasAttribute('id', json_decode($this->response->body())->message);

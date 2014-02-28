@@ -2,60 +2,65 @@
 
   class MediaObjectTest extends Slim_Framework_TestCase
   {
-    public function testLoginValid()
+    public function testUploadMedia()
     {
-      $response = $this->login_to_wordpress($this->user, $this->password);
+      global $testconfig;
 
-      $this->assertEquals(200, $response['status']);
-      $this->assertObjectHasAttribute('key', $response['data']);
-
-      return $response['data'];
-    }
-
-    
-    /**
-     * @depends testLoginValid
-     */
-    public function testUploadMedia($user)
-    {
-      //create a report
-      $this->post('/api/createreport', 
+      //login
+      $response = Requests::post(
+        $testconfig['url'].'/api/users.authenticate', 
+        array('Accept' => 'application/json'), 
         array(
-          'title'   => 'Sample Test Report',
-          'content' => 'Sample report Description',
-          'author'  => 1,
-          'date'    => '2014-02-05 16:46:03',
+          'username' => $testconfig['username'],
+          'password' => $testconfig['password']
+        )
+      );
+      $user = json_decode($response->body);
+
+      //create a report
+      $response = Requests::post(
+        $testconfig['url'].'/api/posts/create_post',
+        array('Accept' => 'application/json'), 
+        array(
+          'title'   => 'Sample title',
+          'content' => 'Sample test description',
+          'author'  => $user->user_id,
+          'date'    => '2014-02-09 13:56:00:00',
           'type'    => 'report',
           'status'  => 'pending',
-          'token'   => 'asdf',
-          'key'     => 'asdf'
+          'token'   => $user->api_token
         )
       );
 
-      $reportid = json_decode( $this->response->body())->message->id;
+      $report = json_decode( $response->body);
 
-      if( $reportid )
+      if( $report->post )
       {
         // create a media object and tie it to this report
         $params = array(
           'user_id'     => $user->user_id,
-          'key'         => $user->key,
-          'token'       => $user->token,
+          'key'         => $user->api_key,
+          'token'       => $user->api_token,
           'title'       => 'Sample media object',
           'object_type' => 'image',
           'narrrative'  => 'here is a sample attachment',
-          'report_id'   => $report_id,
+          'report_id'   => $report->post->id,
         );
 
-        $this->post('/api/insertobject', $params);
+        $params['attachment'] = '@'. __DIR__ . '/_files/test.jpg'; // attachment will be available to wordpress in $_FILES
 
-        $this->assertEquals(200, $this->response->status());
-        $this->assertObjectHasAttribute('object_id', json_decode($this->response->body())->message);
+        //mock the upload
+        $ch = curl_init($testconfig['server_url'].'/api/insertobject');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        echo $response;
+
+        $this->assertObjectHasAttribute('object_id', json_decode($response)->message);
         
       }
 
     }
-
-
 
   }
