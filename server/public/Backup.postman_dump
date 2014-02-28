@@ -6,14 +6,15 @@
 			"name": "Timby Endpoints",
 			"description": "",
 			"order": [
+				"6952f6d8-97ad-cd51-e8b1-621821880afa",
 				"111a05c7-fb1b-78c7-47f7-b91e57fd1c42",
 				"3a6a9300-434c-a6a7-9df9-3f98efbaab5f",
-				"6952f6d8-97ad-cd51-e8b1-621821880afa",
 				"e845b3a2-9b74-8f82-c060-fe3d1528b098",
 				"c1a92892-e3f7-7a76-2674-1bcf9215d867",
 				"ed5957aa-d0d8-7a51-ac67-7448f75debd7",
 				"c07c870d-fc98-033f-fa4d-33142c5eefdc",
-				"f2969a59-6e5c-7fe5-178a-54f39ba34572"
+				"f2969a59-6e5c-7fe5-178a-54f39ba34572",
+				"f1908ee7-79e1-bd19-b774-e3ad72b35a4e"
 			],
 			"folders": [],
 			"timestamp": 1393333322684,
@@ -252,6 +253,63 @@
 					"timestamp": 0,
 					"version": 2,
 					"time": 1393338159345
+				},
+				{
+					"id": "f1908ee7-79e1-bd19-b774-e3ad72b35a4e",
+					"headers": "Accept: application/json\n",
+					"url": "{{api}}/insertobject",
+					"pathVariables": {},
+					"method": "POST",
+					"data": [
+						{
+							"key": "user_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "key",
+							"value": "6b239b3568b209",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "PASTE TOKEN HERE",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "This is a test title",
+							"type": "text"
+						},
+						{
+							"key": "narrative",
+							"value": "Some content for the attachment",
+							"type": "text"
+						},
+						{
+							"key": "report_id",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "attachment",
+							"value": "",
+							"type": "file"
+						},
+						{
+							"key": "object_type",
+							"value": "image",
+							"type": "text"
+						}
+					],
+					"dataMode": "params",
+					"version": 2,
+					"tests": "",
+					"time": 1393572150744,
+					"name": "Create media object",
+					"description": "",
+					"collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
+					"responses": []
 				},
 				{
 					"id": "f2969a59-6e5c-7fe5-178a-54f39ba34572",
