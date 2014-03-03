@@ -23,6 +23,7 @@ $app->configureMode('development', function () use ($app) {
   ));
 });
 
+
 // Only invoked if mode is "uat"
 $app->configureMode('uat', function () use ($app) {
   $app->config(array(
@@ -33,7 +34,38 @@ $app->configureMode('uat', function () use ($app) {
 });
 
 
+// get the database config details from the cms
+require_once __DIR__ . '/../../cms/wp-config.php';
+use Illuminate\Database\Capsule\Manager as Capsule;
+$capsule = new Capsule;
 
+// Database Connection,
+// Settings borrowed from the wordpress' config.php
+$capsule->addConnection(
+  array(
+    'driver'    => 'mysql',
+    'host'      => DB_HOST,
+    'database'  => DB_NAME,
+    'username'  => DB_USER,
+    'password'  => DB_PASSWORD,
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => ''
+  )
+);
 
+// Make this Capsule instance available globally via static methods
+$capsule->setAsGlobal();
 
+// Setup the Eloquent ORM
+$capsule->bootEloquent();
 
+// create a `timbyapi_logs` schema
+if( !Capsule::schema()->hasTable('timbyapi_logs') ) {
+  Capsule::schema()->create('timbyapi_logs', function($table)
+  {
+    $table->increments('id');
+    $table->string('log')->unique();
+    $table->timestamps();
+  });
+}

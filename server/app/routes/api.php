@@ -103,13 +103,13 @@ $app->hook('slim.after', function() use($app){
                             'headers' => $http_response_header,
                             'time'    => time(),
                         );
-  $app->config('app.log', $logdata);
-
-  // write log to file or database
-  if(  $file = fopen( $app->config('PUBLIC_FOLDER') . '/log.txt', 'a' ) ) {
-    fwrite($file, json_encode($logdata) ."\r\n");
-  }
-  
+  // save log to database
+  Log::insert(
+    array(
+      'log'        => json_encode($logdata),
+      'created_at' => date('Y-m-d h:i:s', time())
+    )
+  );
 
 });
 
