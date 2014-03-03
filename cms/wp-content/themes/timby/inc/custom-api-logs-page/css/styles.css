@@ -1,0 +1,14 @@
+.frm_date_filter{
+  margin-bottom: 20px;
+}
+.frm_date_filter input[type="submit"]{
+  display: inline-block;
+  margin-top: 18px;
+}
+.api_activity .frm_date_filter label{
+  display: inline-block;
+}
+.api_activity .frm_date_filter label input{
+  display: block;
+  width: 150px;
+}

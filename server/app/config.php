@@ -65,7 +65,7 @@ if( !Capsule::schema()->hasTable('timbyapi_logs') ) {
   Capsule::schema()->create('timbyapi_logs', function($table)
   {
     $table->increments('id');
-    $table->string('log')->unique();
+    $table->text('log');
     $table->timestamps();
   });
 }

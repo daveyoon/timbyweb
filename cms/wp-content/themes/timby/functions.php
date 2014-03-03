@@ -16,6 +16,12 @@ require get_template_directory() . '/inc/custom-user-roles.php';
 require get_template_directory() . '/inc/custom-taxonomies.php';
 
 
+/**
+ * Custom API logs page
+ */
+require get_template_directory() . '/inc/custom-api-logs-page/page.php';
+
+
 if ( ! function_exists( 'timbyweb_setup' ) ) :
   /**
    * Sets up theme defaults and registers support for various WordPress features.
