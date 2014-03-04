@@ -9,8 +9,11 @@ require __DIR__ .'/config.php';
 
 class Slim_Framework_TestCase extends PHPUnit_Framework_TestCase{
 
+  private $testingMethods = array('get', 'post', 'patch', 'put', 'delete', 'head');
+
   public function setup()
   {
+
     global $testconfig;
 
     date_default_timezone_set('Africa/Lagos');
@@ -34,39 +37,26 @@ class Slim_Framework_TestCase extends PHPUnit_Framework_TestCase{
   }
 
 
-  /**
-   * Login to wordpress and return the user's details
-   * @return array user object containing user_name, key and token
-   */
-  public function login_to_wordpress($user = '', $password = '')
-  {
-    $params = array(
-      'user_name' => $user,
-      'password'  => $password
-    );
-
-    $this->post('/api/login', $params);
-
-    return array(
-      'data'   => json_decode($this->response->body())->message,
-      'status' => $this->response->status()
-    );
-  }
-
   // Abstract way to make a request to SlimPHP, this allows us to mock the
   // slim environment
-  public function request($method, $path, $options = array())
+  public function request($method, $path, $formVars = array(), $optionalHeaders = array())
   {
     // Capture STDOUT
     ob_start();
 
     // Prepare a mock environment
-    \Slim\Environment::mock(array(
-        'REQUEST_METHOD' => $method,
-        'PATH_INFO'      => $path,
-        'SERVER_NAME'    => 'local.dev',
-        'QUERY_STRING'   => http_build_query($options)
-    ));
+    \Slim\Environment::mock(
+      array_merge(
+        array(
+          'REQUEST_METHOD' => strtoupper($method),
+          'PATH_INFO'      => $path,
+          'SERVER_NAME'    => 'local.dev',
+          'slim.input'     => http_build_query($formVars)
+        ),
+        $optionalHeaders
+      )
+
+    );
 
     // Establish some useful references to the slim app properties
     $this->request  = $this->app->request();
@@ -79,37 +69,13 @@ class Slim_Framework_TestCase extends PHPUnit_Framework_TestCase{
     return ob_get_clean();
   }
 
-  public function get($path, $options = array())
-  {
-      return $this->request('GET', $path, $options);
+  // Implement our `get`, `post`, and other http operations
+  public function __call($method, $arguments){
+    if( in_array($method, $this->testingMethods) ) {
+      list($path, $formVars, $headers) = array_pad($arguments, 3, array()); // make a 3 item array containing necessary items
+      $this->request($method, $path,$formVars, $headers); 
+    }
   }
 
-  public function post($path, $options = array(), $postVars = array())
-  {
-    $options['slim.input'] = http_build_query($postVars);
-    return $this->request('POST', $path, $options);
-  }
-
-  public function patch($path, $options = array(), $postVars = array())
-  {
-    $options['slim.input'] = http_build_query($postVars);
-    return $this->request('PATCH', $path, $options);
-  }
-
-  public function put($path, $options = array(), $postVars = array())
-  {
-    $options['slim.input'] = http_build_query($postVars);
-    return $this->request('PUT', $path, $options);
-  }
-
-  public function delete($path, $options = array())
-  {
-    return $this->request('DELETE', $path, $options);
-  }
-
-  public function head($path, $options = array())
-  {
-    return $this->request('HEAD', $path, $options);
-  }
 
 }

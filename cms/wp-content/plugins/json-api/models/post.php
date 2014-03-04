@@ -109,7 +109,14 @@ class JSON_API_Post {
     } else {
       $this->id = wp_insert_post($wp_values);
     }
+    // save custom fields
+    if( array_key_exists('custom_fields', $values) ) 
+    {
+      $this->save_custom_fields($values['custom_fields']);
+    }
     
+
+    // upload an attachment if it exists
     if (!empty($_FILES['attachment'])) {
       include_once ABSPATH . '/wp-admin/includes/file.php';
       include_once ABSPATH . '/wp-admin/includes/media.php';
@@ -254,6 +261,13 @@ class JSON_API_Post {
     $this->thumbnail_images = $attachment->images;
   }
   
+  function save_custom_fields($fields = array()){
+    foreach($fields as $meta_key => $meta_value)
+    {
+      update_post_meta( $this->id, $meta_key, $meta_value );
+    }
+  }
+
   function set_custom_fields_value() {
     global $json_api;
     if ($json_api->include_value('custom_fields')) {

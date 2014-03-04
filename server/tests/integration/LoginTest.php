@@ -5,22 +5,28 @@ class LoginTest extends Slim_Framework_TestCase
 
   public function testLoginInvalid()
   {
-    $response = $this->login_to_wordpress('somebaduser', 'somebadpass');
+    $this->post('/api/login',
+      array(
+        'user_name' => 'invaliduser',
+        'password'  => 'invalidpassword'
+      )
+    );
 
-    $this->assertEquals(200, $response['status']);
-    $this->assertEquals('Invalid login credentials', $response['data']);
+    $this->assertEquals(200, $this->response->status());
+    $this->assertEquals('Invalid login credentials', json_decode($this->response->body())->message);
   }
 
   public function testLoginValid()
   {
-    $response = $this->login_to_wordpress($this->user, $this->password);
+    $this->post('/api/login',
+      array(
+        'user_name' => $this->user,
+        'password'  => $this->password
+      )
+    );
 
-    $this->assertEquals(200, $response['status']);
-    $this->assertObjectHasAttribute('key', $response['data']);
-
-    return $response['data'];
+    $this->assertEquals(200, $this->response->status());
+    $this->assertObjectHasAttribute('key', json_decode($this->response->body())->message);
   }
-
-
 
 }

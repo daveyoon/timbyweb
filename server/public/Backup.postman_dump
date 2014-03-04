@@ -57,22 +57,20 @@
 					"time": 1393338200851
 				},
 				{
-					"collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",
 					"id": "3a6a9300-434c-a6a7-9df9-3f98efbaab5f",
-					"name": "Create Report",
-					"description": "Create a new report\n",
-					"url": "{{api}}/createreport",
-					"method": "POST",
 					"headers": "Accept: application/json\n",
+					"url": "{{api}}/createreport",
+					"pathVariables": {},
+					"method": "POST",
 					"data": [
 						{
 							"key": "user_id",
-							"value": "3",
+							"value": "2",
 							"type": "text"
 						},
 						{
 							"key": "token",
-							"value": "PASTE TOKEN HERE",
+							"value": "PLEASE ENTER TOKEN HERE",
 							"type": "text"
 						},
 						{
@@ -99,12 +97,25 @@
 							"key": "sector",
 							"value": "1",
 							"type": "text"
+						},
+						{
+							"key": "lat",
+							"value": "40.9945928",
+							"type": "text"
+						},
+						{
+							"key": "long",
+							"value": "-77.6046984",
+							"type": "text"
 						}
 					],
 					"dataMode": "urlencoded",
-					"timestamp": 0,
 					"version": 2,
-					"time": 1393337562176
+					"tests": "",
+					"time": 1393921262956,
+					"name": "Create Report",
+					"description": "Create a new report\n",
+					"collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237"
 				},
 				{
 					"collectionId": "d5a1b861-ccde-b762-33e7-3c359190d237",

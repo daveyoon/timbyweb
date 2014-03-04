@@ -81,37 +81,37 @@ $app->hook('upload', function ($params) use($app) {
 });
 
 
-$app->hook('slim.before', function() use($app){
-  $logdata = array(
-    'request' => array(
-      'url'        => $_SERVER['REQUEST_URI'],
-      'method'     => $_SERVER['REQUEST_METHOD'],
-      'parameters' => $_REQUEST,
-      'time'       => time(),
-      'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-      'ip'         => $_SERVER['SERVER_ADDR'],
-    )
-  );
-  $app->config('app.log', $logdata);
-});
+// $app->hook('slim.before', function() use($app){
+//   $logdata = array(
+//     'request' => array(
+//       'url'        => $_SERVER['REQUEST_URI'],
+//       'method'     => $_SERVER['REQUEST_METHOD'],
+//       'parameters' => $_REQUEST,
+//       'time'       => time(),
+//       'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+//       'ip'         => $_SERVER['SERVER_ADDR'],
+//     )
+//   );
+//   $app->config('app.log', $logdata);
+// });
 
-$app->hook('slim.after', function() use($app){
-  global $http_response_header;
-  $logdata = $app->config('app.log');
-  $logdata['response'] = array(
-                            'body'    => $app->response->body(),
-                            'headers' => $http_response_header,
-                            'time'    => time(),
-                        );
-  // save log to database
-  Log::insert(
-    array(
-      'log'        => json_encode($logdata),
-      'created_at' => date('Y-m-d h:i:s', time())
-    )
-  );
+// $app->hook('slim.after', function() use($app){
+//   global $http_response_header;
+//   $logdata = $app->config('app.log');
+//   $logdata['response'] = array(
+//                             'body'    => $app->response->body(),
+//                             'headers' => $http_response_header,
+//                             'time'    => time(),
+//                         );
+//   // save log to database
+//   Log::insert(
+//     array(
+//       'log'        => json_encode($logdata),
+//       'created_at' => date('Y-m-d h:i:s', time())
+//     )
+//   );
 
-});
+// });
 
 
 /**
@@ -134,8 +134,8 @@ $app->group('/api', function () use ($app) {
    *   
    */
   $app->post('/login', function() use ($app) {
-    $user_name = $app->request->params('user_name');
-    $password = $app->request->params('password');
+    $user_name = $app->request->post('user_name');
+    $password = $app->request->post('password');
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.authenticate', 
@@ -180,16 +180,16 @@ $app->group('/api', function () use ($app) {
    */
   $app->post('/createreport', function() use($app) {
     // check the params provided against required params
-    $token = $app->request->params('token');
-    $user_id = $app->request->params('user_id');
-    $key = $app->request->params('key');
+    $token = $app->request->post('token');
+    $user_id = $app->request->post('user_id');
+    $key = $app->request->post('key');
 
-    $title = $app->request->params('title');
-    $description = $app->request->params('description');
-    $sector = $app->request->params('sector');
-    $report_date = $app->request->params('report_date');
-    $lat = $app->request->params('lat') != false ? $app->request->params('lat') : 0;
-    $long = $app->request->params('long') != false ? $app->request->params('long') : 0;
+    $title = $app->request->post('title');
+    $description = $app->request->post('description');
+    $sector = $app->request->post('sector');
+    $report_date = $app->request->post('report_date');
+    $lat = $app->request->post('lat') != false ? $app->request->post('lat') : 0;
+    $lng = $app->request->post('long') != false ? $app->request->post('long') : 0;
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/posts/create_post',
@@ -201,7 +201,11 @@ $app->group('/api', function () use ($app) {
         'date'    => date('c', strtotime($report_date)),
         'type'    => 'report',
         'status'  => 'pending',
-        'token'   => $token
+        'token'   => $token,
+        'custom_fields' =>  array(
+          '_latitude'  => $lat,
+          '_longitude' => $lng
+        )
       )
     );
 
@@ -228,8 +232,8 @@ $app->group('/api', function () use ($app) {
    */
   $app->post('/logout', function() use($app) {
 
-    $username = $app->request->params('user_name');
-    $password = $app->request->params('password');
+    $username = $app->request->post('user_name');
+    $password = $app->request->post('password');
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.logout',
@@ -261,8 +265,8 @@ $app->group('/api', function () use ($app) {
    */
   $app->post('/tokencheck', function() use($app) {
 
-    $user_id = $app->request->params('user_id');
-    $token = $app->request->params('token');
+    $user_id = $app->request->post('user_id');
+    $token = $app->request->post('token');
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.tokenstatus',
@@ -470,19 +474,19 @@ $app->group('/api', function () use ($app) {
   $app->post('/insertobject', function() use($app){
 
     $params = array(
-      'author'     => $app->request->params('user_id'),
-      'key'        => $app->request->params('key'),
-      'token'      => $app->request->params('token'),
-      'title'      => $app->request->params('title'),
-      'content'    => $app->request->params('narrative'),
-      'id'         => $app->request->params('report_id')
+      'author'     => $app->request->post('user_id'),
+      'key'        => $app->request->post('key'),
+      'token'      => $app->request->post('token'),
+      'title'      => $app->request->post('title'),
+      'content'    => $app->request->post('narrative'),
+      'id'         => $app->request->post('report_id')
     );
 
     // we have to upload the file here before passing it on to wordpress
     // see http://stackoverflow.com/questions/13928747/sending-files-information-to-another-script-using-curl
-    if( in_array($app->request->params('object_type'), array('application/octet-stream','image','audio','video')))
+    if( in_array($app->request->post('object_type'), array('application/octet-stream','image','audio','video')))
     {
-      switch( $app->request->params('object_type'))
+      switch( $app->request->post('object_type'))
       {
         case 'image':
           if( in_array($_FILES['attachment']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
@@ -519,5 +523,3 @@ $app->group('/api', function () use ($app) {
   });
 
 });
-
-

@@ -3,7 +3,7 @@
 /*------------------------------------------------------------------
 [Custom Post Types]
 
-* Reports
+* Report
 -------------------------------------------------------------------*/
 
 add_action( 'init', 'register_custom_post_type_report' );
@@ -28,7 +28,7 @@ function register_custom_post_type_report() {
         'labels' => $labels,
         'hierarchical' => false,
         'description' => 'Report',
-        'supports' => array( 'title', 'editor', 'excerpt'),
+        'supports' => array( 'title', 'editor', 'excerpt', 'custom-fields'),
         'taxonomies' => array('category'),
 
         'public' => true,
