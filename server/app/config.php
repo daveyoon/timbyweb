@@ -69,3 +69,4 @@ if( !Capsule::schema()->hasTable('timbyapi_logs') ) {
     $table->timestamps();
   });
 }
+
