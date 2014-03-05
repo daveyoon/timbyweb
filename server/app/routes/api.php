@@ -447,9 +447,19 @@ $app->group('/api', function () use ($app) {
 
     $responsebody = json_decode($response->body);
     if( $responsebody->terms ){
+      $sectors = array();
+
+      foreach ($responsebody->terms as $term) {
+        $sectors[] = array(
+          'id'     => $term->id,
+          'sector' => $term->title,
+          'slug'   => $term->slug
+        );
+      }
+
       success(
         array( 
-          'sectors' => $responsebody->terms
+          'sectors' => $sectors
         )
       );
     }
