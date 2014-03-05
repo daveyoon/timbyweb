@@ -1,19 +1,19 @@
 <?php
-use Illuminate\Database\Capsule\Manager as Capsule;
+// use Illuminate\Database\Capsule\Manager as Capsule;
 
-$capsule = new Capsule;
+// $capsule = new Capsule;
 
-$capsule->addConnection(
-  array(
-    'driver'    => 'pgsql'
-  )
-);
+// $capsule->addConnection(
+//   array(
+//     'driver'    => 'pgsql'
+//   )
+// );
 
-// Make this Capsule instance available globally via static methods
-$capsule->setAsGlobal();
+// // Make this Capsule instance available globally via static methods
+// $capsule->setAsGlobal();
 
-// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-$capsule->bootEloquent();
+// // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+// $capsule->bootEloquent();
 
 
 $app->get('/carto/insert', function() use($app){
