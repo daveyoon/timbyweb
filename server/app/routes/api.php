@@ -81,37 +81,37 @@ $app->hook('upload', function ($params) use($app) {
 });
 
 
-// $app->hook('slim.before', function() use($app){
-//   $logdata = array(
-//     'request' => array(
-//       'url'        => $_SERVER['REQUEST_URI'],
-//       'method'     => $_SERVER['REQUEST_METHOD'],
-//       'parameters' => $_REQUEST,
-//       'time'       => time(),
-//       'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-//       'ip'         => $_SERVER['SERVER_ADDR'],
-//     )
-//   );
-//   $app->config('app.log', $logdata);
-// });
+$app->hook('slim.before', function() use($app){
+  $logdata = array(
+    'request' => array(
+      'url'        => $_SERVER['REQUEST_URI'],
+      'method'     => $_SERVER['REQUEST_METHOD'],
+      'parameters' => $_REQUEST,
+      'time'       => time(),
+      'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+      'ip'         => $_SERVER['SERVER_ADDR'],
+    )
+  );
+  $app->config('app.log', $logdata);
+});
 
-// $app->hook('slim.after', function() use($app){
-//   global $http_response_header;
-//   $logdata = $app->config('app.log');
-//   $logdata['response'] = array(
-//                             'body'    => $app->response->body(),
-//                             'headers' => $http_response_header,
-//                             'time'    => time(),
-//                         );
-//   // save log to database
-//   Log::insert(
-//     array(
-//       'log'        => json_encode($logdata),
-//       'created_at' => date('Y-m-d h:i:s', time())
-//     )
-//   );
+$app->hook('slim.after', function() use($app){
+  global $http_response_header;
+  $logdata = $app->config('app.log');
+  $logdata['response'] = array(
+                            'body'    => $app->response->body(),
+                            'headers' => $http_response_header,
+                            'time'    => time(),
+                        );
+  // save log to database
+  Log::insert(
+    array(
+      'log'        => json_encode($logdata),
+      'created_at' => date('Y-m-d h:i:s', time())
+    )
+  );
 
-// });
+});
 
 
 /**

@@ -227,9 +227,10 @@ class CartoDBClient {
   public function insertRow($table, $data) {
     $keys = implode(',', array_keys($data));
     $values = implode(',', array_values($data));
+
     $sql = "INSERT INTO $table ($keys) VALUES($values);";
-    $sql .= "SELECT $table.cartodb_id as id, $table.* FROM $table ";
-    $sql .= "WHERE cartodb_id = currval('public." . $table . "_cartodb_id_seq');";
+    // $sql .= "SELECT $table.cartodb_id as id, $table.* FROM $table ";
+    // $sql .= "WHERE cartodb_id = currval('public." . $table . "_cartodb_id_seq');";
     return $this->runSql($sql);
   }
 

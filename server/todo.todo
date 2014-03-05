@@ -11,3 +11,5 @@
  ✔ /logout and delete the current token @done (14-02-26 12:46)
  ☐ revisit the update section and return a map of all fields
  ☐ add the authorized keys step to git deployhq manuals http://circle.co.ke/git/?p=22
+ ☐ refactor the cartodb client to use the querybuilder
+ ✔ checkout how to generate a long and latitude via query @done (14-03-04 17:27) http://postgis.org/docs/ST_AsText.html
