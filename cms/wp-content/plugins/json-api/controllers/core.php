@@ -6,6 +6,22 @@ Controller description: Basic introspection methods
 
 class JSON_API_Core_Controller {
   
+
+  private function iskeyvalid($key, $user_id){
+    if( $user = get_user_by('id', $user_id) ) {
+      return (get_user_meta( $user->ID, 'api_key', true) == $key);
+    }
+    return false;
+  }
+
+  private function istokenvalid($token, $user_id){
+    if( $user = get_user_by('id', $user_id) ) {
+      return (get_user_meta( $user->ID, 'api_token', true) == $token);
+    }
+    return false;
+  }
+
+
   public function info() {
     global $json_api;
     $php = '';
@@ -208,7 +224,19 @@ class JSON_API_Core_Controller {
   
   public function get_all_terms_for_taxonomy() {
     global $json_api;
+
     $args = array();
+
+    if(!$this->iskeyvalid($json_api->query->key, $json_api->query->user_id) )
+    {
+      $json_api->error("Invalid key, please try logging in again");
+    }    
+
+    if(!$this->istokenvalid($json_api->query->token, $json_api->query->user_id) )
+    {
+      $json_api->error("Your token has expired, please try logging in again");
+    }
+
     if (!empty($json_api->query->parent)) {
       $args['parent'] = $json_api->query->parent;
     }

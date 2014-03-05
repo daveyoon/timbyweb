@@ -404,15 +404,14 @@ $app->group('/api', function () use ($app) {
     $params = array(
       'user_id' => $_POST['user_id'],
       'key'     => $_POST['key'],
-      'token'   => $_POST['token']
+      'token'   => $_POST['token'],
+      'taxonomy' => 'category'
     );
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/get_all_terms_for_taxonomy',
       array('Accept' => 'application/json'),
-      array(
-        'taxonomy' => 'category'
-      )
+      $params
     );
 
     $responsebody = json_decode($response->body);
@@ -432,6 +431,8 @@ $app->group('/api', function () use ($app) {
           'categories' => $categories
         )
       );
+    } else {
+      error($responsebody->error);
     }
 
   });
@@ -446,13 +447,17 @@ $app->group('/api', function () use ($app) {
    *   token
    */
   $app->post('/getsectors', function() use($app){
+    $params = array(
+      'user_id' => $_POST['user_id'],
+      'key'     => $_POST['key'],
+      'token'   => $_POST['token'],
+      'taxonomy' => 'sector'
+    );
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/get_all_terms_for_taxonomy',
       array('Accept' => 'application/json'),
-      array(
-        'taxonomy' => 'sector'
-      )
+      $params
     );
 
     $responsebody = json_decode($response->body);
@@ -472,6 +477,8 @@ $app->group('/api', function () use ($app) {
           'sectors' => $sectors
         )
       );
+    } else {
+      error($responsebody->error);
     }
 
   });
