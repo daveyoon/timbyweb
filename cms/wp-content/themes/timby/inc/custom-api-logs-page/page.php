@@ -48,7 +48,7 @@ function page_output(){
   $logs = $wpdb->get_results("
     SELECT log, DATE_FORMAT(created_at, '%e %b %Y') as created_at from timbyapi_logs
     WHERE (created_at BETWEEN '".$range['start']."' AND DATE_ADD('".$range['end']."', INTERVAL 1 DAY) )
-    ORDER BY created_at desc
+    ORDER BY id desc
   ");
 
   require_once __DIR__ . '/views/index.php';

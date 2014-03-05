@@ -421,12 +421,12 @@ $app->group('/api', function () use ($app) {
 
       foreach ($responsebody->terms as $term) {
         $categories[] = array(
-          'id'     => $term->id,
-          'sector' => $term->title,
-          'slug'   => $term->slug
+          'id'       => $term->id,
+          'category' => $term->title,
+          'slug'     => $term->slug
         );
       }
-      
+
       success(
         array( 
           'categories' => $categories
