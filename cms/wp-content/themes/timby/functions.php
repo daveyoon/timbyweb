@@ -63,3 +63,43 @@ add_action( 'init', 'cmb_initialize_cmb_meta_boxes', 9999 );
  * Custom Meta boxes
  */
 require get_template_directory() . '/inc/custom-meta-boxes.php';
+
+
+/**
+ * When a report is published, 
+ * Insert the report data into cartodb
+ */
+require get_template_directory().'/lib/cartodb/cartodb.class.php';
+function report_pending_to_publish( $new_status, $old_status, $post ) {
+  if ( $old_status == 'pending' && $new_status == 'publish' ) {
+    if( $post->post_type == 'report')
+    {
+      $lnglat = array(
+        'lng' => get_post_meta($post->ID, '_longitude', true ),
+        'lat' => get_post_meta($post->ID, '_latitude', true ),
+      );
+
+      $cartodb =  new CartoDBClient(
+        array(
+          'key'       => 'jTIOqWUcpsQyfvQP46s09pcGcDXEn877qhgaN44C',
+          'secret'    => 'VUX82GTIzm10o9NoptjJ5ksl73eO7miUbFi3M2t9',
+          'email'     => 'kamweti@circle.co.ke',
+          'password'  => 'P%)>zV:M&{f2K74',
+          'subdomain' => 'kaam'
+        )
+      );
+
+
+      // try inserting data into table
+      $cartodb->insertRow(
+        'reports', 
+        array(
+          'post_id' => "'".$post->ID."'",
+          'the_geom' => "ST_SetSRID(ST_Point(".$lnglat['lng'].", ".$lnglat['lat']."),4326)"
+        )
+      );
+
+    }
+  }
+}
+add_action( 'transition_post_status', 'report_pending_to_publish', 10, 3 );

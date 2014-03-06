@@ -6,10 +6,17 @@
     http://www.slimframework.com/news/how-to-organize-a-large-slim-framework-application
     http://blog.sourcing.io/structuring-sinatra
  ✔ connect to wordpress and do xmlrpc calls @done (14-02-24 11:07)
- ☐ logging capability of the api
+ ✔ logging capability of the api @done (14-03-06 14:50)
  ☐ generate api keys dynamically
  ✔ /logout and delete the current token @done (14-02-26 12:46)
  ☐ revisit the update section and return a map of all fields
  ☐ add the authorized keys step to git deployhq manuals http://circle.co.ke/git/?p=22
  ☐ refactor the cartodb client to use the querybuilder
  ✔ checkout how to generate a long and latitude via query @done (14-03-04 17:27) http://postgis.org/docs/ST_AsText.html
+ ☐ swap title with content during creater
+ ☐ we've tried to create a report with an image and or video but the /insertobject endpoint isn't being called 
+ ☐  how do i see the photo i've taken from the app, how do you edit, remove e.t.c
+ ☐ we just noticed that the long and lat isn't working, the app sends 0 as the value for both long and lat
+ ☐ why is the user able to login without an internet connection? where are the users administrated
+   we are unable to login with other accounts apart from test
+ 

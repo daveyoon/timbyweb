@@ -425,12 +425,12 @@ $app->group('/api', function () use ($app) {
           'slug'     => $term->slug
         );
       }
-
-      success(
-        array( 
-          'categories' => $categories
-        )
-      );
+      echo json_encode(array($categories)); // doing this for testing only, otherwise this is bad design
+      // success(
+      //   array( 
+      //     'categories' => $categories
+      //   )
+      // );
     } else {
       error($responsebody->error);
     }
@@ -546,6 +546,31 @@ $app->group('/api', function () use ($app) {
       }
 
     }
+
+  });
+
+
+
+  /**
+   * Get entities, where entities = reports
+   * 
+   * user_id
+   * key
+   * token
+   */
+  $app->post('/getentities', function() use($app){
+    $params = array(
+      'author'    => $app->request->post('user_id'),
+      'key'       => $app->request->post('key'),
+      'token'     => $app->request->post('token'),
+      'post_type' => 'report'
+    );
+
+    $response = Requests::post(
+      $app->config('wordpress_site_url').'/api/get_posts',
+      array('Accept' => 'application/json'),
+      $params
+    );
 
   });
 
