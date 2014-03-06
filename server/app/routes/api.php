@@ -471,12 +471,12 @@ $app->group('/api', function () use ($app) {
           'slug'   => $term->slug
         );
       }
-
-      success(
-        array( 
-          'sectors' => $sectors
-        )
-      );
+      echo json_encode(array($sectors)); // doing this for testing only, otherwise this is bad design
+      // success(
+      //   array( 
+      //     'sectors' => $sectors
+      //   )
+      // );
     } else {
       error($responsebody->error);
     }

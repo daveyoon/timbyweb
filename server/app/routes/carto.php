@@ -1,27 +1,6 @@
 <?php
-// use Illuminate\Database\Capsule\Manager as Capsule;
-
-// $capsule = new Capsule;
-
-// $capsule->addConnection(
-//   array(
-//     'driver'    => 'pgsql'
-//   )
-// );
-
-// // Make this Capsule instance available globally via static methods
-// $capsule->setAsGlobal();
-
-// // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-// $capsule->bootEloquent();
-
 
 $app->get('/carto/insert', function() use($app){
-  echo Capsule::table('reports')->toSql();
-  exit;
-
-  $config = array();
-
 
   $cartodb =  new CartoDBClient(
     array(
@@ -38,7 +17,8 @@ $app->get('/carto/insert', function() use($app){
   $response = $cartodb->insertRow(
     'reports', 
     array(
-      'description' => "'hello my gutfriend'",
+      'post_id' => "'345'",
+      'status' => "'0'",
       'the_geom' => "ST_SetSRID(ST_Point(-31.23543, 22.24244),4326)"
     )
   );
