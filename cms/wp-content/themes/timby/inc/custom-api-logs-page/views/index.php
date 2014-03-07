@@ -15,7 +15,7 @@
     <input type="submit" class="button" value="Filter">
   </form>
 
-  <table class="wp-list-table widefat">
+  <table class="wp-list-table fixed widefat">
     <thead>
       <tr>
         <th>Date</th>

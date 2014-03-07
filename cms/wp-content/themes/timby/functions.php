@@ -78,7 +78,7 @@ function report_pending_to_publish( $new_status, $old_status, $post ) {
         'lng' => get_post_meta($post->ID, '_longitude', true ),
         'lat' => get_post_meta($post->ID, '_latitude', true ),
       );
-
+      
       $cartodb =  new CartoDBClient(
         array(
           'key'       => 'jTIOqWUcpsQyfvQP46s09pcGcDXEn877qhgaN44C',

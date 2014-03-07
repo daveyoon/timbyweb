@@ -63,15 +63,18 @@ add_action( 'add_meta_boxes', 'map_metabox' );
          return $post_id;
    }
 
-//   /* OK, its safe for us to save the data now. */
-
    // Sanitize user input.
-   $latitude = isset($_POST['_latitude']) ? $_POST['_latitude'] : array();
-   $longitude = isset($_POST['_longitude']) ? $_POST['_longitude'] : array();
-
-
-   // Update the meta field in the database.
+   if( array_key_exists('_latitude', $_POST) && array_key_exists('_longitude', $_POST)  )
+   {
+     $longitude = $_POST['_latitude'];
+     $latitude = $_POST['_longitude'];    
+   } else {
+     $longitude = '0';
+     $latitude = '0'; 
+   }
+    // Update the meta field in the database.
    update_post_meta( $post_id, '_latitude', $latitude );
    update_post_meta( $post_id, '_longitude', $longitude );
+
  }
  add_action( 'save_post', 'map_save_postdata' );

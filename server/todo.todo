@@ -13,10 +13,10 @@
  ☐ add the authorized keys step to git deployhq manuals http://circle.co.ke/git/?p=22
  ☐ refactor the cartodb client to use the querybuilder
  ✔ checkout how to generate a long and latitude via query @done (14-03-04 17:27) http://postgis.org/docs/ST_AsText.html
- ☐ swap title with content during creater
- ☐ we've tried to create a report with an image and or video but the /insertobject endpoint isn't being called 
- ☐  how do i see the photo i've taken from the app, how do you edit, remove e.t.c
- ☐ we just noticed that the long and lat isn't working, the app sends 0 as the value for both long and lat
- ☐ why is the user able to login without an internet connection? where are the users administrated
+ ✔ swap title with content during creater @done (14-03-07 09:53)
+ ✔ we've tried to create a report with an image and or video but the /insertobject endpoint isn't being called @done (14-03-07 09:53)
+ ✔  how do i see the photo i've taken from the app, how do you edit, remove e.t.c @done (14-03-07 09:53)
+ ✔ we just noticed that the long and lat isn't working, the app sends 0 as the value for both long and lat @done (14-03-07 09:53)
+ ✔ why is the user able to login without an internet connection? where are the users administrated @done (14-03-07 09:53)
    we are unable to login with other accounts apart from test
  
