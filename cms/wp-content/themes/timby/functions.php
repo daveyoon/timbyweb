@@ -79,6 +79,7 @@ function report_pending_to_publish( $new_status, $old_status, $post ) {
         'lat' => get_post_meta($post->ID, '_latitude', true ),
       );
       
+      // initialize cartodb
       $cartodb =  new CartoDBClient(
         array(
           'key'       => 'jTIOqWUcpsQyfvQP46s09pcGcDXEn877qhgaN44C',
@@ -89,9 +90,8 @@ function report_pending_to_publish( $new_status, $old_status, $post ) {
         )
       );
 
-
       // try inserting data into table
-      $cartodb->insertRow(
+      $report = $cartodb->insertRow(
         'reports', 
         array(
           'post_id' => "'".$post->ID."'",
@@ -99,6 +99,12 @@ function report_pending_to_publish( $new_status, $old_status, $post ) {
         )
       );
 
+      //save the cartodb id as a custom meta field
+      if( isset($report['return']['rows'][0]->id) ) {
+        update_post_meta($post->ID, '_cartodb_id', $report->rows->id );
+        // test
+        // echo (get_post_meta($post->ID, '_cartodb_id', true ) == $report->rows->id) ? 'true' : 'false';
+      }
     }
   }
 }

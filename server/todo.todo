@@ -19,4 +19,6 @@
  ✔ we just noticed that the long and lat isn't working, the app sends 0 as the value for both long and lat @done (14-03-07 09:53)
  ✔ why is the user able to login without an internet connection? where are the users administrated @done (14-03-07 09:53)
    we are unable to login with other accounts apart from test
- 
+ ☐ delete report deletes the record from cartodb
+ ✔ save the cartodb report id when an insert is successful @done (14-03-07 15:32)
+ ☐ post to cartodb after publishing a post

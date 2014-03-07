@@ -3,8 +3,54 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b9682e793cb7c813675919535089b576",
+    "hash": "a991d72d3d390fb6fdde0708e05de737",
     "packages": [
+        {
+            "name": "fzaninotto/faker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "5be755ad0f9e1e968249ef3cfd4ebbcb51d9f6a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5be755ad0f9e1e968249ef3cfd4ebbcb51d9f6a7",
+                "reference": "5be755ad0f9e1e968249ef3cfd4ebbcb51d9f6a7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Faker": "src/",
+                    "Faker\\PHPUnit": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2014-03-06 13:55:13"
+        },
         {
             "name": "illuminate/container",
             "version": "v4.1.23",
@@ -310,48 +356,6 @@
             "time": "2014-02-11 07:19:07"
         },
         {
-            "name": "simbiotica/cartodbclient-php",
-            "version": "dev-api-key",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/simbiotica/cartoDBclient-PHP.git",
-                "reference": "a3692b4d72160a0756d3e23576b77e93d02763c2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/simbiotica/cartoDBclient-PHP/zipball/a3692b4d72160a0756d3e23576b77e93d02763c2",
-                "reference": "a3692b4d72160a0756d3e23576b77e93d02763c2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Simbiotica": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tiago Garcia",
-                    "email": "tiago@simbiotica.es",
-                    "homepage": "http://simbiotica.es/en/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "CartoDB SQL API v2 client for PHP",
-            "homepage": "https://github.com/simbiotica/cartoDBclient-PHP",
-            "keywords": [
-                "cartodb"
-            ],
-            "time": "2013-04-04 11:48:59"
-        },
-        {
             "name": "slim/slim",
             "version": "2.4.2",
             "source": {
@@ -407,7 +411,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "rmccue/requests": 20,
-        "simbiotica/cartodbclient-php": 20
+        "fzaninotto/faker": 20
     },
     "platform": [
 

@@ -2,6 +2,7 @@
   "require": {
     "slim/slim": "2.*",
     "rmccue/requests": "dev-master",
-    "illuminate/database": "*"
+    "illuminate/database": "*",
+    "fzaninotto/faker": "1.4.*@dev"
   }
 }
