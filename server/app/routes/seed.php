@@ -30,7 +30,7 @@ $app->get('/seed', function() use($app) {
         'author'  => '2',
         'date'    => $faker->dateTimeBetween('30 days ago','now')->format('Y-m-d h:i:s'),
         'type'    => 'report',
-        'status'  => 'pending',
+        'status'  => 'publish',
         'custom_fields' =>  array(
           '_latitude'  => $lnglat[0],
           '_longitude' => $lnglat[1]

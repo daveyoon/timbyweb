@@ -64,34 +64,61 @@ add_action( 'init', 'cmb_initialize_cmb_meta_boxes', 9999 );
  */
 require get_template_directory() . '/inc/custom-meta-boxes.php';
 
+/**
+ * Add a custom schedule 'every 10mins'
+ */
+add_filter( 'cron_schedules', 'cron_add_every_ten_minutes' );
+function cron_add_every_ten_minutes( $schedules ) {
+  // Adds once weekly to the existing schedules.
+  $schedules['every_ten_minutes'] = array(
+    'interval' => 600,
+    'display' => __( 'Every ten minutes' )
+  );
+  return $schedules;
+}
 
 /**
- * When a report is published, 
- * Insert the report data into cartodb
+ * A cron job running every 10 mins checking 
+ * if there are any new posts, new posts are essentially
+ * posts with no _cartodb_id custom field
  */
 require get_template_directory().'/lib/cartodb/cartodb.class.php';
-function report_pending_to_publish( $new_status, $old_status, $post ) {
-  if ( $old_status == 'pending' && $new_status == 'publish' ) {
-    if( $post->post_type == 'report')
-    {
+wp_schedule_event(time(), 'every_ten_minutes', 'sync_reports_to_carto');
+function sync_reports_to_carto(){
+  // initialize cartodb
+  $cartodb =  new CartoDBClient(
+    array(
+      'key'       => 'jTIOqWUcpsQyfvQP46s09pcGcDXEn877qhgaN44C',
+      'secret'    => 'VUX82GTIzm10o9NoptjJ5ksl73eO7miUbFi3M2t9',
+      'email'     => 'kamweti@circle.co.ke',
+      'password'  => 'P%)>zV:M&{f2K74',
+      'subdomain' => 'kaam'
+    )
+  );
+
+  // query all posts without a cartodb id field
+  $args = array(
+    'post_type'   => 'report',
+    'post_status' => 'publish',
+    'meta_query' => array(
+      array(
+        'key'     => '_cartodb_id',
+        'compare' => 'NOT EXISTS'
+      )
+    )
+  );
+  $reports = get_posts($args);
+
+  if( count($reports) > 0){
+    //syncs these new reports with carto
+    foreach($reports as $post){
       $lnglat = array(
-        'lng' => get_post_meta($post->ID, '_longitude', true ),
-        'lat' => get_post_meta($post->ID, '_latitude', true ),
-      );
-      
-      // initialize cartodb
-      $cartodb =  new CartoDBClient(
-        array(
-          'key'       => 'jTIOqWUcpsQyfvQP46s09pcGcDXEn877qhgaN44C',
-          'secret'    => 'VUX82GTIzm10o9NoptjJ5ksl73eO7miUbFi3M2t9',
-          'email'     => 'kamweti@circle.co.ke',
-          'password'  => 'P%)>zV:M&{f2K74',
-          'subdomain' => 'kaam'
-        )
+        'lng' => get_post_meta($post->ID, '_longitude', true ) ?: '0', //ternary operator here assigning a default value http://cn2.php.net/ternary#language.operators.comparison.ternary
+        'lat' => get_post_meta($post->ID, '_latitude', true ) ?: '0',
       );
 
       // try inserting data into table
-      $report = $cartodb->insertRow(
+      $cartoreport = $cartodb->insertRow(
         'reports', 
         array(
           'post_id' => "'".$post->ID."'",
@@ -100,12 +127,11 @@ function report_pending_to_publish( $new_status, $old_status, $post ) {
       );
 
       //save the cartodb id as a custom meta field
-      if( isset($report['return']['rows'][0]->id) ) {
-        update_post_meta($post->ID, '_cartodb_id', $report->rows->id );
-        // test
-        // echo (get_post_meta($post->ID, '_cartodb_id', true ) == $report->rows->id) ? 'true' : 'false';
+      if( isset($cartoreport['return']['rows'][0]->id) ) {
+        update_post_meta($post->ID, '_cartodb_id', $cartoreport->rows->id );
       }
-    }
+    }    
   }
+
 }
-add_action( 'transition_post_status', 'report_pending_to_publish', 10, 3 );
+

@@ -200,7 +200,7 @@ $app->group('/api', function () use ($app) {
         'author'  => $user_id,
         'date'    => date('c', strtotime($report_date)),
         'type'    => 'report',
-        'status'  => 'pending',
+        'status'  => 'publish',
         'token'   => $token,
         'custom_fields' =>  array(
           '_latitude'  => $lat,
@@ -425,12 +425,11 @@ $app->group('/api', function () use ($app) {
           'slug'     => $term->slug
         );
       }
-      echo json_encode(array($categories)); // doing this for testing only, otherwise this is bad design
-      // success(
-      //   array( 
-      //     'categories' => $categories
-      //   )
-      // );
+      success(
+        array( 
+          'categories' => $categories
+        )
+      );
     } else {
       error($responsebody->error);
     }
@@ -471,12 +470,11 @@ $app->group('/api', function () use ($app) {
           'slug'   => $term->slug
         );
       }
-      echo json_encode(array($sectors)); // doing this for testing only, otherwise this is bad design
-      // success(
-      //   array( 
-      //     'sectors' => $sectors
-      //   )
-      // );
+      success(
+        array( 
+          'sectors' => $sectors
+        )
+      );
     } else {
       error($responsebody->error);
     }
