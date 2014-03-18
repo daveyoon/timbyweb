@@ -1,1 +1,1 @@
-If you see this the POST receive hook works fine and Deployhq is properly setup
+If you see this the github POST receive hook works fine and Deployhq is properly setup!
