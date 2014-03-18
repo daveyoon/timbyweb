@@ -1,0 +1,6 @@
+$('.class').show(
+
+
+
+  );
+$('.class').hide();
