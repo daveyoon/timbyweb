@@ -1,0 +1,1 @@
+If you see this the POST receive hook works fine and Deployhq is properly setup
