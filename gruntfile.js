@@ -21,16 +21,16 @@ module.exports = function(grunt) {
             }
         },
 
-        imagemin: {
-            dynamic: {
-                files: [{
-                    expand: true,
-                    cwd: 'cms/wp-content/themes/timby/images/',
-                    src: ['*.{png,jpg,gif}'],
-                    dest: 'cms/wp-content/themes/timby/images/build/'
-                }]
-            }
-        },
+        // imagemin: {
+        //     dynamic: {
+        //         files: [{
+        //             expand: true,
+        //             cwd: 'cms/wp-content/themes/timby/images/',
+        //             src: ['*.{png,jpg,gif}'],
+        //             dest: 'cms/wp-content/themes/timby/images/build/'
+        //         }]
+        //     }
+        // },
 
         sass: {
             dist: {
@@ -38,7 +38,8 @@ module.exports = function(grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    'cms/wp-content/themes/timby/css/global.css': 'cms/wp-content/themes/timby/sass/global.sass'
+                    'cms/wp-content/themes/timby/css/global.css': 'cms/wp-content/themes/timby/sass/global.sass', 
+                    'cms/wp-content/themes/timby/css/bootstrap.css': 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss'
                 }
             } 
         },
@@ -52,7 +53,7 @@ module.exports = function(grunt) {
                 }
             },
             css: {
-                files: ['cms/wp-content/themes/timby/sass/global.sass', 'cms/wp-content/themes/timby/sass/modules/*'],
+                files: ['cms/wp-content/themes/timby/sass/global.sass', 'cms/wp-content/themes/timby/sass/modules/*', 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap/*', 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/*'],
                 tasks: ['sass'],
                 options: {
                     spawn: false,
@@ -70,6 +71,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-    grunt.registerTask('default', ['concat','uglify','imagemin','sass','watch']);
+    grunt.registerTask('default', ['concat','uglify','sass','watch']);
 
 };

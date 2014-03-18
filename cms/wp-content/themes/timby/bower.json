@@ -1,0 +1,20 @@
+{
+  "name": "Timby Web Platform",
+  "version": "0.1.0",
+  "homepage": "https://github.com/circledigitalkenya/timbyweb",
+  "authors": [
+    "Ryan Bowman <ryan@circle.co.ke>"
+  ],
+  "description": "Timby web platform in connection with the mobile app",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1"
+  }
+}
