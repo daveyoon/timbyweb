@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a991d72d3d390fb6fdde0708e05de737",
+    "hash": "28d3223f04454c61259a4373d6b57cd1",
     "packages": [
         {
             "name": "fzaninotto/faker",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "5be755ad0f9e1e968249ef3cfd4ebbcb51d9f6a7"
+                "reference": "4ca3829d9dde19cbe188da004d7b6d4e92d6cb86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5be755ad0f9e1e968249ef3cfd4ebbcb51d9f6a7",
-                "reference": "5be755ad0f9e1e968249ef3cfd4ebbcb51d9f6a7",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/4ca3829d9dde19cbe188da004d7b6d4e92d6cb86",
+                "reference": "4ca3829d9dde19cbe188da004d7b6d4e92d6cb86",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2014-03-06 13:55:13"
+            "time": "2014-03-13 18:33:34"
         },
         {
             "name": "illuminate/container",

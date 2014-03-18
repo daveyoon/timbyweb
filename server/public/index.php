@@ -4,6 +4,7 @@ require '../app/bootstrap.php';
 require '../app/config.php';
 require '../app/models/log.php';
 
+
 # Automatically load router files
 $routers = glob('../app/routes/*.php');
 foreach ($routers as $router) {
