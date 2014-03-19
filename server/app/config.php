@@ -5,7 +5,7 @@ switch ($_SERVER['HTTP_HOST']) {
     $_ENV['SLIM_MODE'] = 'development';
     break;
   
-  case 'uat.circle.co.ke':
+  case 'timby.org':
     $_ENV['SLIM_MODE'] = 'uat';
     break;
 
