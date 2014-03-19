@@ -29,7 +29,7 @@ $app->configureMode('uat', function () use ($app) {
   $app->config(array(
     'log.enable' => true,
     'debug' => false,
-    'wordpress_site_url' => 'https://timby.org/uat/cms'
+    'wordpress_site_url' => 'http://timby.org/uat/cms'
   ));
 });
 
