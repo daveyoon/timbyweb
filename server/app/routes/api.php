@@ -37,7 +37,7 @@ if( !function_exists('error')){
 
 /**
  * Upload hook
- * 
+ *  
  *  Does a few things here
  *  1. Uploading the file to a temporary location
  *  2. Forwarding the uploaded file to the Wordpress api
@@ -515,29 +515,34 @@ $app->group('/api', function () use ($app) {
       {
         case 'image':
           if( in_array($_FILES['attachment']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
-            $app->applyHook('upload', $params);
-          else
+          {
+            $params['media_type'] = 'image';
+            $app->applyHook('upload', $params);            
+          }else{
             error('Please upload a valid image type');
-            return;
-
+            return;            
+          }
           break;
         case 'video':
-          
           if( in_array($_FILES['attachment']['type'], array('application/octet-stream','video/mp4', 'video/ogg','video/webm', 'video/x-flv') ) )
+          {
+            $params['media_type'] = 'video';
             $app->applyHook('upload', $params);
-          else 
-            error('Please upload a valid video type');
-            return;
-          
+          } else 
+          {
+            error('Please upload a valid video type, you uploaded' . $_FILES['attachment']['type']);
+            return;            
+          }
           break;
         case 'audio':
-
           if( in_array($_FILES['attachment']['type'], array('audio/mp3','audio/mp4', 'audio/ogg') ) )
-            $app->applyHook('upload', $params);
-          else
+          {
+            $params['media_type'] = 'audio';
+            $app->applyHook('upload', $params);    
+          } else {
             error('Please upload a valid audio type');
-            return;
-
+            return;        
+          }
           break;
         default:
           break;        

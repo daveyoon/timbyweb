@@ -45,6 +45,9 @@ class JSON_API_Posts_Controller {
       $attachment_id = media_handle_upload('attachment', $_POST['id'], $post_data);
       unset($_FILES['attachment']);
 
+      // set the media type as a meta
+      update_post_meta($attachment_id, '_media_type', $_POST['media_type']);
+
       return array(
         'id' => $attachment_id
       );
