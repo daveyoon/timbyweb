@@ -1,3 +1,6 @@
 server/vendor
 tests/config.php
 cronjobs/config.php
+
+.sass-cache
+node_modules
