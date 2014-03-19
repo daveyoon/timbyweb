@@ -51,6 +51,7 @@ foreach($newreports as $post){
     $new_unoploaded_media = array_merge($new_unoploaded_media, $media);
   }
 }
+echo count($new_unoploaded_media) . 'media items found';
 
 foreach($new_unoploaded_media as $media){
   $media_type = get_post_meta($media->ID, '_media_type', true);
