@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 
 // get the database config details from wordpress
