@@ -1,4 +1,32 @@
-@import "modules/reset"
+//@import "modules/reset"
 
-body
-  background: red
+body, html, .container-fluid, .main-unit, .filtering, .forty
+  height: 100%
+  position: relative
+
+.padding-item
+  padding: 1em
+  // background: #f3f3f3
+
+.form-group:last-of-type
+  margin-bottom: 0
+
+.gray
+  background: #f3f3f3
+
+.column
+  min-height: 1px
+  float: left
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+  &.forty
+    width: 40%
+  &.sixty
+    width: 60%
+
+.filtering
+  border-right: 1px #ddd solid
+
+.item
+  margin-bottom: 1em
