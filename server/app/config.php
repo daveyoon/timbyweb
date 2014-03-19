@@ -5,7 +5,7 @@ switch ($_SERVER['HTTP_HOST']) {
     $_ENV['SLIM_MODE'] = 'development';
     break;
   
-  case 'uat.circle.co.ke':
+  case 'timby.org':
     $_ENV['SLIM_MODE'] = 'uat';
     break;
 
@@ -29,7 +29,7 @@ $app->configureMode('uat', function () use ($app) {
   $app->config(array(
     'log.enable' => true,
     'debug' => false,
-    'wordpress_site_url' => 'http://uat.circle.co.ke/timbyweb/cms'
+    'wordpress_site_url' => 'http://timby.org/uat/cms'
   ));
 });
 
