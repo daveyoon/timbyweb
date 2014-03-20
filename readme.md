@@ -33,6 +33,12 @@ gem install sass
 
 If using XAMPP or MAMP you might have to 'sudo grunt' to give it permission to write in various folders. (Bleck, I know).
 
+Bower. Bootstrap comes from Bower. This should do it.bo
+```
+bower install
+```
+
+
 
 ## Documentation
 
