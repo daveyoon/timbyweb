@@ -9,12 +9,9 @@ require_once __DIR__ . '/../cms/wp-load.php';
 
 # The vimeo LIB
 require_once __DIR__ . '/../server/app/vendor/vimeo/vimeo.php';
-require_once __DIR__ . '/../server/app/vendor/soundcloud/Services/Soundcloud.php';
 
+# Config file
 require 'config.php';
-
-
-
 
 # Get new video reports and upload assets to vimeo
 $newreports = get_posts(
@@ -36,8 +33,7 @@ foreach($newreports as $post){
       'relation' => 'AND',
       array(
         'key'   => '_media_type',
-        'value' => array('video', 'audio'),
-        'compare' => 'IN'
+        'value' => 'video'
       ),
       array(
         'key'   => '_uploaded',
@@ -51,33 +47,45 @@ foreach($newreports as $post){
     $new_unoploaded_media = array_merge($new_unoploaded_media, $media);
   }
 }
-echo count($new_unoploaded_media) . 'media items found';
 
 foreach($new_unoploaded_media as $media){
   $media_type = get_post_meta($media->ID, '_media_type', true);
+
   if( $media_type == 'video') {
+    // intialize vimeo
     $vimeo = new Vimeo(
       $vimeoconfig['client_key'], 
       $vimeoconfig['client_secret'], 
-      $vimeoconfig['access_token']
+      $vimeoconfig['access_token'],
+      $vimeoconfig['access_token_secret']
     );
 
+    // grab the file path
     $uploads = wp_upload_dir();
     $file_path = str_replace( $uploads['baseurl'], $uploads['basedir'], $media->guid );
 
-
-    if( $vimeo_url = $vimeo->upload( $file_path ) ) {
+    if( $video_id = $vimeo->upload( $file_path ) ) {
       update_post_meta($media->ID, '_uploaded', 'true');
-      update_post_meta(
-        $media->ID, 
-        '_vimeo_data', 
+      update_post_meta($media->ID, '_vimeo_video_id', $video_id );
+
+      $vimeo->call(
+        'vimeo.videos.setPrivacy', 
         array(
-          'url' => $vimeo_url
+          'privacy' => 'nobody', 
+          'video_id' => $video_id
         )
       );
+
+      $vimeo->call(
+        'vimeo.videos.setTitle', 
+        array(
+          'title'    => get_the_title($media->post_parent),  //title of the parent
+          'video_id' => $video_id
+        )
+      );
+
       exit(0);
     } 
 
   }
-
 }
