@@ -74,7 +74,7 @@ function register_custom_post_type_phone() {
         'labels' => $labels,
         'hierarchical' => false,
         'description' => 'Devices on the ground',
-        'supports' => array( 'title', 'editor', 'excerpt', 'custom-fields'),
+        'supports' => array( 'title'),
         
         'public' => true,
         'show_ui' => true,
