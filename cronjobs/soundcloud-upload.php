@@ -81,7 +81,7 @@ try {
           'track[asset_data]' => '@' . $file_path
         )
       );
-      if( $upload ) {
+      if( isset($upload->permalink) ) {
         update_post_meta($media->ID, '_uploaded', 'true');
         update_post_meta($media->ID, '_soundcloud_track_data', $upload );
       }

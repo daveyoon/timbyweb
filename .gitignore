@@ -4,3 +4,4 @@ cronjobs/config.php
 
 .sass-cache
 node_modules
+cms/wp-content/themes/timby/bower_components
