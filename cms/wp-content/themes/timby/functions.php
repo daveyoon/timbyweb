@@ -46,6 +46,19 @@ if ( ! function_exists( 'timbyweb_setup' ) ) :
      */
     add_theme_support( 'automatic-feed-links', 'post-thumbnails' );
 
+
+    /**
+     * Create starter pages
+     * if they don't already exist
+     *
+     * @todo: move this to its own function call, check if this page already exists, remove it once theme is switched
+     */
+    wp_insert_post(
+      array(
+        'post_name' => 'signin'
+      )
+    );      
+
   }
 endif; // timbyweb_setup
 add_action( 'after_setup_theme', 'timbyweb_setup' );
@@ -76,6 +89,7 @@ function cron_add_every_ten_minutes( $schedules ) {
   );
   return $schedules;
 }
+
 
 /**
  * A cron job running every 10 mins checking 
