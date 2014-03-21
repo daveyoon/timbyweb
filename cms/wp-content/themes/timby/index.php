@@ -60,15 +60,17 @@
       </section>
       <section class="results">
         <ul class="list-group">
-          <?php 
-            $reportsQuery = new WP_Query(
 
-            ); 
-          ?>
           <?php if( count($reports = fetch_new_reports()) > 0) { ?>
             <?php foreach($reports as $report) { ?>
               <a href="#" class="list-group-item clearfix">
                 <div class="column eighty">
+                  <?php if($report->verified) { ?>
+                    <span class="label label-success">Verified</span>
+                  <?php } else { ?>
+                    <span class="label label-warning">Unverified</span>
+                  <?php } ?>
+
                   <h4 class="list-group-item-heading">
                     <?php echo $report->post_title ?>
                   </h4>

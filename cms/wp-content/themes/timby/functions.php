@@ -117,6 +117,9 @@ function fetch_new_reports( $args = array()){
     $report->mediacount->audio = count(fetch_attachments('audio', $report->ID));
     $report->mediacount->video = count(fetch_attachments('video', $report->ID));
     $report->mediacount->photos = count(fetch_attachments('image', $report->ID));
+    
+    //verification status
+    $report->verified = (get_post_meta($report->ID, '_cmb_verified', true ) == 'on');
 
     $report->{$key} = $report;
   }

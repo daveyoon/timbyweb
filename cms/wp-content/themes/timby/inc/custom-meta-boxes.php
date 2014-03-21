@@ -69,7 +69,7 @@ function cmb_sample_metaboxes( array $meta_boxes ) {
           'name' => 'Verified',
           'desc' => 'Has this story been verified?',
           'id'   => $prefix . 'verified',
-          'type' => 'checkbox',
+          'type' => 'checkbox'
         )
       ),
     );
