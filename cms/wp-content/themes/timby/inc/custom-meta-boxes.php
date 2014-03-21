@@ -48,6 +48,30 @@ function cmb_sample_metaboxes( array $meta_boxes ) {
             'type' => 'text',
           )
         ),
+    );    
+
+
+    /**
+     * Verified Status
+     *   - verified
+     *   
+     * Post type : Phone
+     */
+    $meta_boxes[] = array(
+        'id'         => 'verification_status',
+        'title'      => 'Verification',
+        'pages'      => array( 'report' ), // Post type
+        'context'    => 'normal',
+        'priority'   => 'high',
+        'show_names' => true, // Show field names on the left
+        'fields'     => array(
+          array(
+            'name' => 'Verified',
+            'desc' => 'Has this story been verified?',
+            'id'   => $prefix . 'verified',
+            'type' => 'checkbox',
+          )
+        ),
     );
 
 
