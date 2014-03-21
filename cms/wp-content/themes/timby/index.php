@@ -60,28 +60,33 @@
       </section>
       <section class="results">
         <ul class="list-group">
-          <a href="#" class="list-group-item clearfix">
-            <div class="column eighty">
-              <h4 class="list-group-item-heading">Title of report</h4>
-              <p class="list-group-item-text">Date of Report | by Reporter Name</p>
-            </div>
-            <span class="column twenty text-right text-muted">
-              3 <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;
-              3 <span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;
-              3 <span class="glyphicon glyphicon-music"></span>
-            </span>
-          </a>
-          <a href="#" class="list-group-item clearfix">
-            <div class="column eighty">
-              <h4 class="list-group-item-heading">Title of report</h4>
-              <p class="list-group-item-text">Date of Report | by Reporter Name</p>
-            </div>
-            <span class="column twenty text-right text-muted">
-              3 <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;
-              3 <span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;
-              3 <span class="glyphicon glyphicon-music"></span>
-            </span>
-          </a>
+          <?php 
+            $reportsQuery = new WP_Query(
+
+            ); 
+          ?>
+          <?php if( count($reports = fetch_new_reports()) > 0) { ?>
+            <?php foreach($reports as $report) { ?>
+              <a href="#" class="list-group-item clearfix">
+                <div class="column eighty">
+                  <h4 class="list-group-item-heading">
+                    <?php echo $report->post_title ?>
+                  </h4>
+                  <p class="list-group-item-text">
+                    Date Reported: <?php echo $report->date_reported ?>
+                    | by <?php echo $report->reporter ?>
+                  </p>
+                </div>
+                <span class="column twenty text-right text-muted">
+                  <?php echo $report->mediacount->photos ?> <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;
+                  <?php echo $report->mediacount->video ?> <span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;
+                  <?php echo $report->mediacount->audio ?> <span class="glyphicon glyphicon-music"></span>
+                </span>
+              </a>
+            <?php } ?>
+          <?php } else { ?>
+            <p>No reports found</p>
+          <?php } ?>
         </ul>
       </section>
   
