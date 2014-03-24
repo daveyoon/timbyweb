@@ -8,7 +8,6 @@ if( ! file_exists( __DIR__ . '/../cms/wp-load.php') ){
 require_once __DIR__ . '/../cms/wp-load.php';
 
 # include the soundcloud library
-require_once __DIR__ . '/../server/app/vendor/vimeo/vimeo.php';
 require_once __DIR__ . '/../server/app/vendor/soundcloud/Services/Soundcloud.php';
 
 require 'config.php';
@@ -54,40 +53,44 @@ foreach($newreports as $post){
   }
 }
 
-// exchange authorization code for access token
-try {
-  // retreive the access token through credentials flow
-  $credentials = $soundcloud->credentialsFlow(
-    $soundcloudconfig['username'], 
-    $soundcloudconfig['password']
-  );  
-  // set the access token
-  $soundcloud->setAccessToken($credentials['access_token']);
+if( count($new_unoploaded_media) > 0){
+  // exchange authorization code for access token
+  try {
+    // retreive the access token through credentials flow
+    $credentials = $soundcloud->credentialsFlow(
+      $soundcloudconfig['username'], 
+      $soundcloudconfig['password']
+    );  
+    // set the access token
+    $soundcloud->setAccessToken($credentials['access_token']);
 
-  foreach($new_unoploaded_media as $media){
-    $media_type = get_post_meta($media->ID, '_media_type', true);
+    foreach($new_unoploaded_media as $media){
+      $media_type = get_post_meta($media->ID, '_media_type', true);
 
-    if( $media_type == 'audio') {
+      if( $media_type == 'audio') {
 
-      // grab the file path
-      $uploads = wp_upload_dir();
-      $file_path = str_replace( $uploads['baseurl'], $uploads['basedir'], $media->guid );
+        // grab the file path
+        $uploads = wp_upload_dir();
+        $file_path = str_replace( $uploads['baseurl'], $uploads['basedir'], $media->guid );
 
-      // try and do an upload
-      $upload = $soundcloud->post('tracks', 
-        array(
-          'track[title]'      => get_the_title($media->post_parent),
-          'track[sharing]'    => 'private',
-          'track[asset_data]' => '@' . $file_path
-        )
-      );
-      if( isset($upload->permalink) ) {
-        update_post_meta($media->ID, '_uploaded', 'true');
-        update_post_meta($media->ID, '_soundcloud_track_data', $upload );
+        // try and do an upload
+        $upload = $soundcloud->post('tracks', 
+          array(
+            'track[title]'      => get_the_title($media->post_parent),
+            'track[sharing]'    => 'private',
+            'track[asset_data]' => '@' . $file_path
+          )
+        );
+        if( isset($upload->permalink) ) {
+          update_post_meta($media->ID, '_uploaded', 'true');
+          update_post_meta($media->ID, '_soundcloud_track_data', $upload );
+        }
       }
     }
-  }
 
-} catch (Services_Soundcloud_Invalid_Http_Response_Code_Exception $e) {
-  exit($e->getMessage());
+  } catch (Services_Soundcloud_Invalid_Http_Response_Code_Exception $e) {
+    exit($e->getMessage());
+  }  
+} else {
+  echo 'no new media';
 }
