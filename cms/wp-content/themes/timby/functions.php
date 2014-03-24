@@ -105,6 +105,13 @@ function fetch_new_reports( $args = array()){
   $reports = get_posts($args);
 
   foreach($reports as $key => $report){
+    $report->{$key} = get_report_data($report);
+  }
+
+  return $reports;
+}
+
+function get_report_data($report){
     //reporter
     $report->reporter = get_the_author_meta( 'display_name', $report->post_author );
 
@@ -112,19 +119,16 @@ function fetch_new_reports( $args = array()){
     $report->date_reported = date('l jS F, Y - g:ia', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
 
     // media count
-    $report->mediacount = new StdClass;
+    $report->media = new StdClass;
 
-    $report->mediacount->audio = count(fetch_attachments('audio', $report->ID));
-    $report->mediacount->video = count(fetch_attachments('video', $report->ID));
-    $report->mediacount->photos = count(fetch_attachments('image', $report->ID));
+    $report->media->audio = fetch_attachments('audio', $report->ID);
+    $report->media->video = fetch_attachments('video', $report->ID);
+    $report->media->photos = fetch_attachments('image', $report->ID);
     
     //verification status
     $report->verified = (get_post_meta($report->ID, '_cmb_verified', true ) == 'on');
 
-    $report->{$key} = $report;
-  }
-
-  return $reports;
+    return $report;
 }
 
 
@@ -142,7 +146,18 @@ function fetch_attachments($type = '', $post_parent = '')
       )
     )
   );
-  return get_posts($args);
+  $attachments = get_posts($args);
+
+  foreach($attachments as $key=>$attachment) {
+    if( $type == 'audio' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
+      $attachment->soundcloud = json_decode(get_post_meta($attachment->ID, '_soundcloud_track_data', true ));        
+    }
+    if( $type == 'video' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
+      $attachment->vimeo = array( 'video_id' => get_post_meta($attachment->ID, '_vimeo_video_id', true ) );        
+    }
+    $attachments[$key] = $attachment;
+  }
+  return $attachments;
 }
 
 /**
