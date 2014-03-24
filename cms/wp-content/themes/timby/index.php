@@ -63,7 +63,7 @@
 
           <?php if( count($reports = fetch_new_reports()) > 0) { ?>
             <?php foreach($reports as $report) { ?>
-              <a href="#" class="list-group-item clearfix">
+              <a href="#" class="list-group-item clearfix list-report" data-id="<?php echo $report->ID ?>">
                 <div class="column eighty">
                   <?php if($report->verified) { ?>
                     <span class="label label-success">Verified</span>
@@ -80,9 +80,9 @@
                   </p>
                 </div>
                 <span class="column twenty text-right text-muted">
-                  <?php echo $report->mediacount->photos ?> <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;
-                  <?php echo $report->mediacount->video ?> <span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;
-                  <?php echo $report->mediacount->audio ?> <span class="glyphicon glyphicon-music"></span>
+                  <?php echo count($report->media->photos) ?> <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;
+                  <?php echo count($report->media->video) ?> <span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;
+                  <?php echo count($report->media->audio) ?> <span class="glyphicon glyphicon-music"></span>
                 </span>
               </a>
             <?php } ?>
@@ -93,62 +93,75 @@
       </section>
   
     </div>
-    <div class="column sixty">
-      <div class="padding-item">
-        <div class="row item">
-          <div class="col-md-8">
-          <a href="" class="btn btn-primary">Edit this Report</a>
-            <h1>Report title</h1>
-            <h4>Date by reporter name on device</h4>
-            <span class="label label-info">Sector</span>
-            <span class="label label-warning">Entity</span>
-            <span class="label label-warning">Entity</span>
-            <span class="label label-warning">Entity</span>
-          </div>
-          <div class="col-md-4">
-            <img src="http://fillmurray.com/g/200/200">
-          </div>
-        </div><!--- end header group-->
-        <div class="row">
-          <div class="col-md-12">
-            <p>This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text</p>
-          </div>
-        </div><!-- end text -->
-        <div class="row">
-          <div class="col-md-3">
-            <a href="#" class="thumbnail">
-              <img src="http://fillmurray.com/g/200/200">
-            </a>
-          </div>
-          <div class="col-md-3">
-            <a href="#" class="thumbnail">
-              <img src="http://fillmurray.com/g/200/200">
-            </a>
-          </div>
-          <div class="col-md-3">
-            <a href="#" class="thumbnail">
-              <img src="http://fillmurray.com/g/200/200">
-            </a>
-          </div>
-          <div class="col-md-3">
-            <a href="#" class="thumbnail">
-              <img src="http://fillmurray.com/g/200/200">
-            </a>
-          </div>
-        </div><!-- end media -->
-        <div class="row">
-          <div class="col-md-12">
-            <a href="" class="btn btn-primary">Verify</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="column sixty report-wrap"></div>
   </div>
 </div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button.js"></script>
-</body>
-</html>
+
+<!-- templates -->
+<script type="text/html" id="report_template">
+  <div class="padding-item">
+    <div class="row item">
+      <div class="col-md-8">
+      <a href="" class="btn btn-primary">Edit this Report</a>
+        <h1><%=post_title%></h1>
+        <h4>Date <%=date_reported%> by <%=reporter%> on device</h4>
+        <span class="label label-info">Sector: <%=sector%> </span>
+      </div>
+      <div class="col-md-4">
+        <div id="report-location" style="width:200px; height:200px;"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+      <%=post_content%>
+      </div>
+    </div>
+    <div class="row">
+      <% if (media.photos.length > 0){ %>
+        <% for ( var i = 0; i < media.photos.length; i++ ) { %>
+          <div class="col-md-3">
+            <a href="#" class="thumbnail">
+              <img src="<%=media.photos[i].guid%>">
+            </a>
+          </div>
+        <% } %>
+      <% } %>
+      <% if (media.audio.length > 0){ %>
+        <% for ( var i = 0; i < media.audio.length; i++ ) { %>
+          <% if (media.audio[i].soundcloud){ %>
+            <div class="col-md-3">
+              <iframe 
+              width="100%" 
+              height="166" 
+              scrolling="no" 
+              frameborder="no" 
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%=media.audio[i].soundcloud.id%>%3Fsecret_token%3D<%=media.audio[i].soundcloud.secret_token%>&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true">
+              </iframe>
+            </div>
+          <% } %>
+        <% } %>
+      <% } %>
+
+      <% if (media.video.length > 0){ %>
+        <% for ( var i = 0; i < media.video.length; i++ ) { %>
+          <% if (media.video[i].vimeo){ %>
+            <iframe 
+                src="//player.vimeo.com/video/<%=media.video[i].vimeo.video_id%>" 
+                width="500" 
+                height="281" 
+                frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+            </iframe> 
+          <% } %>
+        <% } %>
+      <% } %>
+
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a href="" class="btn btn-primary">Verify</a>
+      </div>
+    </div>
+  </div>
+</script>
+<?php get_footer() ?>
