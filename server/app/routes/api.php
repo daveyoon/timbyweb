@@ -198,13 +198,13 @@ $app->group('/api', function () use ($app) {
         'title'   => $title,
         'content' => $description,
         'author'  => $user_id,
-        'date'    => date('c', strtotime($report_date)),
         'type'    => 'report',
         'status'  => 'publish',
         'token'   => $token,
         'custom_fields' =>  array(
-          '_latitude'  => $lat,
-          '_longitude' => $lng
+          '_date_reported' => date('c', strtotime($report_date)),
+          '_latitude'     => $lat,
+          '_longitude'    => $lng
         )
       )
     );
