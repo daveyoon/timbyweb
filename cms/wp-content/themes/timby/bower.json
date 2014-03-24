@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1"
+    "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1",
+    "neat": "~1.5.0"
   }
 }

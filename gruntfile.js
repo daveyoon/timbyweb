@@ -41,7 +41,7 @@ module.exports = function(grunt) {
                     'cms/wp-content/themes/timby/css/global.css': 'cms/wp-content/themes/timby/sass/global.sass'
                     // 'cms/wp-content/themes/timby/css/bootstrap.css': 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss'
                 }
-            } 
+            }
         },
 
         watch: {

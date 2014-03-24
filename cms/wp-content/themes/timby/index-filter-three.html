@@ -8,110 +8,136 @@
     
     <!-- Bootstrap -->
     <!-- <link href="css/bootstrap.css" rel="stylesheet"> -->
-    <link href="https://www.google.com/fonts#ChoosePlace:select/Collection:Droid+Sans|Droid+Serif" rel="stylesheet">
     <link href="css/global.css" rel="stylesheet">
   </head>
   <body>
-      <header>
-        <h1>Timby</h1>
+      <header class="clearfix">
+        <div class="pull-left">
+          <h3>TIMBY</h3>
+        </div>
+        <div class="pull-right">
+          <button>Logout</button>
+        </div>
       </header>
       <nav class="tabs">
-        <li class="active"><a href="#">Moderation</a></li>
-        <li><a href="#">Create a Story</a></li>
-        <li><a href="#" class="btn btn-success">Add Report</a></li>
+        <li class="tab-item active"><a href="#">Moderation</a></li>
+        <li class="tab-item"><a href="#">Create a Story</a></li>
+        <li class="tab-item"><a href="#">Add Report</a></li>
       </nav>
-      <div class="main-unit">
-        <div class="column twenty l-no-gutter filtering">
-          <section class="filters padding-item gray">
-            <form class="form-horizontal" role="form">
+      <section class="l-main-unit">
+        <section class="filters l-column">
+          <h4>Filters</h4>
+          <form role="form">
+            <div class="form-group">
+                <label for="search" class="">Sector</label>
+                <div>
+                  <input type="checkbox" name="option1" value="timber"> Timber<br>
+                  <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
+                  <input type="checkbox" name="option1" value="palm"> Mining
+                </div>
+            </div><!--end Sector-->
+            <div class="form-group">
+                <label for="search" class="">Category</label>
+                <div>
+                  <input type="checkbox" name="option1" value="timber"> Timber<br>
+                  <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
+                  <input type="checkbox" name="option1" value="palm"> Mining
+                </div>
+            </div><!--end Sector-->
+            <div class="form-group">
+              <label for="search" >Tags</label>
+              <div>
+                <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
+              </div>
+            </div><!--end Tags-->
+            <div class="form-group">
+              <label for="search" >Date</label>
+              <div>
+                <div class="six">
+                  <input type="date" placeholder="Start Date">
+                </div>
+                <div class="six">
+                  <input type="date" placeholder="End Date">
+                </div>
+              </div>
+            </div><!--end Dates-->
+          </form>
+        </section>
+        
+        <section class="results l-column">
+          <!-- <h4>Reports</h4> -->
+          <ul class="list">
+            <li class="list-item highlight">
               <div class="form-group">
-                <label for="search" class="column twenty">Search</label>
-                <div class="column 80">
+                <div>
                   <input type="search" id="search" placeholder="Search Reports">
                 </div>
               </div>
-              <div class="form-group">
-                  <label for="search" class="">Sector</label>
-              </div><!--end Sector-->
-              <div class="form-group">
-                <label for="search" >Tags</label>
-                <div>
-                  <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
+            </li>
+            <li class="list-item">
+              <a href="">
+                <h5 class="list-title">Title of report</h5>
+                <p class="list-content">Date of Report | by Reporter Name</p>
+                <div class="horz-list">
+                  <span class="icon-camera"></span> 3 &nbsp;&nbsp; <span class="icon-videocam"></span> 2 &nbsp;&nbsp; <span class="icon-volume-up"></span> 1 &nbsp;&nbsp;
                 </div>
-              </div><!--end Tags-->
-              <div class="form-group">
-                <label for="search" >Date</label>
-                <div>
-                  <input type="search" class="form-control  pull-left" id="search" placeholder="Start Date">
-                  <input type="search" class="form-control" id="search" placeholder="End Date">
+              </a>
+            </li>
+            <li class="list-item">
+              <a href="">
+                <span class="verified-triangle"></span>
+                <h5 class="list-title">Title of report</h5>
+                <p class="list-content">Date of Report | by Reporter Name</p>
+                <div class="horz-list">
+                  <span class="icon-camera"></span> 3 &nbsp;&nbsp; <span class="icon-videocam"></span> 2 &nbsp;&nbsp; <span class="icon-volume-up"></span> 1 &nbsp;&nbsp;
                 </div>
-              </div><!--end Dates-->
-            </form>
-          </section>
-          </div>
-          <div class="column thirty  l-no-gutter">
-            <section class="results">
-              <div class="list">
-                <a href="#" class="list-item clearfix">
-                  <h5>Title of report</h5>
-                  <p>Date of Report | by Reporter Name</p>
-                </a>
-              </div>
-            </section>
-        </div>
-        <div class="column fifty  l-no-gutter">
-          <div class="padding-item report-full-view">
-            <div class="row item">
-              <div class="col-md-8">
-                <h1>Report title</h1>
-                <h4>Date by reporter name on device</h4>
-                <span class="label label-info">Sector &times;</span>
-                <span class="label label-warning">Entity &times;</span>
-                <span class="label label-warning">Entity &times;</span>
-                <span class="label label-warning">Entity &times;</span>
-                <span class="label label-success"><strong>+</strong> Add Entity</span>
-              </div>
-              <div class="col-md-4">
-                <img src="http://fillmurray.com/g/200/200">
-              </div>
-            </div><!--- end header group-->
-            <div class="row">
-              <div class="col-md-12">
-                <p>This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text</p>
-              </div>
-            </div><!-- end text -->
-            <div class="row">
-              <div class="col-md-3">
-                <a href="#" class="thumbnail">
-                  <img src="http://fillmurray.com/g/200/200">
-                </a>
-              </div>
-              <div class="col-md-3">
-                <a href="#" class="thumbnail">
-                  <img src="http://fillmurray.com/g/200/200">
-                </a>
-              </div>
-              <div class="col-md-3">
-                <a href="#" class="thumbnail">
-                  <img src="http://fillmurray.com/g/200/200">
-                </a>
-              </div>
-              <div class="col-md-3">
-                <a href="#" class="thumbnail">
-                  <img src="http://fillmurray.com/g/200/200">
-                </a>
-              </div>
-            </div><!-- end media -->
-            
-            <div class="row">
-              <div class="col-md-12">
-                <a href="" class="btn btn-success pull-left">Save</a> 
-                <a href="" class="btn btn-danger pull-left">Cancel</a>
-              </div>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="report l-column">
+          <div class="row l-group">
+            <div class="nine">
+              <h2>Report title</h2>
+              <h4>Date by reporter name on device</h4>
+              <span class="tag">Sector &times;</span>
+              <span class="tag">Entity &times;</span>
+              <span class="tag">Entity &times;</span>
+              <span class="tag">Entity &times;</span>
+              <span class="tag"><strong>+</strong> Add Entity</span>
+            </div>
+            <div class="three">
+              <img src="http://fillmurray.com/g/200/200">
+            </div>
+          </div><!--- end header group-->
+          <div class="row l-group">
+            <div class="col-md-12">
+              <p>This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text</p>
+            </div>
+          </div><!-- end text -->
+          <div class="row l-media-grid l-group">
+            <div class="three">
+              <img src="http://fillmurray.com/g/200/200">
+            </div>
+            <div class="three">
+              <img src="http://fillmurray.com/g/200/200">
+            </div>
+            <div class="three">
+              <img src="http://fillmurray.com/g/200/200">
+            </div>
+            <div class="three">
+              <img src="http://fillmurray.com/g/200/200">
+            </div>
+          </div><!-- end media -->
+          
+          <div class="row">
+            <div class="twelve">
+              <button href="">Save</button> 
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </section>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script-->
