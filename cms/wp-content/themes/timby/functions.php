@@ -128,6 +128,11 @@ function get_report_data($report){
     //verification status
     $report->verified = (get_post_meta($report->ID, '_cmb_verified', true ) == 'on');
 
+
+    //geo data
+    $report->lng = get_post_meta( $report->ID, '_longitude', true);
+    $report->lat = get_post_meta( $report->ID, '_latitude', true);
+
     return $report;
 }
 

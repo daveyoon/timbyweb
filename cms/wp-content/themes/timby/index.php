@@ -112,7 +112,7 @@
         <span class="label label-warning">Entity</span>
       </div>
       <div class="col-md-4">
-        <img src="http://fillmurray.com/g/200/200">
+        <div id="report-location" style="width:200px; height:200px;"></div>
       </div>
     </div>
     <div class="row">
@@ -147,7 +147,7 @@
       <% if (media.video.length > 0){ %>
         <% for ( var i = 0; i < media.video.length; i++ ) { %>
           <iframe 
-              src="//player.vimeo.com/video/media.audio[i].vimeo.video_id" 
+              src="//player.vimeo.com/video/<%=media.video[i].vimeo.video_id%>" 
               width="500" 
               height="281" 
               frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>

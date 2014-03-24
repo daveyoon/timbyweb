@@ -5,13 +5,15 @@ function initialize() {
   var _lat = document.getElementById('_latitude').value;
   var _lng = document.getElementById('_longitude').value;
   var latlng = {};
+  
   if(_lat == ''){
-      lat = 6.593820;
-      lng = -9.394627;
-    }else{
-      lat = _lat;
-      lng = _lng;
-    }
+    lat = 6.593820;
+    lng = -9.394627;
+  }else{
+    lat = _lat;
+    lng = _lng;
+  }
+
   var mapOptions = {
     zoom: 7,
     center: new google.maps.LatLng(lat,lng)

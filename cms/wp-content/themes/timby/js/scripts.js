@@ -45,7 +45,27 @@ $(function(){
         response = $.parseJSON(response);
 
         if(response.status == 'success'){
-          $('.report-wrap').html(tmpl("report_template", response.data))
+          $('.report-wrap').html(
+            tmpl("report_template", response.data)
+          );
+
+          // initialize map only if the element exists in the DOM
+          var map = new google.maps.Map(
+            document.getElementById('report-location'),
+            {
+              zoom: 7,
+              center: new google.maps.LatLng(response.data.lat,response.data.lng)
+            }
+          );
+
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(
+              response.data.lat,
+              response.data.lng
+            ),
+            map: map
+          });
+
         }
       }
     );
