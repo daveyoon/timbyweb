@@ -29,7 +29,7 @@ function register_custom_post_type_report() {
         'labels' => $labels,
         'hierarchical' => false,
         'description' => 'Report',
-        'supports' => array( 'title', 'editor', 'excerpt', 'custom-fields'),
+        'supports' => array( 'title', 'editor'),
         'taxonomies' => array('category'),
 
         'public' => true,

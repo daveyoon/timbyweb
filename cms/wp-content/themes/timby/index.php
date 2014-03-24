@@ -129,26 +129,30 @@
       <% } %>
       <% if (media.audio.length > 0){ %>
         <% for ( var i = 0; i < media.audio.length; i++ ) { %>
-          <div class="col-md-3">
-            <iframe 
-            width="100%" 
-            height="166" 
-            scrolling="no" 
-            frameborder="no" 
-            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%=media.audio[i].soundcloud.id%>%3Fsecret_token%3D<%=media.audio[i].soundcloud.secret_token%>&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true">
-            </iframe>
-          </div>
+          <% if (media.audio[i].soundcloud){ %>
+            <div class="col-md-3">
+              <iframe 
+              width="100%" 
+              height="166" 
+              scrolling="no" 
+              frameborder="no" 
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/<%=media.audio[i].soundcloud.id%>%3Fsecret_token%3D<%=media.audio[i].soundcloud.secret_token%>&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true">
+              </iframe>
+            </div>
+          <% } %>
         <% } %>
       <% } %>
 
       <% if (media.video.length > 0){ %>
         <% for ( var i = 0; i < media.video.length; i++ ) { %>
-          <iframe 
-              src="//player.vimeo.com/video/<%=media.video[i].vimeo.video_id%>" 
-              width="500" 
-              height="281" 
-              frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
-          </iframe> 
+          <% if (media.video[i].vimeo){ %>
+            <iframe 
+                src="//player.vimeo.com/video/<%=media.video[i].vimeo.video_id%>" 
+                width="500" 
+                height="281" 
+                frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+            </iframe> 
+          <% } %>
         <% } %>
       <% } %>
 
