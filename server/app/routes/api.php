@@ -186,7 +186,7 @@ $app->group('/api', function () use ($app) {
 
     $title = $app->request->post('title');
     $description = $app->request->post('description');
-    $sector = $app->request->post('sector');
+    $sector = (int) $app->request->post('sector');
     $report_date = $app->request->post('report_date');
     $lat = $app->request->post('lat') != false ? $app->request->post('lat') : 0;
     $lng = $app->request->post('long') != false ? $app->request->post('long') : 0;
@@ -203,8 +203,9 @@ $app->group('/api', function () use ($app) {
         'token'   => $token,
         'custom_fields' =>  array(
           '_date_reported' => date('c', strtotime($report_date)),
-          '_latitude'     => $lat,
-          '_longitude'    => $lng
+          '_latitude'      => $lat,
+          '_longitude'     => $lng,
+          '_sector'        => $sector
         )
       )
     );
