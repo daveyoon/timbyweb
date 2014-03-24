@@ -30,44 +30,49 @@
             <form class="form-horizontal" role="form">
               <div class="form-group">
                 <label for="search" class="col-sm-2 control-label">Search</label>
-                <div class="col-sm-10">
+                <div class="col-sm-7">
                   <input type="search" class="form-control" id="search" placeholder="Search Reports">
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="search" class="col-sm-2 control-label">Sector</label>
-                <div class="col-md-10">
-                  <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default">
-                      <input type="checkbox"> Logging
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox"> Palm Oil
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox"> Community Dev Fund
-                    </label>
-                  </div>
-                </div>
-              </div><!--end row-->
-              <div class="form-group">
-                <label for="search" class="col-sm-2 control-label">Tags</label>
-                <div class="col-sm-10">
-                  <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
+                <div class="col-sm-3">
+                  <button class="btn btn-default" id="filterbutton">Show Filters</button>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="search" class="col-sm-2 control-label">Date</label>
-                <div class="col-sm-4">
-                  <input type="search" class="form-control" id="search" placeholder="Start Date">
+              <div class="filters-extended" id="filters">
+                <div class="form-group">
+                    <label for="search" class="col-sm-2 control-label">Sector</label>
+                    <div class="col-md-10">
+                      <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default">
+                          <input type="checkbox"> Logging
+                        </label>
+                        <label class="btn btn-default">
+                          <input type="checkbox"> Palm Oil
+                        </label>
+                        <label class="btn btn-default">
+                          <input type="checkbox"> Community Dev Fund
+                        </label>
+                      </div>
+                    </div>
+                  </div><!--end Sector-->
+                  <div class="form-group">
+                    <label for="search" class="col-sm-2 control-label">Tags</label>
+                    <div class="col-sm-10">
+                      <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
+                    </div>
+                  </div><!--end Tags-->
+                  <div class="form-group">
+                    <label for="search" class="col-sm-2 control-label">Date</label>
+                    <div class="col-sm-4">
+                      <input type="search" class="form-control" id="search" placeholder="Start Date">
+                    </div>
+                    <div class="col-sm-1">
+                      <span class="text-center text-muted">to</span>
+                    </div>
+                    <div class="col-sm-4">
+                      <input type="search" class="form-control" id="search" placeholder="End Date">
+                    </div>
+                  </div><!--end Dates-->
                 </div>
-                <div class="col-sm-1">
-                  <span class="text-center text-muted">to</span>
-                </div>
-                <div class="col-sm-4">
-                  <input type="search" class="form-control" id="search" placeholder="End Date">
-                </div>
-              </div>
             </form>
           </section>
           <section class="results">
@@ -143,8 +148,8 @@
             </div><!-- end media -->
             
             <div class="row">
-              <div class="col-md-12 panel">
-                <a href="" class="btn btn-success pull-left">Save</a>
+              <div class="col-md-12">
+                <a href="" class="btn btn-success pull-left">Save</a> 
                 <a href="" class="btn btn-danger pull-left">Cancel</a>
               </div>
             </div>
@@ -154,8 +159,10 @@
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script-->
+    <script src="js/build/production.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button.js"></script>
+    
   </body>
 </html>

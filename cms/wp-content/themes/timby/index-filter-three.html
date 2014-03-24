@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Filter this!</title>
+    
+    <!-- Bootstrap -->
+    <!-- <link href="css/bootstrap.css" rel="stylesheet"> -->
+    <link href="https://www.google.com/fonts#ChoosePlace:select/Collection:Droid+Sans|Droid+Serif" rel="stylesheet">
+    <link href="css/global.css" rel="stylesheet">
+  </head>
+  <body>
+      <header>
+        <h1>Timby</h1>
+      </header>
+      <nav class="tabs">
+        <li class="active"><a href="#">Moderation</a></li>
+        <li><a href="#">Create a Story</a></li>
+        <li><a href="#" class="btn btn-success">Add Report</a></li>
+      </nav>
+      <div class="main-unit">
+        <div class="column twenty l-no-gutter filtering">
+          <section class="filters padding-item gray">
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="search" class="column twenty">Search</label>
+                <div class="column 80">
+                  <input type="search" id="search" placeholder="Search Reports">
+                </div>
+              </div>
+              <div class="form-group">
+                  <label for="search" class="">Sector</label>
+              </div><!--end Sector-->
+              <div class="form-group">
+                <label for="search" >Tags</label>
+                <div>
+                  <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
+                </div>
+              </div><!--end Tags-->
+              <div class="form-group">
+                <label for="search" >Date</label>
+                <div>
+                  <input type="search" class="form-control  pull-left" id="search" placeholder="Start Date">
+                  <input type="search" class="form-control" id="search" placeholder="End Date">
+                </div>
+              </div><!--end Dates-->
+            </form>
+          </section>
+          </div>
+          <div class="column thirty  l-no-gutter">
+            <section class="results">
+              <div class="list">
+                <a href="#" class="list-item clearfix">
+                  <h5>Title of report</h5>
+                  <p>Date of Report | by Reporter Name</p>
+                </a>
+              </div>
+            </section>
+        </div>
+        <div class="column fifty  l-no-gutter">
+          <div class="padding-item report-full-view">
+            <div class="row item">
+              <div class="col-md-8">
+                <h1>Report title</h1>
+                <h4>Date by reporter name on device</h4>
+                <span class="label label-info">Sector &times;</span>
+                <span class="label label-warning">Entity &times;</span>
+                <span class="label label-warning">Entity &times;</span>
+                <span class="label label-warning">Entity &times;</span>
+                <span class="label label-success"><strong>+</strong> Add Entity</span>
+              </div>
+              <div class="col-md-4">
+                <img src="http://fillmurray.com/g/200/200">
+              </div>
+            </div><!--- end header group-->
+            <div class="row">
+              <div class="col-md-12">
+                <p>This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text</p>
+              </div>
+            </div><!-- end text -->
+            <div class="row">
+              <div class="col-md-3">
+                <a href="#" class="thumbnail">
+                  <img src="http://fillmurray.com/g/200/200">
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="#" class="thumbnail">
+                  <img src="http://fillmurray.com/g/200/200">
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="#" class="thumbnail">
+                  <img src="http://fillmurray.com/g/200/200">
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="#" class="thumbnail">
+                  <img src="http://fillmurray.com/g/200/200">
+                </a>
+              </div>
+            </div><!-- end media -->
+            
+            <div class="row">
+              <div class="col-md-12">
+                <a href="" class="btn btn-success pull-left">Save</a> 
+                <a href="" class="btn btn-danger pull-left">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script-->
+    <script src="js/build/production.min.js"></script>
+  </body>
+</html>

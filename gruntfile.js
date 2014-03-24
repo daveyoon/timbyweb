@@ -38,8 +38,8 @@ module.exports = function(grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    'cms/wp-content/themes/timby/css/global.css': 'cms/wp-content/themes/timby/sass/global.sass', 
-                    'cms/wp-content/themes/timby/css/bootstrap.css': 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss'
+                    'cms/wp-content/themes/timby/css/global.css': 'cms/wp-content/themes/timby/sass/global.sass'
+                    // 'cms/wp-content/themes/timby/css/bootstrap.css': 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss'
                 }
             } 
         },
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
                 }
             },
             css: {
-                files: ['cms/wp-content/themes/timby/sass/global.sass', 'cms/wp-content/themes/timby/sass/modules/*', 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap/*', 'cms/wp-content/themes/timby/bower_components/bootstrap-sass/vendor/assets/stylesheets/*'],
+                files: ['cms/wp-content/themes/timby/sass/*','cms/wp-content/themes/timby/sass/modules/*','cms/wp-content/themes/timby/sass/layout/*', 'cms/wp-content/themes/timby/bower_components/typeplate/scss/_typeplate.scss', 'cms/wp-content/themes/timby/bower_components/typeplate/scss/*','cms/wp-content/themes/timby/bower_components/typeplate/scss/_vars-typeplate.scss'],
                 tasks: ['sass'],
                 options: {
                     spawn: false,

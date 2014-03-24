@@ -1,0 +1,32 @@
+//BASE STYLES
+//INCLUDES TYPEPLATE
+
+.column
+  min-height: 1px
+  float: left
+  margin-left: 1em
+  @include box-sizing(border-box)
+  &.twenty
+    width: 20%
+  &.twenty-five
+    width: 25%
+  &.thirty
+    width: 30%
+  &.thirty-three
+    width: 33%
+  &.forty
+    width: 40%
+  &.fifty
+    width: 50%
+  &.sixty
+    width: 60%
+  &.eighty
+    width: 80%
+  &.seventy-five
+    width: 75%
+
+.column:first-of-type
+  margin-left: 0
+
+.l-no-gutter
+  margin-left: 0
