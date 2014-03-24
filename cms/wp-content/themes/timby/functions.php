@@ -46,6 +46,19 @@ if ( ! function_exists( 'timbyweb_setup' ) ) :
      */
     add_theme_support( 'automatic-feed-links', 'post-thumbnails' );
 
+
+    /**
+     * Create starter pages
+     * if they don't already exist
+     *
+     * @todo: move this to its own function call, check if this page already exists, remove it once theme is switched
+     */
+    wp_insert_post(
+      array(
+        'post_name' => 'signin'
+      )
+    );      
+
   }
 endif; // timbyweb_setup
 add_action( 'after_setup_theme', 'timbyweb_setup' );
@@ -75,6 +88,61 @@ function cron_add_every_ten_minutes( $schedules ) {
     'display' => __( 'Every ten minutes' )
   );
   return $schedules;
+}
+
+
+function fetch_new_reports( $args = array()){
+  $args = array_merge(
+    array(
+      'post_type'      => 'report',
+      'posts_per_page' => -1,
+      'orderby'        => 'meta_key = _date_reported',
+      'order'          => 'DESC',
+    ),
+    $args
+  );
+
+  $reports = get_posts($args);
+
+  foreach($reports as $key => $report){
+    //reporter
+    $report->reporter = get_the_author_meta( 'display_name', $report->post_author );
+
+    // report date
+    $report->date_reported = date('l jS F, Y - g:ia', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
+
+    // media count
+    $report->mediacount = new StdClass;
+
+    $report->mediacount->audio = count(fetch_attachments('audio', $report->ID));
+    $report->mediacount->video = count(fetch_attachments('video', $report->ID));
+    $report->mediacount->photos = count(fetch_attachments('image', $report->ID));
+    
+    //verification status
+    $report->verified = (get_post_meta($report->ID, '_cmb_verified', true ) == 'on');
+
+    $report->{$key} = $report;
+  }
+
+  return $reports;
+}
+
+
+function fetch_attachments($type = '', $post_parent = '')
+{
+  $args = array(
+    'post_type'   => 'attachment',
+    'numberposts' => null,
+    'post_status' => null,
+    'post_parent' => $post_parent,
+    'meta_query' => array(
+      array(
+        'key'   => '_media_type',
+        'value' => $type
+      )
+    )
+  );
+  return get_posts($args);
 }
 
 /**
