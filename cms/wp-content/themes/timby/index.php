@@ -106,10 +106,7 @@
       <a href="" class="btn btn-primary">Edit this Report</a>
         <h1><%=post_title%></h1>
         <h4>Date <%=date_reported%> by <%=reporter%> on device</h4>
-        <span class="label label-info">Sector</span>
-        <span class="label label-warning">Entity</span>
-        <span class="label label-warning">Entity</span>
-        <span class="label label-warning">Entity</span>
+        <span class="label label-info">Sector: <%=sector%> </span>
       </div>
       <div class="col-md-4">
         <div id="report-location" style="width:200px; height:200px;"></div>

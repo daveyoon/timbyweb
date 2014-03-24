@@ -133,6 +133,11 @@ function get_report_data($report){
     $report->lng = get_post_meta( $report->ID, '_longitude', true);
     $report->lat = get_post_meta( $report->ID, '_latitude', true);
 
+
+    // sectors
+    $sectorid = get_post_meta($report->ID, '_sector', true);
+    $report->sector = get_term_by('id', $sectorid, 'sector')->name;
+
     return $report;
 }
 
