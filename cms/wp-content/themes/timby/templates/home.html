@@ -1,56 +1,46 @@
-      <header class="clearfix main-header">
-        <div class="clearfix">
-          <div class="pull-left">
-            <h3>Timby</h3>
-          </div>
-          <div class="pull-right">
-            <button>Logout</button>
-          </div>
-        </div>
-        <nav class="tabs">
-          <li class="tab-item active"><a href="#">Moderation</a></li>
-          <li class="tab-item"><a href="#">Create a Story</a></li>
-          <li class="tab-item"><a href="#">Add Report</a></li>
-        </nav>
-      </header>
       <section class="l-main-unit clearfix">
-        <section class="filters l-column">
-          <h4>Filters</h4>
-          <form role="form">
-            <div class="form-group">
-                <label for="search" class="">Sector</label>
+        <section class="filters l-column is-hidden">
+          <div class="filters-hide">
+            Show Filters
+          </div>
+          <div class="filters-alive">
+            <h4>Filters</h4>
+            <form role="form">
+              <div class="form-group">
+                  <label for="search" class="">Sector</label>
+                  <div>
+                    <input type="checkbox" name="option1" value="timber"> Timber<br>
+                    <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
+                    <input type="checkbox" name="option1" value="palm"> Mining
+                  </div>
+              </div><!--end Sector-->
+              <div class="form-group">
+                  <label for="search" class="">Category</label>
+                  <div>
+                    <input type="checkbox" name="option1" value="timber"> Timber<br>
+                    <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
+                    <input type="checkbox" name="option1" value="palm"> Mining
+                  </div>
+              </div><!--end Sector-->
+              <div class="form-group">
+                <label for="search" >Tags</label>
                 <div>
-                  <input type="checkbox" name="option1" value="timber"> Timber<br>
-                  <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
-                  <input type="checkbox" name="option1" value="palm"> Mining
+                  <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
                 </div>
-            </div><!--end Sector-->
-            <div class="form-group">
-                <label for="search" class="">Category</label>
+              </div><!--end Tags-->
+              <div class="form-group">
+                <label for="search" >Date</label>
                 <div>
-                  <input type="checkbox" name="option1" value="timber"> Timber<br>
-                  <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
-                  <input type="checkbox" name="option1" value="palm"> Mining
+                  <div class="six">
+                    <input type="date" placeholder="Start Date">
+                  </div>
+                  <div class="six">
+                    <input type="date" placeholder="End Date">
+                  </div>
                 </div>
-            </div><!--end Sector-->
-            <div class="form-group">
-              <label for="search" >Tags</label>
-              <div>
-                <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
-              </div>
-            </div><!--end Tags-->
-            <div class="form-group">
-              <label for="search" >Date</label>
-              <div>
-                <div class="six">
-                  <input type="date" placeholder="Start Date">
-                </div>
-                <div class="six">
-                  <input type="date" placeholder="End Date">
-                </div>
-              </div>
-            </div><!--end Dates-->
-          </form>
+              </div><!--end Dates-->
+            </form>
+          </div>
         </section>
         
         <section class="results l-column">

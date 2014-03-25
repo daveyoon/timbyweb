@@ -1,0 +1,26 @@
+// .filters-hide, .filters-alive
+
+
+.filters-hide
+  position: absolute
+  @include transform(translateX(-250px))
+  text-align: center
+
+.filters-button
+  @include size(58px 58px)
+  padding: 4px 8px 8px 11px
+  background: $light-gray
+  margin-bottom: 4px
+  [class^="icon-"]
+    font-size: 36px
+
+.filters-hidden
+  .filters
+    width: 100px
+  .report
+    left: 450px
+  .filters-alive
+    position: relative
+    @include transform(translateX(-250px))
+  .filters-hide
+    @include transform(translateX(0px)) 
