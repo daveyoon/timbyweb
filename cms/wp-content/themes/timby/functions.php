@@ -177,6 +177,40 @@ function fetch_attachments($type = '', $post_parent = '')
 }
 
 /**
+ * Enqueue frontend scripts
+ */
+function timby_scripts() {
+  //remove jquery from the header, stick it at the footer
+  wp_deregister_script('jquery'); 
+  wp_register_script('jquery', '/wp-includes/js/jquery/jquery.js', false, '1.10.2', true); 
+  wp_enqueue_script('jquery');
+
+
+  wp_enqueue_script( 'angular', get_template_directory_uri() .'/bower_components/angular/angular.min.js', false, false, true );
+  wp_enqueue_script( 'angular-route', get_template_directory_uri() .'/bower_components/angular-route/angular-route.min.js', false, false, true );
+  
+  wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
+  wp_enqueue_script( 'directives', get_template_directory_uri() .'/js/directives.js',false, false, true );
+  wp_enqueue_script( 'services', get_template_directory_uri() .'/js/services.js',false, false, true );
+  wp_enqueue_script( 'app', get_template_directory_uri() .'/js/app.js',false, false, true );
+
+
+  //localize ajaxurl and nonce to the app script
+  wp_localize_script( 
+    'app', 
+    'wp_data', 
+    array( 
+      'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+      'nonce'        => wp_create_nonce('timbyweb_front_login_nonce'),
+      'template_url' => get_template_directory_uri()
+    ) 
+  );
+
+}
+add_action( 'wp_enqueue_scripts', 'timby_scripts' );
+
+
+/**
  * A cron job running every 10 mins checking 
  * if there are any new posts, new posts are essentially
  * posts with no _cartodb_id custom field

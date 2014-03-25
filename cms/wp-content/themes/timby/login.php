@@ -8,6 +8,10 @@
 </nav>
 <div class="col-md-5">
 <form class="form-horizontal" role="form">
+  <p ng-show="working">Loading...</p>
+  <div ng-if="ng-error">
+    <p></p>
+  </div>
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
     <div class="col-sm-10">

@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once __DIR__ . '/../../../wp-load.php';
 
 
@@ -18,8 +18,6 @@ switch($_REQUEST['action']){
         )
       );      
     }
-
-
     break;
 
   case 'get_new_reports':
@@ -29,8 +27,32 @@ switch($_REQUEST['action']){
         'reports' => fetch_new_reports()
       )
     );
+    break;
 
-  break;
+  case 'login':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_login_nonce') == true ){ 
+      if( isset($data->user) && isset($data->password) ) { 
+
+        $user = wp_signon( array( 
+          'user_login' => sanitize_text_field($data->user), 
+          'user_password' => sanitize_text_field($data->password) 
+        ), false); 
+
+        if( !is_wp_error($user) ) { 
+          echo json_encode(
+            array(
+              'status' => 'success',
+              'user' => $user
+            )
+          );
+        } 
+      }
+    } 
+    break;
+
   default:
     break;
 }
