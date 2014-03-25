@@ -1,4 +1,5 @@
 <form class="form-horizontal" ng-submit="login()" novalidate ng-controller="LoginController">
+  <h3 ng-show="working">Loading</h3>
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Login</label>
     <div class="col-sm-10">
@@ -25,7 +26,7 @@
       <button type="submit" class="btn btn-default">Sign in</button>
     </div>
     <p>
-      <a href="<?php echo esc_url(home_url( '/wp-login.php?action=lostpassword' ) ); ?>">Forgot your password?</a>
+      <a href="wp-login.php?action=lostpassword">Forgot your password?</a>
     </p> 
   </div>
   <input type="hidden" name="redirect_to" value="<?php echo esc_url( home_url('/') ) ?>" />

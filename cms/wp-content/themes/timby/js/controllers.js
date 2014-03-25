@@ -59,14 +59,18 @@ angular.module('timby.controllers', [])
     function($scope,$rootScope, AuthService, $location){
 
       $scope.login = function(){
+        $scope.working = true;
         AuthService
           .login($scope.username, $scope.password)
           .then(
             function(response){
+              $scope.working = false;
               if(response.data.status == 'success' && response.data.user){
                 AuthService.logged_in = true;
                 AuthService.user = response.data.user;
                 $location.path('/dashboard');
+              } else{
+                $scope.error_message = "Invalid login, please try again";
               }
             },
             function(){
