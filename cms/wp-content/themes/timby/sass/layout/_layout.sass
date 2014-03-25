@@ -2,33 +2,42 @@
 //INCLUDES TYPEPLATE
 
 body, html
-  position: relative
-  height: 100%
+  // position: relative
+  // height: 100%
 
 .l-column
   float: left
   @include box-sizing(border-box)
-  min-height: 1px
-  position: relative
-  min-height: 100%
+  // min-height: 1px
+  // position: relative
+  // min-height: 100%
 
 //major columns
 .filters
-  width: 18%
+  width: 220px
   padding: 1.5em
 .results
-  width: 25%
+  width: 350px
   border-left: 1px $med-gray solid
+  overflow-y: auto
+  height: 100%
   // padding-top: 1em
 .report
-  width: 57%
+  position: absolute
+  left: 570px
   border-left: 1px $med-gray solid
   padding: 1.5em
+  overflow-y: auto
+  height: 100%
 
 //major container on moderation
 .l-main-unit
-  position: relative
-  height: 100%
+  position: absolute
+  top: 113px
+  bottom: 0
+  overflow: hidden
+  @include fill-parent
+  z-index: 3
 
 
 //media grid to fill in responsive grid with images, etc
