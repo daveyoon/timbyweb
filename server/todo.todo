@@ -29,3 +29,5 @@
  ☐ filtering between pins
  ☐ caching of layer data
  ☐ find out a way to route to custom theme templates 
+ ☐ localize the ajax script and preferrably the app.js angular script together with nonces
+ ☐ change the login to use a nonce

@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Filter this!</title>
-    
-    <!-- Bootstrap -->
-    <!-- <link href="css/bootstrap.css" rel="stylesheet"> -->
-    <link href="css/global.css" rel="stylesheet">
-  </head>
-  <body>
       <header class="clearfix">
         <div class="pull-left">
           <h3>Timby</h3>
@@ -74,22 +61,17 @@
                 </div>
               </div>
             </li>
-            <li class="list-item">
+
+            <li class="list-item" ng-repeat="report in reports" ng-click="viewReport(report.ID)">
               <a href="">
-                <h5 class="list-title">Title of report</h5>
-                <p class="list-content">Date of Report | by Reporter Name</p>
+                <h5 class="list-title">{{report.post_title}}</h5>
+                <p class="list-content">
+                  Date of Report {{report.date_reported}} | by {{report.reporter}}
+                </p>
                 <div class="horz-list">
-                  <span class="icon-camera"></span> 3 &nbsp;&nbsp; <span class="icon-videocam"></span> 2 &nbsp;&nbsp; <span class="icon-volume-up"></span> 1 &nbsp;&nbsp;
-                </div>
-              </a>
-            </li>
-            <li class="list-item">
-              <a href="">
-                <span class="verified-triangle"></span>
-                <h5 class="list-title">Title of report</h5>
-                <p class="list-content">Date of Report | by Reporter Name</p>
-                <div class="horz-list">
-                  <span class="icon-camera"></span> 3 &nbsp;&nbsp; <span class="icon-videocam"></span> 2 &nbsp;&nbsp; <span class="icon-volume-up"></span> 1 &nbsp;&nbsp;
+                  <span class="icon-camera"></span> {{ report.media.photo.length}} &nbsp;&nbsp; 
+                  <span class="icon-videocam"></span> {{ report.media.video.length}} &nbsp;&nbsp; 
+                  <span class="icon-volume-up"></span> {{ report.media.audio.length}} &nbsp;&nbsp;
                 </div>
               </a>
             </li>
@@ -99,13 +81,15 @@
         <section class="report l-column">
           <div class="row l-group">
             <div class="ten">
-              <h3>Report title</h3>
-              <h5>Date by reporter name on device</h5>
-              <span class="tag">Sector &times;</span>
+              <h3>{{report.post_title}}</h3>
+              <h5>{{report.post_content}}</h5>
+              <span class="tag">Sector: {{report.sector}} &times;</span>
               <span class="tag">Entity &times;</span>
               <span class="tag">Entity &times;</span>
               <span class="tag">Entity &times;</span>
-              <span class="tag"><strong>+</strong> Add Entity</span>
+              <span class="tag">
+                <strong>+</strong> Add Entity
+              </span>
             </div>
             <div class="two">
               <img src="http://fillmurray.com/g/200/200">
@@ -117,18 +101,31 @@
             </div>
           </div><!-- end text -->
           <div class="row l-media-grid l-group">
-            <div class="three">
-              <img src="http://fillmurray.com/g/200/200">
+            <div ng-if="report.media.photos.length > 0">
+              <div class="three" ng-repeat="photo in report.media.photo">
+                <a href="#" class="thumbnail">
+                  <img ng-src="{{photo.guid}}">
+                </a>
+              </div>
             </div>
-            <div class="three">
-              <img src="http://fillmurray.com/g/200/200">
+
+            <div ng-if="report.media.audio.length > 0">
+              <div class="three" ng-repeat="audio in report.media.audio">
+                <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
+              </div>
             </div>
-            <div class="three">
-              <img src="http://fillmurray.com/g/200/200">
+            
+            <div ng-if="report.media.video.length > 0">
+              <div class="six" ng-repeat="video in report.media.video">
+                <iframe 
+                    ng-src="{{trustSrc(video.vimeo.embed_url)}}" 
+                    width="500" 
+                    height="281" 
+                    frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                </iframe> 
+              </div>
             </div>
-            <div class="three">
-              <img src="http://fillmurray.com/g/200/200">
-            </div>
+
           </div><!-- end media -->
           
           <div class="row">
@@ -139,8 +136,3 @@
         </section>
       </section>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script-->
-    <script src="js/build/production.min.js"></script>
-  </body>
-</html>
