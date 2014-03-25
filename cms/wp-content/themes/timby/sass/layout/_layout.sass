@@ -1,2 +1,42 @@
 //BASE STYLES
 //INCLUDES TYPEPLATE
+
+body, html
+  position: relative
+  height: 100%
+
+.l-column
+  float: left
+  @include box-sizing(border-box)
+  min-height: 1px
+  position: relative
+  min-height: 100%
+
+//major columns
+.filters
+  width: 18%
+  padding: 1.5em
+.results
+  width: 25%
+  border-left: 1px $med-gray solid
+  // padding-top: 1em
+.report
+  width: 57%
+  border-left: 1px $med-gray solid
+  padding: 1.5em
+
+//major container on moderation
+.l-main-unit
+  position: relative
+  height: 100%
+
+
+//media grid to fill in responsive grid with images, etc
+.l-media-grid
+  @include fill-parent
+
+.l-group
+  margin-bottom: 1em
+
+p:last-of-type
+  margin-bottom: 0
