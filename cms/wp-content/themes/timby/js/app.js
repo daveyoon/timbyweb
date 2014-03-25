@@ -15,8 +15,20 @@ angular.module('timby',[
   $routeProvider
     .when('/', 
       { 
-        templateUrl : BASE_URL + '/templates/home.html',
-        controller : 'HomepageController'
+        templateUrl : BASE_URL + '/templates/login.html',
+        controller : ['$location', 'AuthService', 
+        function($location, AuthService){
+          if( AuthService.isAuthenticated() )
+            $location.path( "/dashboard" )
+        }],
+        authenticate : false
+      }
+    )
+    .when('/dashboard', 
+      { 
+        templateUrl : BASE_URL + '/templates/dashboard.html',
+        controller : 'MainController',
+        authenticate : false
       }
     )
 
