@@ -1,27 +1,36 @@
 <?php 
 require_once __DIR__ . '/../../../wp-load.php';
 
+
 switch($_REQUEST['action']){
   case 'get_report':
     $ID = (int) $_REQUEST['id'];
 
     $report = get_post($ID);
 
-    // get report data and add keys to our report object
-    $report_data = get_report_data($report);
-    foreach($report_data as $key => $val){
-      $report->{$key} = $val;
+    if( count($report) > 0 ) {
+      // get report data and add keys to our report object
+      $report = build_report_data($report);
+      echo json_encode(
+        array(
+          'status' => 'success',
+          'report' => $report,
+        )
+      );      
     }
-
-    echo json_encode(
-      array(
-        'status' => 'success',
-        'data' => $report,
-      )
-    );      
 
 
     break;
+
+  case 'get_new_reports':
+    echo json_encode(
+      array(
+        'status' => 'success',
+        'reports' => fetch_new_reports()
+      )
+    );
+
+  break;
   default:
     break;
 }

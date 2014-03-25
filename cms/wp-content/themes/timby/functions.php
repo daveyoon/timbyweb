@@ -105,42 +105,42 @@ function fetch_new_reports( $args = array()){
   $reports = get_posts($args);
 
   foreach($reports as $key => $report){
-    $report->{$key} = get_report_data($report);
+    $report = build_report_data($report);
+    $reports[$key] = $report;
   }
 
   return $reports;
 }
 
-function get_report_data($report){
-    //reporter
-    $report->reporter = get_the_author_meta( 'display_name', $report->post_author );
+function build_report_data($report){
+  //reporter
+  $report->reporter = get_the_author_meta( 'display_name', $report->post_author );
 
-    // report date
-    $report->date_reported = date('l jS F, Y - g:ia', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
+  // report date
+  $report->date_reported = date('l jS F, Y - g:ia', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
 
-    // media count
-    $report->media = new StdClass;
+  // media count
+  $report->media = new StdClass;
 
-    $report->media->audio = fetch_attachments('audio', $report->ID);
-    $report->media->video = fetch_attachments('video', $report->ID);
-    $report->media->photos = fetch_attachments('image', $report->ID);
-    
-    //verification status
-    $report->verified = (get_post_meta($report->ID, '_cmb_verified', true ) == 'on');
-
-
-    //geo data
-    $report->lng = get_post_meta( $report->ID, '_longitude', true);
-    $report->lat = get_post_meta( $report->ID, '_latitude', true);
+  $report->media->audio = fetch_attachments('audio', $report->ID);
+  $report->media->video = fetch_attachments('video', $report->ID);
+  $report->media->photos = fetch_attachments('image', $report->ID);
+  
+  //verification status
+  $report->verified = (get_post_meta($report->ID, '_cmb_verified', true ) == 'on');
 
 
-    // sectors
-    $sectorid = get_post_meta($report->ID, '_sector', true);
-    $report->sector = get_term_by('id', $sectorid, 'sector')->name;
+  //geo data
+  $report->lng = get_post_meta( $report->ID, '_longitude', true);
+  $report->lat = get_post_meta( $report->ID, '_latitude', true);
 
-    return $report;
+
+  // sectors
+  $sectorid = get_post_meta($report->ID, '_sector', true);
+  $report->sector = get_term_by('id', $sectorid, 'sector')->name;
+
+  return $report;
 }
-
 
 function fetch_attachments($type = '', $post_parent = '')
 {
@@ -160,10 +160,16 @@ function fetch_attachments($type = '', $post_parent = '')
 
   foreach($attachments as $key=>$attachment) {
     if( $type == 'audio' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
-      $attachment->soundcloud = json_decode(get_post_meta($attachment->ID, '_soundcloud_track_data', true ));        
+      $trackdata = json_decode(get_post_meta($attachment->ID, '_soundcloud_track_data', true ));
+      $trackdata->embed_url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/".$trackdata->id."%3Fsecret_token%3D".$trackdata->secret_token."&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true";
+      $attachment->soundcloud = $trackdata;        
     }
     if( $type == 'video' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
-      $attachment->vimeo = array( 'video_id' => get_post_meta($attachment->ID, '_vimeo_video_id', true ) );        
+      $video_id = get_post_meta($attachment->ID, '_vimeo_video_id', true);
+      $attachment->vimeo = array( 
+        'video_id' => get_post_meta($attachment->ID, '_vimeo_video_id', true),
+        'embed_url' => "//player.vimeo.com/video/".$video_id
+      );        
     }
     $attachments[$key] = $attachment;
   }

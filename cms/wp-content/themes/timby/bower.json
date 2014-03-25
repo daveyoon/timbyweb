@@ -17,6 +17,7 @@
   "dependencies": {
     "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1",
     "angular": "1.2.15",
-    "neat": "~1.5.0"
+    "neat": "~1.5.0",
+    "angular-route": "~1.2.15"
   }
 }
