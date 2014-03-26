@@ -1,4 +1,5 @@
 angular.module('timby',[
+  'ngSanitize',
   'ngRoute',
   'timby.controllers',
   'timby.services',

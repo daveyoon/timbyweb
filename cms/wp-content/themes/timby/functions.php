@@ -117,7 +117,7 @@ function build_report_data($report){
   $report->reporter = get_the_author_meta( 'display_name', $report->post_author );
 
   // report date
-  $report->date_reported = date('l jS F, Y - g:ia', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
+  $report->date_reported = date('jS F, Y', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
 
   // media count
   $report->media = new StdClass;
@@ -190,6 +190,7 @@ function timby_scripts() {
 
   wp_enqueue_script( 'angular', get_template_directory_uri() .'/bower_components/angular/angular.min.js', false, false, true );
   wp_enqueue_script( 'angular-route', get_template_directory_uri() .'/bower_components/angular-route/angular-route.min.js', false, false, true );
+  wp_enqueue_script( 'angular-sanitize', get_template_directory_uri() .'/bower_components/angular-sanitize/angular-sanitize.min.js', false, false, true );
   wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, false, true );
   
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );

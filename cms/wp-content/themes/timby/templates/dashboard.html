@@ -80,9 +80,9 @@
             {{report.date_reported}} | by {{report.reporter}}
           </p>
           <div class="horz-list">
-            <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp; 
-            <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp; 
-            <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp;
+            <span class="icon-camera"></span> {{ report.media.photos.length}} &nbsp;&nbsp; 
+            <span class="icon-videocam"></span>{{ report.media.video.length}} &nbsp;&nbsp; 
+            <span class="icon-volume-up"></span>{{ report.media.audio.length}} &nbsp;&nbsp;
           </div>
         </a>
       </li>
@@ -112,9 +112,7 @@
       </div>
     </div><!--- end header group-->
 
-    <div class="row l-group">
-      {{report.post_content}}
-    </div><!-- end description -->
+    <div class="row l-group" ng-bind-html="report.post_content"></div><!-- end description -->
      
     <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
       <div class="three" ng-repeat="photo in report.media.photo">
