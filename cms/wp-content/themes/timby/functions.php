@@ -134,10 +134,12 @@ function build_report_data($report){
   $report->lng = get_post_meta( $report->ID, '_longitude', true);
   $report->lat = get_post_meta( $report->ID, '_latitude', true);
 
+  // get terms for this post
 
   // sectors
-  $sectorid = get_post_meta($report->ID, '_sector', true);
-  $report->sector = get_term_by('id', $sectorid, 'sector')->name;
+  $report->categories = wp_get_post_terms( $report->ID, 'category');
+  $report->sectors = wp_get_post_terms( $report->ID, 'sector');
+  $report->entities = wp_get_post_terms( $report->ID, 'entity');
 
   return $report;
 }
@@ -209,6 +211,49 @@ function timby_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'timby_scripts' );
 
+
+
+/**
+ * When a report is saved, save custom fields
+ * outside of the cmb library
+ * 
+ * @param int $post_id The ID of the post being saved.
+ */
+function save_custom_report_data( $post_id ) {
+  // check permissions
+  if (
+    // check if autosave
+    defined('DOING_AUTOSAVE' ) && DOING_AUTOSAVE
+    // check user editing permissions
+    || ( 'page' == $_POST['post_type'] && ! current_user_can( 'edit_page', $post_id ) )
+    || ! current_user_can( 'edit_post', $post_id )
+    // current post type is report
+    || $_POST['post_type'] != 'report'
+  )
+    return $post_id;
+
+
+  // save the long and latitude
+  if( array_key_exists('_lat', $_POST) && array_key_exists('_lng', $_POST)  )
+  {
+    $lat = sanitize_text_field($_POST['_lat']);    
+    $lng = sanitize_text_field($_POST['_lng']);
+  } else {
+    $lng = '0';
+    $lat = '0'; 
+  }
+  // Update the meta field in the database.
+  update_post_meta( $post_id, '_lat', $lat );
+  update_post_meta( $post_id, '_lng', $lng );
+
+  // save the reported_date if not already set
+  if( get_post_meta( $post_id, '_date_reported', true) == '' ){
+    update_post_meta( $post_id, '_date_reported', date('c', time() ) );
+  }
+
+
+}
+ add_action( 'save_post', 'save_custom_report_data' );
 
 /**
  * A cron job running every 10 mins checking 

@@ -70,11 +70,10 @@
     <div class="row l-group">
       <div class="ten">
         <h3>{{report.post_title}}</h3>
-        <h5>{{report.post_content}}</h5>
-        <span class="tag">Sector: {{report.sector}} &times;</span>
-        <span class="tag">Entity &times;</span>
-        <span class="tag">Entity &times;</span>
-        <span class="tag">Entity &times;</span>
+        <h5>{{report.date_reported}} | by {{report.reporter}}</h5>
+        <p>Category: <span class="tag" ng-repeat="term in report.categories">{{term.name}} &times;</span></p>
+        <p>Sector: <span class="tag" ng-repeat="term in report.sectors">{{term.name}} &times;</span></p>
+        <p>Entities:<span class="tag" ng-repeat="term in report.entities">{{term.name}} &times;</span></p>
         <span class="tag">
           <strong>+</strong> Add Entity
         </span>
@@ -84,9 +83,7 @@
       </div>
     </div><!--- end header group-->
     <div class="row l-group">
-      <div class="col-md-12">
-        <p>This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text. This is where the content of the report goes. Text goes first then media. Tags are between the header and the text</p>
-      </div>
+      <div class="col-md-12">{{report.post_content}}</div>
     </div><!-- end text -->
     <div class="row l-media-grid l-group">
       <div ng-if="report.media.photos.length > 0">

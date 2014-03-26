@@ -1,9 +1,11 @@
+<?php global $post; ?>
+
 Latitude:
-<input type="text" name="_latitude" id="_latitude" value="<?php if(get_post_meta( get_the_id(), '_latitude', true)) echo get_post_meta( get_the_id(), '_latitude', true); ?>" />
+<input type="text" name="_lat" id="_latitude" value="<?php echo get_post_meta( $post->ID, '_lat', true); ?>" />
 Longitude:
-<input type="text" name="_longitude" id="_longitude" value="<?php if(get_post_meta( get_the_id(), '_longitude', true)) echo get_post_meta( get_the_id(), '_longitude', true); ?>" />
+<input type="text" name="_lng" id="_longitude" value="<?php echo get_post_meta( $post->ID, '_lat', true); ?>" />
 Type a location to navigate:
-<input type="text" name="_location_address" id="_location_address" placeholder="e.g monrovia" value="<?php echo get_post_meta( get_the_id(), '_location_address', true); ?>" />
+<input type="text" name="_location_address" id="_location_address" placeholder="e.g Monrovia" value="" />
 <button type='button' onclick="getlocation();">Go</button>
 <br />
 <br />
