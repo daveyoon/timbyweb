@@ -196,6 +196,15 @@ function timby_scripts() {
   // crazy scribe enqueueing going on here
   wp_enqueue_script('requirejs', get_template_directory_uri() .'/bower_components/requirejs/require.js', false, false, true);
   wp_enqueue_script('scribe', get_template_directory_uri() .'/bower_components/scribe/scribe.js', false, false, true);
+  // wp_enqueue_script('scribe-plugin-blockquote-command', get_template_directory_uri().'/bower_components/scribe-plugin-blockquote-command/scribe-plugin-blockquote-command.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-curly-quotes', get_template_directory_uri().'/bower_components/scribe-plugin-curly-quotes/scribe-plugin-curly-quotes.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-formatter-plain-text-convert-new-lines-to-html', get_template_directory_uri().'/bower_components/scribe-plugin-formatter-plain-text-convert-new-lines-to-html/scribe-plugin-formatter-plain-text-convert-new-lines-to-html.js', false, false, true);
+  // wp_enqueue_script('scribe-plugin-heading-command', get_template_directory_uri().'/bower_components/scribe-plugin-heading-command/scribe-plugin-heading-command.js', false, false, true);
+  // wp_enqueue_script('scribe-plugin-intelligent-unlink-command', get_template_directory_uri().'/bower_components/scribe-plugin-intelligent-unlink-command/scribe-plugin-intelligent-unlink-command.js', false, false, true);
+  // wp_enqueue_script('scribe-plugin-keyboard-shortcuts', get_template_directory_uri().'/bower_components/scribe-plugin-keyboard-shortcuts/scribe-plugin-keyboard-shortcuts.js', false, false, true);
+  // wp_enqueue_script('scribe-plugin-link-prompt-command', get_template_directory_uri().'/bower_components/scribe-plugin-link-prompt-command/scribe-plugin-link-prompt-command.js', false, false, true);
+  // wp_enqueue_script('scribe-plugin-sanitizer', get_template_directory_uri().'/bower_components/scribe-plugin-sanitizer/scribe-plugin-sanitizer.js', false, false, true);
+  // wp_enqueue_script('scribe-plugin-smart-lists', get_template_directory_uri().'/bower_components/scribe-plugin-smart-lists/scribe-plugin-smart-lists.js', false, false, true);
   wp_enqueue_script('scribe-plugin-toolbar', get_template_directory_uri().'/bower_components/scribe-plugin-toolbar/scribe-plugin-toolbar.js', false, false, true);
 
 

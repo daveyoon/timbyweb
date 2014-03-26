@@ -56,7 +56,7 @@ angular.module('timby.controllers', [])
                   map: map
                 });
 
-                require(['scribe', 'scribe-plugin-toolbar'], function (Scribe, scribePluginToolbar) {
+                require(['scribe', 'scribe-plugin-toolbar', 'scribe-plugin-formatter-plain-text-convert-new-lines-to-html'], function (Scribe, scribePluginToolbar,scribePluginFormatterPlainTextConvertNewLinesToHtml) {
 
                   var title_scribe = new Scribe(document.querySelector('#report_title'))
                   var content_scribe = new Scribe(document.querySelector('#report_content'))
@@ -65,6 +65,7 @@ angular.module('timby.controllers', [])
                   var toolbarElement = document.querySelector('.toolbar');
                   // title_scribe.use(scribePluginToolbar(toolbarElement));
                   content_scribe.use(scribePluginToolbar(toolbarElement));
+                  content_scribe.use(scribePluginFormatterPlainTextConvertNewLinesToHtml());
                 });
 
               }
