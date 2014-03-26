@@ -78,10 +78,9 @@
             <div class="nine header-group">
               <div class="kicker" ng-repeat="term in report.sectors">
                 {{term.name}}
-                <div class="tag tag-small">
+                <div class="tag tag-small tag-edit">
                   <a href="" ng-click="showList=!showList">EDIT SECTOR</a>
                   <span class="edit-pane" ng-show="showList">
-                    <label for="search" class="">Sector</label>
                     <div>
                       <input type="checkbox" name="option1" value="timber"> Timber<br>
                       <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
