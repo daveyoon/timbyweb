@@ -75,24 +75,37 @@
 
         <section class="report l-column">
           <div class="row l-group">
-            <div class="nine">
+            <div class="nine header-group">
+              <div class="kicker" ng-repeat="term in report.sectors">
+                {{term.name}}
+                <div class="tag tag-small">
+                  <a href="" ng-click="showList=!showList">EDIT SECTOR</a>
+                  <span class="edit-pane" ng-show="showList">
+                    <label for="search" class="">Sector</label>
+                    <div>
+                      <input type="checkbox" name="option1" value="timber"> Timber<br>
+                      <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
+                      <input type="checkbox" name="option1" value="palm" checked> Mining
+                    </div>
+                    <div>
+                      <button>save</button><button ng-click="showList=!showList">close</button>
+                    </div></span>
+                </div>
+              </div>
               <h3>{{report.post_title}}</h3>
               <h5 class="subhead">{{report.date_reported}} | by {{report.reporter}}</h5>
+              <!-- <div>
+                <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
+              </div> -->
               <div>
-                Category: <span class="tag" ng-repeat="term in report.categories">{{term.name}} &times;</span>
-              </div>
-              <div>
-                Sector: <span class="tag" ng-repeat="term in report.sectors">{{term.name}} &times;</span>
-              </div>
-              <div>
-                Entities:<span class="tag" ng-repeat="term in report.entities">{{term.name}} &times;</span>
+                <span class="tag" ng-repeat="term in report.entities">{{term.name}} &times;</span>
               </div>
               <span class="tag">
                 <strong>+</strong> Add Entity
               </span>
             </div>
             <div class="three">
-              <div id="report-location"></div>
+              <div id="report-location" style="width:200px; height:200px;"></div>
             </div>
           </div><!--- end header group-->
 

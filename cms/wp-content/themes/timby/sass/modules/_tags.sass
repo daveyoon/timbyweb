@@ -1,8 +1,47 @@
 .tag
   display: inline-block
   padding: .25em 1em
-  border-radius: 1em
   text-transform: uppercase
-  color: white
   font-size: 12px
+  position: relative
+  background: $light-gray
+
+.tag-small
+  font-size: 10px
+  padding: .1em .5em
+
+.tag-rounded
+  border-radius: 1em
+
+.tag-outline
+  border: 1px solid $dark-gray
+  background: none
+
+.tag-dark
   background: $black
+  color: white
+
+// .edit-pane
+//   display: none
+
+.tag-edit
+  width: 200px
+  position: absolute
+  z-index: 2
+  background: white
+  top: 0
+  margin: 3px 0 0 8px
+  // .edit-pane
+  //   display: block
+
+
+//   -webkit-transition: all 1s ease-in-out
+//   -moz-transition: all 1s ease-in-out
+//   -o-transition: all 1s ease-in-out
+// .tag:hover
+//   cursor: pointer
+// .tag:hover:after
+//   content: '\e804'
+//   font-family: 'fontello'
+//   padding: 0 0 0 3px
+//   
