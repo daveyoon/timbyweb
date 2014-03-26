@@ -193,8 +193,12 @@ function timby_scripts() {
   wp_enqueue_script( 'angular-sanitize', get_template_directory_uri() .'/bower_components/angular-sanitize/angular-sanitize.min.js', false, false, true );
   wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, false, true );
  
-  wp_enqueue_script( 'requirejs', get_template_directory_uri() .'/bower_components/requirejs/require.js', false, false, true );
- 
+  // crazy scribe enqueueing going on here
+  wp_enqueue_script('requirejs', get_template_directory_uri() .'/bower_components/requirejs/require.js', false, false, true);
+  wp_enqueue_script('scribe', get_template_directory_uri() .'/bower_components/scribe/scribe.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-toolbar', get_template_directory_uri().'/bower_components/scribe-plugin-toolbar/scribe-plugin-toolbar.js', false, false, true);
+
+
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
   wp_enqueue_script( 'directives', get_template_directory_uri() .'/js/directives.js',false, false, true );
   wp_enqueue_script( 'services', get_template_directory_uri() .'/js/services.js',false, false, true );

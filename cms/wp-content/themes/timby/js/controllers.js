@@ -56,6 +56,17 @@ angular.module('timby.controllers', [])
                   map: map
                 });
 
+                require(['scribe', 'scribe-plugin-toolbar'], function (Scribe, scribePluginToolbar) {
+
+                  var title_scribe = new Scribe(document.querySelector('#report_title'))
+                  var content_scribe = new Scribe(document.querySelector('#report_content'))
+
+                  // Use some plugins
+                  var toolbarElement = document.querySelector('.toolbar');
+                  // title_scribe.use(scribePluginToolbar(toolbarElement));
+                  content_scribe.use(scribePluginToolbar(toolbarElement));
+                });
+
               }
             },
             function error(response, status, headers, config) {
