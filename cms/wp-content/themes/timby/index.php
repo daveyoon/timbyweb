@@ -13,21 +13,7 @@
     <?php wp_head() ?>
   </head>
   <body data-template-url="<?php echo get_template_directory_uri() ?>" controller="MainController">
-    <header class="clearfix main-header">
-      <div class="clearfix">
-        <div class="pull-left">
-          <h3>Timby</h3>
-        </div>
-        <div class="pull-right">
-          <button>Logout</button>
-        </div>
-      </div>
-      <nav class="tabs">
-        <li class="tab-item active"><a href="#">Moderation</a></li>
-        <li class="tab-item"><a href="#">Create a Story</a></li>
-        <li class="tab-item"><a href="#">Add Report</a></li>
-      </nav>
-    </header>
+
     <div ng-view></div>
 
     <?php wp_footer(); // this loads jQuery, Angular and our Angular app, see functions.php ?>
