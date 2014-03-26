@@ -79,8 +79,7 @@
               <div class="kicker clearfix" ng-repeat="term in report.sectors">
                 <h6 class="pull-left">{{term.name}}</h6>
                 <div class="pull-left" style="position:relative; margin: -4px 0 0 5px;">
-                  <a href="" ng-click="showList=!showList" class="tag tag-small">EDIT SECTOR</a>
-                
+                  <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
                   <div class="edit-pane" ng-show="showList">
                     <div>
                       <input type="checkbox" name="option1" value="timber"> Timber<br>
@@ -98,12 +97,13 @@
               <!-- <div>
                 <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
               </div> -->
-              <div>
-                <span class="tag" ng-repeat="term in report.entities">{{term.name}} &times;</span>
+              <div class="entity-list l-group">
+                <span class="tag" ng-repeat="term in report.entities">{{term.name}}</span>
               </div>
-              <span class="tag">
-                <strong>+</strong> Add Entity
-              </span>
+              <div class="l-group">
+                <input type="search" class="five" id="search" placeholder="Start typing to bring up tags">
+                <input type="submit" class="two" value="Add Entity">
+              </div>
             </div>
             <div class="three">
               <div id="report-location" style="width:200px; height:200px;"></div>

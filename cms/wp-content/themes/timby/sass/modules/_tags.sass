@@ -1,7 +1,7 @@
 .tag
   display: inline-block
   padding: .25em 1em
-  text-transform: uppercase
+  // text-transform: uppercase
   font-size: 12px
   position: relative
   background: $light-gray
@@ -25,10 +25,8 @@
 //   display: none
 
 .tag-edit
-  position: absolute
-  z-index: 2
-  top: 0
-  margin: 3px 0 0 8px
+  background: $edit-color
+  color: white !important
   // .edit-pane
   //   display: block
 
@@ -38,15 +36,3 @@
   background: $light-gray
   padding: 1em
   z-index: 3
-  // border: 1px solid $dark-gray
-
-//   -webkit-transition: all 1s ease-in-out
-//   -moz-transition: all 1s ease-in-out
-//   -o-transition: all 1s ease-in-out
-// .tag:hover
-//   cursor: pointer
-// .tag:hover:after
-//   content: '\e804'
-//   font-family: 'fontello'
-//   padding: 0 0 0 3px
-//   
