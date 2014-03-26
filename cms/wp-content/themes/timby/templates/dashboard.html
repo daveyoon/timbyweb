@@ -76,11 +76,12 @@
         <section class="report l-column">
           <div class="row l-group">
             <div class="nine header-group">
-              <div class="kicker" ng-repeat="term in report.sectors">
-                {{term.name}}
-                <div class="tag tag-small tag-edit">
-                  <a href="" ng-click="showList=!showList">EDIT SECTOR</a>
-                  <span class="edit-pane" ng-show="showList">
+              <div class="kicker clearfix" ng-repeat="term in report.sectors">
+                <h6 class="pull-left">{{term.name}}</h6>
+                <div class="pull-left" style="position:relative; margin: -4px 0 0 5px;">
+                  <a href="" ng-click="showList=!showList" class="tag tag-small">EDIT SECTOR</a>
+                
+                  <div class="edit-pane" ng-show="showList">
                     <div>
                       <input type="checkbox" name="option1" value="timber"> Timber<br>
                       <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
@@ -88,7 +89,8 @@
                     </div>
                     <div>
                       <button>save</button><button ng-click="showList=!showList">close</button>
-                    </div></span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <h3>{{report.post_title}}</h3>
