@@ -32,9 +32,5 @@
 
     <?php wp_footer(); // this loads jQuery, Angular and our Angular app, see functions.php ?>
 
-    <!-- Load any other custom scripts below -->
-    <script src="<?php echo get_template_directory_uri() ?>/js/build/production.min.js"></script>
-
-
   </body>
 </html>

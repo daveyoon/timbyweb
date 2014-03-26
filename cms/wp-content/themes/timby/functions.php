@@ -131,8 +131,8 @@ function build_report_data($report){
 
 
   //geo data
-  $report->lng = get_post_meta( $report->ID, '_longitude', true);
-  $report->lat = get_post_meta( $report->ID, '_latitude', true);
+  $report->lng = get_post_meta( $report->ID, '_lng', true);
+  $report->lat = get_post_meta( $report->ID, '_lat', true);
 
   // get terms for this post
 
@@ -190,6 +190,7 @@ function timby_scripts() {
 
   wp_enqueue_script( 'angular', get_template_directory_uri() .'/bower_components/angular/angular.min.js', false, false, true );
   wp_enqueue_script( 'angular-route', get_template_directory_uri() .'/bower_components/angular-route/angular-route.min.js', false, false, true );
+  wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, false, true );
   
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
   wp_enqueue_script( 'directives', get_template_directory_uri() .'/js/directives.js',false, false, true );
