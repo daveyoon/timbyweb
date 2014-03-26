@@ -1,33 +1,35 @@
-<form class="form-horizontal" ng-submit="login()" novalidate ng-controller="LoginController">
-  <h3 ng-show="working">Loading</h3>
-  <div class="form-group">
-    <label for="inputEmail3" class="col-sm-2 control-label">Login</label>
-    <div class="col-sm-10">
-      <input type="text" ng-model="username" name="username" class="form-control" placeholder="Username/Email"  required />
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-10">
-      <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required >
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <div class="checkbox">
-        <label>
-          <input name="rememberme" ng-model="rememberme" type="checkbox" value="forever"> Remember me?
-        </label>
+<div class="l-main-unit">
+  <form class="form-horizontal" ng-submit="login()" novalidate ng-controller="LoginController">
+    <h3 ng-show="working">Loading</h3>
+    <div class="form-group">
+      <label for="inputEmail3" class="two">Login</label>
+      <div class="ten">
+        <input type="text" ng-model="username" name="username" class="form-control" placeholder="Username/Email"  required />
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">Sign in</button>
+    <div class="form-group">
+      <label for="inputPassword3" class="two control-label">Password</label>
+      <div class="ten">
+        <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required >
+      </div>
     </div>
-    <p>
-      <a href="wp-login.php?action=lostpassword">Forgot your password?</a>
-    </p> 
-  </div>
-  <input type="hidden" name="redirect_to" value="<?php echo esc_url( home_url('/') ) ?>" />
-</form>
+    <div class="form-group">
+      <div class="ten">
+        <div class="checkbox">
+          <label>
+            <input name="rememberme" ng-model="rememberme" type="checkbox" value="forever"> Remember me?
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="ten">
+        <button type="submit" class="btn btn-default">Sign in</button>
+      </div>
+      <p>
+        <a href="wp-login.php?action=lostpassword">Forgot your password?</a>
+      </p> 
+    </div>
+    <input type="hidden" name="redirect_to" value="<?php echo esc_url( home_url('/') ) ?>" />
+  </form>
+</div>

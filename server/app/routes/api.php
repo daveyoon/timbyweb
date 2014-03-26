@@ -191,6 +191,30 @@ $app->group('/api', function () use ($app) {
     $lat = $app->request->post('lat') != false ? $app->request->post('lat') : 0;
     $lng = $app->request->post('long') != false ? $app->request->post('long') : 0;
 
+    $terms = array();
+    if( $sector = $app->request->post('sector') ){
+      $terms[] = array(
+        'taxonomy' => 'sector',
+        'term' => (int) $sector
+      );
+    }
+
+    if( $category = $app->request->post('category') ){
+      $terms[] = array(
+        'taxonomy' => 'category',
+        'term' => (int) $category
+      );
+    }
+
+    // entities should be a comma 
+    // separated string of terms 
+    if( $entity = $app->request->post('entity') ){
+      $terms[] = array(
+        'taxonomy' => 'entity',
+        'term' => (int) $entity
+      );
+    }
+
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/posts/create_post',
       array('Accept' => 'application/json'), 
@@ -201,11 +225,11 @@ $app->group('/api', function () use ($app) {
         'type'    => 'report',
         'status'  => 'publish',
         'token'   => $token,
+        'terms'   => $terms,
         'custom_fields' =>  array(
           '_date_reported' => date('c', strtotime($report_date)),
           '_latitude'      => $lat,
-          '_longitude'     => $lng,
-          '_sector'        => $sector
+          '_longitude'     => $lng
         )
       )
     );

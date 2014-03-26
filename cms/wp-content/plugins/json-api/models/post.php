@@ -115,6 +115,17 @@ class JSON_API_Post {
       $this->save_custom_fields($values['custom_fields']);
     }
     
+    //save taxonomy fields
+    if( ! empty($values['terms']) ) {
+      foreach($values['terms'] as $the_term){
+        // cast the term id as an int to avoid it being passed
+        // as a string and hence intepreted as a slug
+        if( !is_array($the_term['term']) )
+          $the_term['term'] = (int) $the_term['term'];
+
+        wp_set_object_terms( $this->id, $the_term['term'], $the_term['taxonomy'] );
+      }
+    }
 
     // upload an attachment if it exists
     if (!empty($_FILES['attachment'])) {
