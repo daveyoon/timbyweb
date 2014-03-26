@@ -77,10 +77,16 @@
           <div class="row l-group">
             <div class="nine">
               <h3>{{report.post_title}}</h3>
-              <h5>{{report.date_reported}} | by {{report.reporter}}</h5>
-              <p>Category: <span class="tag" ng-repeat="term in report.categories">{{term.name}} &times;</span></p>
-              <p>Sector: <span class="tag" ng-repeat="term in report.sectors">{{term.name}} &times;</span></p>
-              <p>Entities:<span class="tag" ng-repeat="term in report.entities">{{term.name}} &times;</span></p>
+              <h5 class="subhead">{{report.date_reported}} | by {{report.reporter}}</h5>
+              <div>
+                Category: <span class="tag" ng-repeat="term in report.categories">{{term.name}} &times;</span>
+              </div>
+              <div>
+                Sector: <span class="tag" ng-repeat="term in report.sectors">{{term.name}} &times;</span>
+              </div>
+              <div>
+                Entities:<span class="tag" ng-repeat="term in report.entities">{{term.name}} &times;</span>
+              </div>
               <span class="tag">
                 <strong>+</strong> Add Entity
               </span>
