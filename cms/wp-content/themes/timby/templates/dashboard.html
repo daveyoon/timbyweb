@@ -113,7 +113,17 @@
     </div><!--- end header group-->
 
     <div class="row l-group" ng-bind-html="report.post_content"></div><!-- end description -->
-     
+    <ui-rich-text-editor ui:placeholder="Enter some text…" ui:config="{
+      paragraphs: true,
+      commands: [
+        'bol  d', 'italic', 'strikeThrough',
+        'removeFormat', 'linkPrompt', 'unlink',
+        'insertUnorderedList', 'insertOrderedList',
+        'blockquote', 'quote', 'h2',
+        'undo', 'redo'
+      ]
+    }" ng:model="exampleModel" class="scribe"></ui-rich-text-editor>
+
     <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
       <div class="three" ng-repeat="photo in report.media.photo">
         <a href="#" class="thumbnail">

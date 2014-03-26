@@ -193,10 +193,25 @@ function timby_scripts() {
   wp_enqueue_script( 'angular-sanitize', get_template_directory_uri() .'/bower_components/angular-sanitize/angular-sanitize.min.js', false, false, true );
   wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, false, true );
   
+  // crazy scribe enqueueing going on here
+  wp_enqueue_script('requirejs', get_template_directory_uri() .'/bower_components/requirejs/require.js', false, false, true);
+  wp_enqueue_script('scribe', get_template_directory_uri() .'/bower_components/scribe/scribe.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-blockquote-command', get_template_directory_uri().'/bower_components/scribe-plugin-blockquote-command/scribe-plugin-blockquote-command.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-curly-quotes', get_template_directory_uri().'/bower_components/scribe-plugin-curly-quotes/scribe-plugin-curly-quotes.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-formatter-plain-text-convert-new-lines-to-html', get_template_directory_uri().'/bower_components/scribe-plugin-formatter-plain-text-convert-new-lines-to-html/scribe-plugin-formatter-plain-text-convert-new-lines-to-html.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-heading-command', get_template_directory_uri().'/bower_components/scribe-plugin-heading-command/scribe-plugin-heading-command.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-intelligent-unlink-command', get_template_directory_uri().'/bower_components/scribe-plugin-intelligent-unlink-command/scribe-plugin-intelligent-unlink-command.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-keyboard-shortcuts', get_template_directory_uri().'/bower_components/scribe-plugin-keyboard-shortcuts/scribe-plugin-keyboard-shortcuts.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-link-prompt-command', get_template_directory_uri().'/bower_components/scribe-plugin-link-prompt-command/scribe-plugin-link-prompt-command.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-sanitizer', get_template_directory_uri().'/bower_components/scribe-plugin-sanitizer/scribe-plugin-sanitizer.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-smart-lists', get_template_directory_uri().'/bower_components/scribe-plugin-smart-lists/scribe-plugin-smart-lists.js', false, false, true);
+  wp_enqueue_script('scribe-plugin-toolbar', get_template_directory_uri().'/bower_components/scribe-plugin-toolbar/scribe-plugin-toolbar.js', false, false, true);
+  
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
   wp_enqueue_script( 'directives', get_template_directory_uri() .'/js/directives.js',false, false, true );
   wp_enqueue_script( 'services', get_template_directory_uri() .'/js/services.js',false, false, true );
   wp_enqueue_script( 'app', get_template_directory_uri() .'/js/app.js',false, false, true );
+
 
 
   //localize ajaxurl and nonce to the app script
@@ -209,7 +224,6 @@ function timby_scripts() {
       'template_url' => get_template_directory_uri()
     ) 
   );
-
 }
 add_action( 'wp_enqueue_scripts', 'timby_scripts' );
 
@@ -252,10 +266,10 @@ function save_custom_report_data( $post_id ) {
   if( get_post_meta( $post_id, '_date_reported', true) == '' ){
     update_post_meta( $post_id, '_date_reported', date('c', time() ) );
   }
-
-
 }
- add_action( 'save_post', 'save_custom_report_data' );
+add_action( 'save_post', 'save_custom_report_data' );
+
+
 
 /**
  * A cron job running every 10 mins checking 
