@@ -75,7 +75,7 @@
 
         <section class="report l-column">
           <div class="row l-group">
-            <div class="ten">
+            <div class="nine">
               <h3>{{report.post_title}}</h3>
               <h5>{{report.date_reported}} | by {{report.reporter}}</h5>
               <p>Category: <span class="tag" ng-repeat="term in report.categories">{{term.name}} &times;</span></p>
@@ -85,56 +85,40 @@
                 <strong>+</strong> Add Entity
               </span>
             </div>
-            <div class="two">
-              <div id="report-location" style="width:200px; height:200px;"></div>
+            <div class="three">
+              <div id="report-location"></div>
             </div>
           </div><!--- end header group-->
+
           <div class="row l-group">
-            <div class="twelve">{{report.post_content}}</div>
-          </div><!-- end text -->
-          <div class="row l-media-grid l-group">
-            <div ng-if="report.media.photos.length > 0">
-              <div class="col-md-3" ng-repeat="photo in report.media.photo">
-                <a href="#" class="thumbnail">
-                  <img ng-src="{{photo.guid}}">
-                </a>
-              </div>
+            {{report.post_content}}
+          </div><!-- end description -->
+           
+          <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
+            <div class="three" ng-repeat="photo in report.media.photo">
+              <a href="#" class="thumbnail">
+                <img ng-src="{{photo.guid}}">
+              </a>
             </div>
-
-            <div ng-if="report.media.audio.length > 0">
-              <div class="col-md-3" ng-repeat="audio in report.media.audio">
-                <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
-              </div>
+          </div><!-- end photos -->
+                  
+          <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
+            <div class="three" ng-repeat="audio in report.media.audio">
+              <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
             </div>
-
-      
-            <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
-              <div class="three" ng-repeat="photo in report.media.photo">
-                <a href="#" class="thumbnail">
-                  <img ng-src="{{photo.guid}}">
-                </a>
-              </div>
-            </div>
-          
-          
-            <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
-              <div class="three" ng-repeat="audio in report.media.audio">
-                <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
-              </div>
-            </div>
+          </div><!-- end audio -->
             
-           <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
-              <div class="six" ng-repeat="video in report.media.video">
-                <iframe 
-                    ng-src="{{trustSrc(video.vimeo.embed_url)}}" 
-                    width="500" 
-                    height="281" 
-                    frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
-                </iframe> 
-              </div>
-          </div>
-          <!-- end media -->
-          
+          <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
+            <div class="six" ng-repeat="video in report.media.video">
+              <iframe 
+                  ng-src="{{trustSrc(video.vimeo.embed_url)}}" 
+                  width="500" 
+                  height="281" 
+                  frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+              </iframe> 
+            </div>
+          </div><!-- end videos -->
+            
           <div class="row">
             <div class="twelve">
               <button href="">Save</button> 

@@ -80,7 +80,24 @@ angular.module('timby.controllers', [])
 
               if (response.data.status == 'success') {
                 $scope.report = response.data.report;
-                console.log($scope.report);
+
+                // initialize the map
+                var map = new google.maps.Map(
+                  document.getElementById('report-location'),
+                  {
+                    zoom: 7,
+                    center: new google.maps.LatLng(response.data.report.lat,response.data.report.lng)
+                  }
+                );
+
+                var marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(
+                    response.data.report.lat,
+                    response.data.report.lng
+                  ),
+                  map: map
+                });
+
               }
             },
             function error(response, status, headers, config) {
