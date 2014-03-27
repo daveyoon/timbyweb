@@ -31,7 +31,10 @@ You need to install SASS on the command line. On a mac this works fine
 gem install sass
 ```
 
-If using XAMPP or MAMP you might have to chown 777 -R <name of directory> to give it permission to write in various folders.
+If using XAMPP or MAMP you might have to change ownership to give it permission to write in various folders.
+```bash
+chown 777 -R <name of directory>
+```
 
 Bower. This gives you [Typeplate](https://github.com/typeplate/typeplate.github.io), [Font Awesome](http://fortawesome.github.io/Font-Awesome/icons/), Angular, Angular Sanitize, Angular Route, [TextAngular](https://github.com/fraywing/textAngular), Bourbon, Neat, RequireJS
 
