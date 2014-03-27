@@ -31,9 +31,10 @@ You need to install SASS on the command line. On a mac this works fine
 gem install sass
 ```
 
-If using XAMPP or MAMP you might have to 'sudo grunt' to give it permission to write in various folders. (Bleck, I know).
+If using XAMPP or MAMP you might have to chown 777 -R <name of directory> to give it permission to write in various folders.
 
-Bower. Bootstrap comes from Bower. This should do it.bo
+Bower. This gives you Typeplate, Font Awesome, Angular, Angular Sanitize, Angular Route, TextAngular, Bourbon, Neat, RequireJS
+
 ```
 bower install
 ```
