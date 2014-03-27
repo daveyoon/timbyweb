@@ -39,12 +39,6 @@ switch($_REQUEST['action']){
       }
 
       if( ! wp_update_post($post) == 0 ){
-        echo json_encode(
-          array(
-            'status' => 'success'
-          )
-        );
-
         // update custom fields if set
         if( isset($data->custom_fields) ){
           foreach ($data->custom_fields as $meta_key => $meta_value) {
@@ -52,10 +46,31 @@ switch($_REQUEST['action']){
           }
         }
 
+        // update terms
+        if( isset($data->taxonomies) ){
+          foreach ($data->taxonomies as $taxonomy => $terms) {
+            $tagids = array_map(
+              function($term){ 
+                return $term->id;
+              },
+              $terms
+            );
+            wp_set_post_terms( $post['ID'], $tagids, $taxonomy, false );  // replace existing terms      
+          }
+        }
+
+        echo json_encode(
+          array(
+            'status' => 'success'
+          )
+        );
+
+
       }
     }
 
     break;
+
   case 'get_new_reports':
     echo json_encode(
       array(
@@ -89,6 +104,24 @@ switch($_REQUEST['action']){
     } 
     break;
 
+  case 'get_all_terms':
+      $result = array();
+      $taxonomies = array('sector', 'entity', 'category');
+      foreach($taxonomies as $taxonomy){
+        $terms = get_terms($taxonomy, array('hide_empty' => false, 'fields' => 'id=>name') );
+        $nice_terms = array();
+        foreach($terms as $id=>$name){
+          $nice_terms[] = array('id' => $id, 'name'=> $name);
+        }
+        $result[$taxonomy] = $nice_terms;
+      }
+      echo json_encode(
+        array(
+          'status' => 'success',
+          'terms' => $result,
+        )
+      );
+    break;
   default:
     break;
 }

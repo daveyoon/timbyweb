@@ -137,11 +137,18 @@ function build_report_data($report){
   // get terms for this post
 
   // sectors
-  $report->categories = wp_get_post_terms( $report->ID, 'category');
-  $report->sectors = wp_get_post_terms( $report->ID, 'sector');
-  $report->entities = wp_get_post_terms( $report->ID, 'entity');
+  $report->categories = array_map('_better_post_terms', wp_get_post_terms( $report->ID, 'category'));
+  $report->sectors = array_map('_better_post_terms', wp_get_post_terms( $report->ID, 'sector'));
+  $report->entities = array_map('_better_post_terms', wp_get_post_terms( $report->ID, 'entity'));
 
   return $report;
+}
+
+function _better_post_terms($obj){
+  return array(
+    'id'   => $obj->term_id,
+    'name' => $obj->name,
+  );
 }
 
 function fetch_attachments($type = '', $post_parent = '')
@@ -191,6 +198,7 @@ function timby_scripts() {
   wp_enqueue_script( 'angular', get_template_directory_uri() .'/bower_components/angular/angular.min.js', false, false, true );
   wp_enqueue_script( 'angular-route', get_template_directory_uri() .'/bower_components/angular-route/angular-route.min.js', false, false, true );
   wp_enqueue_script( 'angular-sanitize', get_template_directory_uri() .'/bower_components/angular-sanitize/angular-sanitize.min.js', false, false, true );
+  wp_enqueue_script( 'angular-checklist-model', get_template_directory_uri() .'/bower_components/checklist-model/checklist-model.js', false, false, true );
   wp_enqueue_script( 'textangular', get_template_directory_uri() .'/bower_components/textAngular/textAngular.min.js', false, false, true );
   wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, false, true );
  

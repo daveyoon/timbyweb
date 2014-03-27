@@ -2,6 +2,7 @@ angular.module('timby',[
     'ngRoute', 
     'ngSanitize',
     'textAngular',
+    'checklist-model',
     'timby.controllers',
     'timby.services',
     'timby.directives',

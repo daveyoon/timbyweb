@@ -97,18 +97,16 @@
       <div class="nine header-group">
         <div class="kicker clearfix" ng-repeat="term in report.sectors">
           <h6 class="pull-left">{{term.name}}</h6>
-          <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
-            <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
-            <div class="edit-pane" ng-show="showList">
-              <div>
-                <input type="checkbox" name="option1" value="timber"> Timber<br>
-                <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
-                <input type="checkbox" name="option1" value="palm" checked> Mining
-              </div>
-              <div>
-                <button>save</button>
-                <button ng-click="showList=!showList">close</button>
-              </div>
+        </div>
+        <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
+          <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
+          <div class="edit-pane" ng-show="showList">
+            <label ng-repeat="term in terms.sector">
+              <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
+            </label>
+            <div>
+              <button ng-click="updateReport()">save</button>
+              <button ng-click="showList=!showList">close</button>
             </div>
           </div>
         </div>

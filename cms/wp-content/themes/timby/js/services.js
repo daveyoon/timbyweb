@@ -18,9 +18,17 @@ angular.module('timby.services', [])
           'custom_fields' : {
             '_cmb_verified' : report.verified ? 'on' : ''
           },
+          'taxonomies' : {
+            'sector' : report.sectors,
+            'entity' : report.entities,
+            'categorie' : report.categories
+          },
           'nonce' : $window.wp_data.nonce,
         }
       )
+    },
+    getAllTerms : function(){
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=get_all_terms');
     }
   }
 }])
