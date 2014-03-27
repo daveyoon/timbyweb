@@ -107,7 +107,8 @@
             </div>
           </div>
         </div>
-        <h3>{{report.post_title}}</h3>
+        <!-- <h3>{{report.post_title}}</h3> -->
+        <input type="text" ng-model="report.post_title" class="h3-input">
         <h5 class="subhead">{{report.date_reported}} by {{report.reporter}}</h5>
         <!-- <div>
           <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
