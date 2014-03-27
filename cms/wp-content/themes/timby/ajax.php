@@ -20,6 +20,27 @@ switch($_REQUEST['action']){
     }
     break;
 
+  case 'update_report':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
+      if(! isset($data->id) ) exit(0);
+      $post = array(
+        'ID'           => $data->id,
+        'post_title'   => $data->title,
+        'post_content' => $data->content,
+      );
+      
+      if( ! wp_update_post($post) == 0 ){
+        echo json_encode(
+          array(
+            'status' => 'success'
+          )
+        );
+      }
+    }
+
+    break;
   case 'get_new_reports':
     echo json_encode(
       array(
@@ -33,7 +54,7 @@ switch($_REQUEST['action']){
     $data = file_get_contents("php://input");
     $data = json_decode($data);
 
-    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_login_nonce') == true ){ 
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
       if( isset($data->user) && isset($data->password) ) { 
 
         $user = wp_signon( array( 

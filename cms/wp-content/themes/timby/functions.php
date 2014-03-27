@@ -207,7 +207,7 @@ function timby_scripts() {
     'wp_data', 
     array( 
       'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-      'nonce'        => wp_create_nonce('timbyweb_front_login_nonce'),
+      'nonce'        => wp_create_nonce('timbyweb_front_nonce'),
       'template_url' => get_template_directory_uri()
     ) 
   );

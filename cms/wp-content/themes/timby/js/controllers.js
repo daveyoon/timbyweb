@@ -13,18 +13,21 @@ angular.module('timby.controllers', [])
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
-      ReportService
-        .findAll()
-        .then(
-          function success(response, status, headers, config) {
-            if (response.data.status == 'success') {
-              $scope.reports = response.data.reports;
+      $scope.getAllReports = function(){
+        ReportService
+          .findAll()
+          .then(
+            function success(response, status, headers, config) {
+              if (response.data.status == 'success') {
+                $scope.reports = response.data.reports;
+              }
+            },
+            function error(response, status, headers, config) {
+              //notify alert, could not connect to remote server
             }
-          },
-          function error(response, status, headers, config) {
-            //notify alert, could not connect to remote server
-          }
-        )
+          )        
+      };
+      $scope.getAllReports();
 
       $scope.viewReport = function(id){
         $scope.working = true;
@@ -58,6 +61,24 @@ angular.module('timby.controllers', [])
               }
             },
             function error(response, status, headers, config) {
+              //notify alert, could not connect to remote server
+            }
+          )
+      }
+
+      $scope.updateReport = function(){
+        $scope.working = true;
+        ReportService
+          .update($scope.report)
+          .then(
+            function success(response, status, headers, config) {
+              $scope.working = false;
+              if (response.data.status == 'success') {
+                $scope.getAllReports();
+              }
+            },
+            function error(response, status, headers, config) {
+              $scope.working = false;
               //notify alert, could not connect to remote server
             }
           )

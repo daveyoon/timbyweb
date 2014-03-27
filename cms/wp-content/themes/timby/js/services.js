@@ -7,6 +7,17 @@ angular.module('timby.services', [])
 
     findById : function(id){
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_report&id='+id)
+    },
+    update : function(report){
+      return $http.post(
+        $window.wp_data.template_url + '/ajax.php?action=update_report',
+        {
+          'id' : report.ID,
+          'title' : report.post_title,
+          'content' : report.post_content,
+          'nonce' : $window.wp_data.nonce,
+        }
+      )
     }
   }
 }])
