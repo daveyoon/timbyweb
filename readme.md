@@ -36,7 +36,16 @@ If using XAMPP or MAMP you might have to change ownership to give it permission 
 chown 777 -R <name of directory>
 ```
 
-Bower. This gives you [Typeplate](https://github.com/typeplate/typeplate.github.io), [Font Awesome](http://fortawesome.github.io/Font-Awesome/icons/), Angular, Angular Sanitize, Angular Route, [TextAngular](https://github.com/fraywing/textAngular), Bourbon, Neat, RequireJS
+Bower. This gives you
+- [Typeplate](https://github.com/typeplate/typeplate.github.io)
+- [Font Awesome](http://fortawesome.github.io/Font-Awesome/icons/)
+- Angular
+- Angular Sanitize
+- Angular Route
+- [TextAngular](https://github.com/fraywing/textAngular)
+- Bourbon
+- Neat
+- RequireJS
 
 ```
 bower install
