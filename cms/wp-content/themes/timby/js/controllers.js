@@ -84,6 +84,10 @@ angular.module('timby.controllers', [])
           )
       }
 
+      $scope.verifyReport = function(){
+        $scope.report.verified = !$scope.report.verified;
+        $scope.updateReport();
+      }
       $scope.trustSrc = function(src){
         return $sce.trustAsResourceUrl(src);
       }

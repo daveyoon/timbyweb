@@ -24,19 +24,34 @@ switch($_REQUEST['action']){
     $data = file_get_contents("php://input");
     $data = json_decode($data);
     if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
-      if(! isset($data->id) ) exit(0);
-      $post = array(
-        'ID'           => $data->id,
-        'post_title'   => $data->title,
-        'post_content' => $data->content,
+      if(! isset($data->ID) ) exit(0);
+      $updatable_fields = array(
+        'post_title', 'post_content'
       );
-      
+
+      $post = array();
+      $post['ID'] = $data->ID;
+      unset($data->ID);
+      foreach($data as $key=>$value){
+        if( in_array($key, $updatable_fields)){
+          $post[$key] = $value;
+        }
+      }
+
       if( ! wp_update_post($post) == 0 ){
         echo json_encode(
           array(
             'status' => 'success'
           )
         );
+
+        // update custom fields if set
+        if( isset($data->custom_fields) ){
+          foreach ($data->custom_fields as $meta_key => $meta_value) {
+            update_post_meta( $post['ID'], $meta_key, $meta_value );        
+          }
+        }
+
       }
     }
 

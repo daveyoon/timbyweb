@@ -12,9 +12,12 @@ angular.module('timby.services', [])
       return $http.post(
         $window.wp_data.template_url + '/ajax.php?action=update_report',
         {
-          'id' : report.ID,
-          'title' : report.post_title,
-          'content' : report.post_content,
+          'ID' : report.ID,
+          'post_title' : report.post_title,
+          'post_content' : report.post_content,
+          'custom_fields' : {
+            '_cmb_verified' : report.verified ? 'on' : ''
+          },
           'nonce' : $window.wp_data.nonce,
         }
       )

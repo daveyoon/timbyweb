@@ -102,7 +102,8 @@
                 <input type="checkbox" name="option1" value="palm" checked> Mining
               </div>
               <div>
-                <button>save</button><button ng-click="showList=!showList">close</button>
+                <button>save</button>
+                <button ng-click="showList=!showList">close</button>
               </div>
             </div>
           </div>
@@ -158,6 +159,11 @@
       
     <div class="row">
       <div class="twelve">
+
+        <button ng-class="report.verified ? 'verified' : 'unverified'">
+          <span ng-show="!report.verified" ng-click="verifyReport()">Verify</span>
+          <span ng-show="report.verified" ng-click="verifyReport()">Unverify</span>
+        </button>
         <button href="" ng-click="updateReport()" class="btn-edit">Save</button> 
       </div>
     </div>
