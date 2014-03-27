@@ -1,10 +1,12 @@
 angular.module('timby',[
-  'ngSanitize',
-  'ngRoute',
-  'timby.controllers',
-  'timby.services',
-  'timby.directives'
-])
+    'ngRoute', 
+    'ngSanitize',
+    'textAngular',
+    'timby.controllers',
+    'timby.services',
+    'timby.directives',
+  ]
+)
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
 .config(['$routeProvider', 'BASE_URL', '$sceDelegateProvider', function($routeProvider, BASE_URL, $sceDelegateProvider){
   
@@ -34,5 +36,6 @@ angular.module('timby',[
     )
 
   $routeProvider.otherwise({ redirectTo : '/'});
+  
 
 }]);

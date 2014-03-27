@@ -1,5 +1,4 @@
 angular.module('timby.services', [])
-
 .factory('ReportService', ['$http','$window', function($http, $window) {
   return {
     findAll : function(){

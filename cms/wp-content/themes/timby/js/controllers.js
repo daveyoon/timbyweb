@@ -1,5 +1,4 @@
 angular.module('timby.controllers', [])
-
 .controller('MainController', 
   ['$scope', '$rootScope', 'ReportService', '$sce',
     function($scope, $rootScope,ReportService, $sce){
@@ -54,18 +53,6 @@ angular.module('timby.controllers', [])
                     response.data.report.lng
                   ),
                   map: map
-                });
-
-                require(['scribe', 'scribe-plugin-toolbar', 'scribe-plugin-formatter-plain-text-convert-new-lines-to-html'], function (Scribe, scribePluginToolbar,scribePluginFormatterPlainTextConvertNewLinesToHtml) {
-
-                  var title_scribe = new Scribe(document.querySelector('#report_title'))
-                  var content_scribe = new Scribe(document.querySelector('#report_content'))
-
-                  // Use some plugins
-                  var toolbarElement = document.querySelector('.toolbar');
-                  // title_scribe.use(scribePluginToolbar(toolbarElement));
-                  content_scribe.use(scribePluginToolbar(toolbarElement));
-                  content_scribe.use(scribePluginFormatterPlainTextConvertNewLinesToHtml());
                 });
 
               }
