@@ -33,7 +33,7 @@ gem install sass
 
 If using XAMPP or MAMP you might have to chown 777 -R <name of directory> to give it permission to write in various folders.
 
-Bower. This gives you Typeplate, [Font Awesome](http://fortawesome.github.io/Font-Awesome/icons/), Angular, Angular Sanitize, Angular Route, TextAngular, Bourbon, Neat, RequireJS
+Bower. This gives you [Typeplate](https://github.com/typeplate/typeplate.github.io), [Font Awesome](http://fortawesome.github.io/Font-Awesome/icons/), Angular, Angular Sanitize, Angular Route, [TextAngular](https://github.com/fraywing/textAngular), Bourbon, Neat, RequireJS
 
 ```
 bower install
