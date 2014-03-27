@@ -74,6 +74,8 @@
       </li>
       <li class="list-item" ng-repeat="report in reports" ng-click="viewReport(report.ID)">
         <a href="">
+          <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
+          <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
           <h5 class="list-title">{{report.post_title}}</h5>
           <p class="list-content">
             {{report.date_reported}} by {{report.reporter}}

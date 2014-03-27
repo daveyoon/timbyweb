@@ -3,10 +3,20 @@
   position: absolute
   top: 0
   right: 0
+  &.triangle-good
+    @include triangle(40px, $edit-color, up-right)
+  &.triangle-bad
+    @include triangle(40px, red, up-right)
 
-.triangle-good
-  @include triangle(40px, $edit-color, up-right)
+.top-right-triangle-small
+  @include triangle(14px, $black, up-right)
+  position: absolute
+  top: 0
+  right: 0
+  &.triangle-good
+    @include triangle(14px, $edit-color, up-right)
+  &.triangle-bad
+    @include triangle(14px, red, up-right)
 
-.triangle-bad
-  @include triangle(40px, red, up-right)
+
   
