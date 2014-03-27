@@ -72,17 +72,16 @@
           </div>
         </div>
       </li>
-
       <li class="list-item" ng-repeat="report in reports" ng-click="viewReport(report.ID)">
         <a href="">
           <h5 class="list-title">{{report.post_title}}</h5>
           <p class="list-content">
-            {{report.date_reported}} | by {{report.reporter}}
+            {{report.date_reported}} by {{report.reporter}}
           </p>
           <div class="horz-list">
-            <span class="icon-camera"></span> {{ report.media.photos.length}} &nbsp;&nbsp; 
-            <span class="icon-videocam"></span>{{ report.media.video.length}} &nbsp;&nbsp; 
-            <span class="icon-volume-up"></span>{{ report.media.audio.length}} &nbsp;&nbsp;
+            <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp; 
+            <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp; 
+            <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp;
           </div>
         </a>
       </li>
@@ -91,24 +90,41 @@
 
   <section class="report l-column">
     <div class="row l-group">
-      <div class="nine">
-        <input type="text" ng-model="report.post_title">
-        <h5 class="subhead">{{report.date_reported}} | by {{report.reporter}}</h5>
-        <div>
-          Category: <span class="tag" ng-repeat="term in report.categories">{{term.name}} &times;</span>
+      <div class="nine header-group">
+        <div class="kicker clearfix" ng-repeat="term in report.sectors">
+          <h6 class="pull-left">{{term.name}}</h6>
+          <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
+            <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
+            <div class="edit-pane" ng-show="showList">
+              <div>
+                <input type="checkbox" name="option1" value="timber"> Timber<br>
+                <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
+                <input type="checkbox" name="option1" value="palm" checked> Mining
+              </div>
+              <div>
+                <button>save</button><button ng-click="showList=!showList">close</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          Sector: <span class="tag" ng-repeat="term in report.sectors">{{term.name}} &times;</span>
+        <h3>{{report.post_title}}</h3>
+        <h5 class="subhead">{{report.date_reported}} by {{report.reporter}}</h5>
+        <!-- <div>
+          <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
+        </div> -->
+        <div class="entity-list l-group">
+          <span class="tag" ng-repeat="term in report.entities">{{term.name}}</span>
         </div>
-        <div>
-          Entities:<span class="tag" ng-repeat="term in report.entities">{{term.name}} &times;</span>
+        <div class="l-group">
+          <select name="" id="">
+            <option value="">Select box with Chosen</option>
+            <option value="Entity">You can search it</option>
+            <option value="Entity">When you select it adds above</option>
+          </select>
         </div>
-        <span class="tag">
-          <strong>+</strong> Add Entity
-        </span>
       </div>
       <div class="three">
-        <div id="report-location"></div>
+        <div id="report-location" style="width:200px; height:200px;"></div>
       </div>
     </div><!--- end header group-->
 

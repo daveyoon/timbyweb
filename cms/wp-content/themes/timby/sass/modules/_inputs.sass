@@ -3,5 +3,8 @@ input[type="text"], input[type="search"], input[type="date"], input[type="passwo
   border: 1px solid $med-gray
   padding: .5em
   border-radius: 2px
-  @include fill-parent
   @include box-sizing(border-box)
+
+.filters
+  input[type="text"], input[type="search"], input[type="date"], input[type="password"]
+    @include fill-parent

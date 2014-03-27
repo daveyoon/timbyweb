@@ -1,8 +1,40 @@
 .tag
   display: inline-block
   padding: .25em 1em
-  border-radius: 1em
-  text-transform: uppercase
-  color: white
+  // text-transform: uppercase
   font-size: 12px
+  position: relative
+  background: $light-gray
+  border-radius: 2px
+
+.tag-small
+  font-size: 10px
+  padding: .2em .75em
+  border-radius: 2px
+
+.tag-rounded
+  border-radius: 1em
+
+.tag-outline
+  border: 1px solid $dark-gray
+  background: none
+
+.tag-dark
   background: $black
+  color: white
+
+// .edit-pane
+//   display: none
+
+.tag-edit
+  background: $edit-color
+  color: white !important
+  // .edit-pane
+  //   display: block
+
+.edit-pane
+  position: absolute
+  width: 250px
+  background: $light-gray
+  padding: 1em
+  z-index: 3
