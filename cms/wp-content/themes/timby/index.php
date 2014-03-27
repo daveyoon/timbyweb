@@ -13,7 +13,7 @@
     <?php wp_head() ?>
 
     <style>
-      button {
+      /*button {
         height: 3em;
       }
 
@@ -28,9 +28,7 @@
         padding: 0.5em;
       }
 
-      p {
-        margin-top: 0;
-      }
+
 
       ui-rich-text-editor {
         display: block;
@@ -60,7 +58,7 @@
         height: 370px;
         overflow: auto;
         padding: 0.5em;
-      }
+      }*/
     </style>
   </head>
   <body data-template-url="<?php echo get_template_directory_uri() ?>" controller="MainController">

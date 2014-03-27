@@ -1,2 +1,28 @@
 button
-  @include button
+  padding: .5em 1em
+  background: white
+  border: 1px $gray solid
+  color: $dark-gray
+  &.active
+    background: $dark-gray
+    color: white
+  &.active:hover
+    background: $dark-gray
+    color: white
+    cursor: default
+  &:disabled
+    background: $light-gray
+  &:disabled:hover
+    background: $light-gray
+    color: $dark-gray
+  &:hover
+    background: $med-gray
+    color: white
+
+.btn-edit
+  background: $edit-color
+  color: white
+  border: none
+
+  &:hover
+    background: darken($edit-color,10%)
