@@ -165,15 +165,15 @@
         </iframe> 
       </div>
     </div><!-- end videos -->
-      
+    <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
+    <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
     <div class="row">
       <div class="twelve">
-
-        <button ng-class="report.verified ? 'verified' : 'unverified'">
-          <span ng-show="!report.verified" ng-click="verifyReport()">Verify</span>
-          <span ng-show="report.verified" ng-click="verifyReport()">Unverify</span>
+        <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left">
+          <span ng-show="!report.verified" ng-click="verifyReport()">Verify this Report</span>
+          <span ng-show="report.verified" ng-click="verifyReport()">Unverify this Report</span>
         </button>
-        <button href="" ng-click="updateReport()" class="btn-edit">Save</button> 
+        <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button> 
       </div>
     </div>
   </section>
