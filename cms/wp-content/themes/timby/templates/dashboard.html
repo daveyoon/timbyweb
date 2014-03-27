@@ -74,6 +74,8 @@
       </li>
       <li class="list-item" ng-repeat="report in reports" ng-click="viewReport(report.ID)">
         <a href="">
+          <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
+          <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
           <h5 class="list-title">{{report.post_title}}</h5>
           <p class="list-content">
             {{report.date_reported}} by {{report.reporter}}
@@ -94,7 +96,7 @@
 
   <section class="report l-column">
     <div class="row l-group">
-      <div class="nine header-group">
+      <div class="header-group">
         <div class="kicker clearfix" ng-repeat="term in report.sectors">
           <h6 class="pull-left">{{term.name}}</h6>
         </div>
@@ -112,24 +114,29 @@
         </div>
         <!-- <h3>{{report.post_title}}</h3> -->
         <input type="text" ng-model="report.post_title" class="h3-input">
-        <h5 class="subhead">{{report.date_reported}} by {{report.reporter}}</h5>
-        <!-- <div>
-          <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
-        </div> -->
-        <div class="entity-list l-group">
-          <span class="tag" ng-repeat="term in report.entities">{{term.name}}</span>
-        </div>
-        <div class="l-group">
-          <select name="" id="">
-            <option value="">Select box with Chosen</option>
-            <option value="Entity">You can search it</option>
-            <option value="Entity">When you select it adds above</option>
-          </select>
+        <div class="row">
+          <div class="three">
+            <div id="report-location"></div>
+          </div>
+          <div class="nine">
+            <h5 class="subhead">{{report.date_reported}} by {{report.reporter}}</h5>
+            <!-- <div>
+              <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
+            </div> -->
+            <div class="entity-list l-group">
+              <span class="tag" ng-repeat="term in report.entities">{{term.name}}</span>
+            </div>
+            <div class="l-group">
+              <select name="" id="">
+                <option value="">Select box with Chosen</option>
+                <option value="Entity">You can search it</option>
+                <option value="Entity">When you select it adds above</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="three">
-        <div id="report-location" style="width:200px; height:200px;"></div>
-      </div>
+      
     </div><!--- end header group-->
 
     <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
@@ -158,15 +165,15 @@
         </iframe> 
       </div>
     </div><!-- end videos -->
-      
+    <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
+    <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
     <div class="row">
       <div class="twelve">
-
-        <button ng-class="report.verified ? 'verified' : 'unverified'">
-          <span ng-show="!report.verified" ng-click="verifyReport()">Verify</span>
-          <span ng-show="report.verified" ng-click="verifyReport()">Unverify</span>
+        <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left">
+          <span ng-show="!report.verified" ng-click="verifyReport()">Verify this Report</span>
+          <span ng-show="report.verified" ng-click="verifyReport()">Unverify this Report</span>
         </button>
-        <button href="" ng-click="updateReport()" class="btn-edit">Save</button> 
+        <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button> 
       </div>
     </div>
   </section>
