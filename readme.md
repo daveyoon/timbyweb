@@ -1,4 +1,19 @@
-# Timby Web
+# TIMBY Web Platform
+
+The TIMBY platform enables reporters to submit audio visual reports via a mobile phone to a remote server anonymously.
+
+These reports are then recieved by moderators who are responsible for screening each report and establishing its authenticity.
+
+Verified reports can then be visualized on a map.
+
+Moderators can then compose stories involving related reports and publish them to the world for viewing or invite journalists to preview.
+
+Core parts of this platform
+
+* API
+* Report Moderation
+* Visual Representation of Reports
+* Story Maker
 
 
 ## Getting Started
