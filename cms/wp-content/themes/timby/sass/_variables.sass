@@ -7,3 +7,46 @@ $dark-gray: #333
 $black: #444
 $edit-color: green
 $delete-color: red
+
+
+//TYPEPLATE
+
+$serif-boolean: false !default
+
+$font-family: if($serif-boolean, serif, sans-serif) !default
+// Non-font-face font-stack
+
+$font-weight: normal !default
+$line-height: 1.5 !default
+$font-size: 87.5 !default
+// percentage value (16 * 112.5% = 18px)
+$font-base: 14 * ($font-size/100) !default
+// converts our percentage to a pixel value
+$custom-font-family: Open Sans !default
+// Custom font-face stack, if set will be added to the $base-font-family
+$measure: $font-base * $line-height
+
+$font-family: Open Sans
+// Non-font-face font-stack
+
+$custom-font-family: true 
+// Custom font-face stack, if set will be added to the $font-family
+
+$tera: 90 !default
+// 117 = 18 × 6.5
+$giga: 70 !default
+// 90 = 18 × 5
+$mega: 64 !default
+// 72 = 18 × 4
+$alpha: 46 !default
+// 60 = 18 × 3.3333
+$beta: 38 !default
+// 48 = 18 × 2.6667
+$gamma: 28 !default
+// 36 = 18 × 2
+$delta: 18 !default
+// 24 = 18 × 1.3333
+$epsilon: 16 !default
+// 21 = 18 × 1.1667
+$zeta: 14 !default
+// 18 = 18 × 1
