@@ -123,14 +123,20 @@
               <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
             </div> -->
             <div class="entity-list l-group">
-              <span class="tag" ng-repeat="term in report.entities">{{term.name}}</span>
+              <span class="tag" ng-repeat="term in report.entities">
+                {{term.name}} <a href="" title="removetag" ng-click="removeEntity(term)"><i class="fa fa-times"></i></a>
+              </span> 
             </div>
             <div class="l-group">
-              <select name="" id="">
-                <option value="">Select box with Chosen</option>
-                <option value="Entity">You can search it</option>
-                <option value="Entity">When you select it adds above</option>
+              <select chosen
+                      ng-model="termselected"
+                      data-placeholder="Select a tag" 
+                      ng-options="term.name for term in terms.entity"
+                      width="'100%'">
+                      <option value=""></option>
               </select>
+              <input type="button" ng-click="addEntity()" value="Add">
+              <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
             </div>
           </div>
         </div>

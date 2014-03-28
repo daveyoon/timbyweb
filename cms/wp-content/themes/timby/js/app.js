@@ -3,6 +3,7 @@ angular.module('timby',[
     'ngSanitize',
     'textAngular',
     'checklist-model',
+    'localytics.directives',
     'timby.controllers',
     'timby.services',
     'timby.directives',

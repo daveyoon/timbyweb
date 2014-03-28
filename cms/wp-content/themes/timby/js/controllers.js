@@ -34,7 +34,7 @@ angular.module('timby.controllers', [])
           )
       };
       $scope.getAllTerms();
-      
+
       $scope.getAllReports = function(){
         ReportService
           .findAll()
@@ -113,6 +113,30 @@ angular.module('timby.controllers', [])
       $scope.trustSrc = function(src){
         return $sce.trustAsResourceUrl(src);
       }
+
+      $scope.addEntity = function(){
+        if (angular.isArray($scope.report.entities)) {
+          for(i=0; i<=$scope.report.entities.length; i++){
+            if(angular.equals($scope.termselected, $scope.report.entities[i])){
+              $scope.tagexists = true;
+              return;
+            }
+          }
+          $scope.report.entities.push($scope.termselected);
+        }
+      }
+
+      $scope.removeEntity = function(term){
+        if (angular.isArray($scope.report.entities)) {
+          for (var i = 0; i < $scope.report.entities.length; i++) {
+            if (angular.equals($scope.report.entities[i], term)) {
+              $scope.report.entities.splice(i, 1);
+              break;
+            }
+          }
+        }
+      }
+
     }
   ]
 )
