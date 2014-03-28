@@ -3,6 +3,7 @@
 # Ignore everything in the root except the readme.md, gitignore and the "wp-content" directory.
 /*
 !.readme.md
+!.install.sh
 !.gitignore
 !wp-content/
 
