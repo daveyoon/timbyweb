@@ -6,7 +6,7 @@
 !.gitignore
 !wp-content/
 
-# Ignore everything in the "wp-content" directory, except the "plugins"
+# Ignore everything in the "wp-content" directory, except the "plugins" "themes" and the uploads folder
 # and "themes" directories.
 wp-content/*
 !wp-content/plugins/
