@@ -11,6 +11,7 @@
 wp-content/*
 !wp-content/plugins/
 !wp-content/themes/
+!wp-content/uploads/
 
 # Ignore everything in the "plugins" directory, except the
 # json-api plugin
