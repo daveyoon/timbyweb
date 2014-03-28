@@ -29,6 +29,20 @@ angular.module('timby.services', [])
     },
     getAllTerms : function(){
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_all_terms');
+    },
+    create : function(report){
+      return $http.post(
+        $window.wp_data.template_url + '/ajax.php?action=create_report',
+        {
+          'post_title' : report.title,
+          'post_content' : report.description,
+          'taxonomies' : {
+            'sector' : report.sectors,
+            'entity' : report.entities
+          },
+          'nonce' : $window.wp_data.nonce,
+        }
+      );
     }
   }
 }])

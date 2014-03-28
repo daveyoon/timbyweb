@@ -1,0 +1,69 @@
+<!-- @todo: move this header to its own directive -->
+<header class="clearfix main-header">
+  <div class="clearfix">
+    <div class="pull-left">
+      <h3>Timby</h3>
+    </div>
+    <div class="pull-right">
+      <button>Logout</button>
+    </div>
+  </div>
+  <nav class="tabs">
+    <li class="tab-item">
+      <a href="#/dashboard">Moderation</a>
+    </li>
+    <li class="tab-item">
+      <a href="#">Create a Story</a>
+    </li>
+    <li class="tab-item active">
+      <a href="#/addreport">Add Report</a>
+    </li>
+  </nav>
+</header>
+<section class="l-main-unit clearfix filters-hidden" ng-controller="ReportController">
+  <form action="" ng-submit="addReport()" ng-hide="working">
+    <h3>Add a new report</h3>
+    <div style="float:left; margin-right: 20px">
+      Title
+      <input type="text" ng-model="report.title">
+    </div>
+    <div style="float:left; margin-right: 20px">
+      Description
+      <textarea ng-model="report.description" id="" cols="30" rows="10"></textarea>
+    </div>
+    <div style="float:left; margin-right: 20px">
+      Sector
+      <select chosen
+              ng-model="report.sectors"
+              data-placeholder="Select a sector" 
+              ng-options="term.name for term in terms.sector"
+              width="'100%'">
+              <option value=""></option>
+      </select>
+    </div>
+    <div style="float:left; margin-right: 20px">
+      Entity
+      <select chosen
+              ng-model="report.entities"
+              data-placeholder="Select an entity" 
+              ng-options="term.name for term in terms.entity"
+              width="'100%'">
+              <option value=""></option>
+      </select>
+    </div>
+    <div style="float:left; margin-right: 20px">
+      Location
+      <google-map 
+      center="map.center" 
+      zoom="map.zoom"
+      draggable="true"
+      events="map.events"
+      ></google-map>
+
+
+    </div>
+    <input type="submit" value="Add Report">
+  </form>
+  <h2 ng-show="working">Saving...</h2>
+</section>
+

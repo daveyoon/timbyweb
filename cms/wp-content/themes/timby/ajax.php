@@ -71,6 +71,57 @@ switch($_REQUEST['action']){
 
     break;
 
+  case 'create_report':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
+      if(! isset($data->ID) ) unset($data->ID);
+      $post = array();
+
+      foreach($data as $key=>$value){
+        $post[$key] = $value;
+      }
+
+      $post['post_type'] = 'report';
+      $post['post_status'] = 'publish';
+      
+      $data->custom_fields = array(
+        '_date_reported' => date('c', time() )
+      );
+
+      if( ! ($ID = wp_insert_post($post)) == 0 ){
+        // update custom fields if set
+        if( isset($data->custom_fields) ){
+          foreach ($data->custom_fields as $meta_key => $meta_value) {
+            update_post_meta( $ID, $meta_key, $meta_value );        
+          }
+        }
+
+        // update terms
+        if( isset($data->taxonomies) ){
+          foreach ($data->taxonomies as $taxonomy => $terms) {
+            $tagids = array_map(
+              function($term){ 
+                return $term->id;
+              },
+              is_array($terms) ? $terms : array($terms)
+            );
+            wp_set_post_terms( $ID, $tagids, $taxonomy, false );  // replace existing terms      
+          }
+        }
+
+        echo json_encode(
+          array(
+            'status' => 'success'
+          )
+        );
+
+
+      }
+    }
+
+    break;
+
   case 'get_new_reports':
     echo json_encode(
       array(
@@ -122,6 +173,7 @@ switch($_REQUEST['action']){
         )
       );
     break;
+
   default:
     break;
 }

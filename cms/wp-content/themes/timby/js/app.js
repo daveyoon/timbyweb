@@ -3,6 +3,7 @@ angular.module('timby',[
     'ngSanitize',
     'textAngular',
     'checklist-model',
+    'google-maps',
     'localytics.directives',
     'timby.controllers',
     'timby.services',
@@ -33,6 +34,13 @@ angular.module('timby',[
       { 
         templateUrl : BASE_URL + '/templates/dashboard.html',
         controller : 'MainController',
+        authenticate : false
+      }
+    )
+    .when('/addreport', 
+      { 
+        templateUrl : BASE_URL + '/templates/add.report.html',
+        controller : 'ReportController',
         authenticate : false
       }
     )

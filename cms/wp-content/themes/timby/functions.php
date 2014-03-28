@@ -207,8 +207,13 @@ function timby_scripts() {
   wp_enqueue_style( 'chosen-css', get_template_directory_uri() .'/bower_components/chosen/chosen.min.css', false, false, false );
   wp_enqueue_style( 'chosen-angular-spinner-css', get_template_directory_uri() .'/bower_components/angular-chosen-localytics/chosen-spinner.css', false, false, false );
   
+  // textangular
   wp_enqueue_script( 'textangular', get_template_directory_uri() .'/bower_components/textAngular/textAngular.min.js', false, false, true );
-  wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', false, false, true );
+  
+  wp_enqueue_script( 'google-maps', '//maps.googleapis.com/maps/api/js?sensor=false', false, false, true );
+  
+  // angular-google-maps, depends on underscore
+  wp_enqueue_script( 'angular-google-maps', get_template_directory_uri() .'/bower_components/angular-google-maps/dist/angular-google-maps.min.js', array('underscore'), false, true );
  
   wp_enqueue_script( 'app', get_template_directory_uri() .'/js/app.js',false, false, true );
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
