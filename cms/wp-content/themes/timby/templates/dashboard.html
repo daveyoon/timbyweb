@@ -14,10 +14,11 @@
     <li class="tab-item"><a href="#/addreport">Add Report</a></li>
   </nav>
 </header>
-<section class="l-main-unit clearfix filters-hidde">
+<section class="l-main-unit clearfix" ng-class="{ 'filters-hidden': showFilters }">
   <section class="filters l-column">
+    <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button"></button>
     <div class="filters-hide">
-      <div class="filters-button">
+      <div class="filters-button" ng-click="showFilters = ! showFilters">
         <span class="icon-tasks"></span>
       </div>
       FILTERS
