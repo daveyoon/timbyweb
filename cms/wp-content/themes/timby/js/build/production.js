@@ -222,14 +222,68 @@ angular.module('timby.controllers', [])
     }
   ]
 )
-.controller('ReportController', ['$scope', function($scope){
-  $scope.map = {
-    center: {
-      latitude: 45,
-      longitude: -73
-    },
-    zoom: 8
+.controller('ReportController', ['$scope','ReportService', function($scope,ReportService){
+  $scope.report = {};
+
+  // improve this later
+  $scope.getAllTerms = function(){
+    ReportService
+      .getAllTerms()
+      .then(
+        function success(response, status, headers, config) {
+          if (response.data.status == 'success') {
+            $scope.terms = response.data.terms;
+          }
+        },
+        function error(response, status, headers, config) {
+          //notify alert, could not connect to remote server
+        }
+      )
   };
+  $scope.getAllTerms();
+
+  angular.extend($scope, {
+    map : {
+      center: {
+        latitude: 45,
+        longitude: -73
+      },
+      zoom: 8,
+      markers: [{
+        latitude: 45,
+        longitude: -74,
+        showWindow: false,
+        title: 'Marker 2'
+      }],
+      events: {
+        click : function(mapModel, eventName, originalEventArgs){
+          var e = originalEventArgs[0]
+          $scope.map.markers.push({
+            title: 'You clicked here',
+            latitude: e.latLng.lat(),
+            longitude: e.latLng.lng()
+          })
+        }
+      }
+    }
+  });
+
+  $scope.addReport = function(){
+    $scope.working = true;
+    ReportService
+      .create($scope.report)
+      .then(
+        function success(response, status, headers, config) {
+          if (response.data.status == 'success') {
+            $scope.working = false;
+          }
+        },
+        function error(response, status, headers, config) {
+          //notify alert, could not connect to remote server
+        }
+      );
+  }
+
 }])
 
 angular.module('timby.directives', [])
@@ -345,6 +399,20 @@ angular.module('timby.services', [])
     },
     getAllTerms : function(){
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_all_terms');
+    },
+    create : function(report){
+      return $http.post(
+        $window.wp_data.template_url + '/ajax.php?action=create_report',
+        {
+          'post_title' : report.title,
+          'post_content' : report.description,
+          'taxonomies' : {
+            'sector' : report.sectors,
+            'entity' : report.entities
+          },
+          'nonce' : $window.wp_data.nonce,
+        }
+      );
     }
   }
 }])

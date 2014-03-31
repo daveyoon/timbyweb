@@ -1,5 +1,9 @@
-// .filters-hide, .filters-alive
+.filters-hide, .filters-alive, .filters, .report
+  @include transition(all,.5s)
 
+.filters-alive
+  position: relative
+  @include transform(translateX(0px))
 
 .filters-hide
   position: absolute
@@ -23,4 +27,9 @@
     position: relative
     @include transform(translateX(-250px))
   .filters-hide
-    @include transform(translateX(0px)) 
+    @include transform(translateX(0px))
+  .filter-control-button:after
+    content: 'Show' 
+
+.filter-control-button:after
+  content: 'Hide'
