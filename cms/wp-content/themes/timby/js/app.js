@@ -5,6 +5,7 @@ angular.module('timby',[
     'checklist-model',
     'google-maps',
     'localytics.directives',
+    'angularFileUpload',
     'timby.controllers',
     'timby.services',
     'timby.directives',

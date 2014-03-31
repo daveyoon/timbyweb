@@ -167,7 +167,7 @@ angular.module('timby.controllers', [])
     }
   ]
 )
-.controller('ReportController', ['$scope','ReportService', function($scope,ReportService){
+.controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
   $scope.report = {};
 
   // improve this later
@@ -188,14 +188,17 @@ angular.module('timby.controllers', [])
   $scope.getAllTerms();
 
   // Enable the new Google Maps visuals until it gets enabled by default.
-  // See http://googlegeodevelopers.blogspot.ca/2013/05/a-fresh-new-look-for-maps-api-for-all.html
   google.maps.visualRefresh = true;
+
+  // preselected position which is also the map center
+  $scope.report.lat = 75;
+  $scope.report.lng = -73;
 
   angular.extend($scope, {
     map : {
       center: {
-        latitude: 45,
-        longitude: -73
+        latitude: $scope.report.lat,
+        longitude: $scope.report.lng
       },
       zoom: 8,
       clickedMarker: {
@@ -205,7 +208,8 @@ angular.module('timby.controllers', [])
       },
       events: {
         click : function(mapModel, eventName, originalEventArgs){
-          var e = originalEventArgs[0]
+          var e = originalEventArgs[0];
+
           $scope.map.clickedMarker.latitude = $scope.report.lat =  e.latLng.lat();
           $scope.map.clickedMarker.longitude = $scope.report.lng = e.latLng.lng();
 
@@ -222,7 +226,7 @@ angular.module('timby.controllers', [])
       .then(
         function success(response, status, headers, config) {
           if (response.data.status == 'success') {
-            $scope.working = false;
+            $scope.uploadMedia(response.data.report.ID); //upload the media files selected
           }
         },
         function error(response, status, headers, config) {
@@ -231,4 +235,72 @@ angular.module('timby.controllers', [])
       );
   }
 
-}])
+
+  $scope.onFileSelect = function($type, $files){
+    $scope.invalid = {};
+
+    if( $type == 'photo' ){
+      if( ! files_are_valid($files, ['image/jpeg', 'image/png']) ){
+        $scope.invalid.photo = 'Select only valid image files.';
+        return;
+      }
+      $scope.report.photos = $files;
+    }
+
+    if( $type == 'video'){
+      if( ! files_are_valid($files, ['video/mp4', 'video/ogg','video/webm', 'video/x-flv']) ){
+        $scope.invalid.video = 'Select only valid video files.';
+        return;
+      }
+      $scope.report.video = $files;
+    }
+
+    if( $type == 'audio'){
+      if( ! files_are_valid($files, ['audio/mp3','audio/mp4', 'audio/ogg']) ){
+        $scope.invalid.audio = 'Select only valid audio files.';
+        return;
+      }
+      $scope.report.audio = $files;
+    }
+
+    /**
+     * validate the file types,
+     * return on first
+     * @param  {[type]} $files       [description]
+     * @param  {[type]} $valid_types [description]
+     * @return {[type]}              [description]
+     */
+    function files_are_valid($files, $valid_types){
+      var valid = true;
+      for(var i=0; i<=$files.length; $i++){
+        if( $valid_types.indexOf($files[i].type) === -1 )
+          valid = false;
+          break;
+      }
+      return valid;
+    }
+  }
+
+  /**
+   * Upload media attachements
+   *   
+   * @param  string id the report id
+   * @return void
+   */
+  $scope.uploadMedia = function(id){
+    
+    ReportService
+      .uploadMedia('image', $scope.report.photos, id)
+      .then()
+
+    ReportService
+      .uploadMedia('video', $scope.report.video, id)
+      .then()
+
+    ReportService
+      .uploadMedia('audio', $scope.report.audio, id)
+      .then()
+
+  }
+
+}]);

@@ -1,5 +1,5 @@
 angular.module('timby.services', [])
-.factory('ReportService', ['$http','$window', function($http, $window) {
+.factory('ReportService', ['$http','$window', '$upload', function($http, $window, $upload) {
   return {
     findAll : function(){
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_new_reports');
@@ -21,7 +21,7 @@ angular.module('timby.services', [])
           'taxonomies' : {
             'sector' : report.sectors,
             'entity' : report.entities,
-            'categorie' : report.categories
+            'category' : report.categories
           },
           'nonce' : $window.wp_data.nonce,
         }
@@ -41,9 +41,36 @@ angular.module('timby.services', [])
             'entity' : report.entities
           },
           'nonce' : $window.wp_data.nonce,
+          'custom_fields' : {
+            '_lat' : report.lat,
+            '_lng' : report.lng
+          },
         }
       );
+    },
+
+    uploadMedia : function(mediatype, files, reportid){
+      for(var i = 0; i < files.length; i++){
+        var file = files[i];
+        $upload.upload({
+          url: $window.wp_data.template_url + '/ajax.php?action=upload_media',
+          method: 'POST',
+          data: {
+            media_type : mediatype,
+            reportid   : reportid,
+            nonce      : $window.wp_data.nonce
+          },
+          file: file,
+        }).progress(function(evt) {
+          console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total) );
+        }).success(function(data, status, headers, config) {
+          // file is uploaded successfully
+          console.log(data);
+        });
+
+      }
     }
+
   }
 }])
 .factory('AuthService', ['$http','$window', function($http, $window) {

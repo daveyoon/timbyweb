@@ -3,7 +3,7 @@
 Latitude:
 <input type="text" name="_lat" id="_latitude" value="<?php echo get_post_meta( $post->ID, '_lat', true); ?>" />
 Longitude:
-<input type="text" name="_lng" id="_longitude" value="<?php echo get_post_meta( $post->ID, '_lat', true); ?>" />
+<input type="text" name="_lng" id="_longitude" value="<?php echo get_post_meta( $post->ID, '_lng', true); ?>" />
 Type a location to navigate:
 <input type="text" name="_location_address" id="_location_address" placeholder="e.g Monrovia" value="" />
 <button type='button' onclick="getlocation();">Go</button>

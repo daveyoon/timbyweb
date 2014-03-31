@@ -85,11 +85,14 @@ switch($_REQUEST['action']){
       $post['post_type'] = 'report';
       $post['post_status'] = 'publish';
       
-      $data->custom_fields = array(
-        '_date_reported' => date('c', time() )
-      );
+      // set our custom date reported, which is different from post_created
+      if( !property_exists($data, 'custom_fields'))
+        $data->custom_fields = new stdClass;
+
+      $data->custom_fields->_date_reported = date('c', time() );
 
       if( ! ($ID = wp_insert_post($post)) == 0 ){
+        
         // update custom fields if set
         if( isset($data->custom_fields) ){
           foreach ($data->custom_fields as $meta_key => $meta_value) {
@@ -112,7 +115,10 @@ switch($_REQUEST['action']){
 
         echo json_encode(
           array(
-            'status' => 'success'
+            'status' => 'success',
+            'report' => array(
+              'ID' => $ID
+            )
           )
         );
 
@@ -156,22 +162,70 @@ switch($_REQUEST['action']){
     break;
 
   case 'get_all_terms':
-      $result = array();
-      $taxonomies = array('sector', 'entity', 'category');
-      foreach($taxonomies as $taxonomy){
-        $terms = get_terms($taxonomy, array('hide_empty' => false, 'fields' => 'id=>name') );
-        $nice_terms = array();
-        foreach($terms as $id=>$name){
-          $nice_terms[] = array('id' => $id, 'name'=> $name);
-        }
-        $result[$taxonomy] = $nice_terms;
+    $result = array();
+    $taxonomies = array('sector', 'entity', 'category');
+    foreach($taxonomies as $taxonomy){
+      $terms = get_terms($taxonomy, array('hide_empty' => false, 'fields' => 'id=>name') );
+      $nice_terms = array();
+      foreach($terms as $id=>$name){
+        $nice_terms[] = array('id' => $id, 'name'=> $name);
       }
-      echo json_encode(
-        array(
-          'status' => 'success',
-          'terms' => $result,
-        )
-      );
+      $result[$taxonomy] = $nice_terms;
+    }
+    echo json_encode(
+      array(
+        'status' => 'success',
+        'terms' => $result,
+      )
+    );
+    break;
+
+  case 'upload_media':
+    $required_fields = array('reportid', 'media_type', 'nonce');
+    foreach ($required_fields as $key ) {
+      if( !array_key_exists($key, $_POST) ){
+        echo json_encode(
+          array(
+            'status' => 'error',
+            'message' => 'Upload requires all parameters',
+          )
+        );
+        exit(0);
+      }
+    }
+    if( !empty($_POST) && wp_verify_nonce( $_POST['nonce'], 'timbyweb_front_nonce') == true ){
+      
+      if (!empty($_FILES['file'])) {
+
+        include_once ABSPATH . '/wp-admin/includes/file.php';
+        include_once ABSPATH . '/wp-admin/includes/media.php';
+        include_once ABSPATH . '/wp-admin/includes/image.php';
+        $attachment_id = media_handle_upload('file', $_POST['reportid']);
+        unset($_FILES['file']);
+
+        // set the media type as a meta
+        update_post_meta($attachment_id, '_media_type', $_POST['media_type']);
+
+        echo json_encode(
+          array(
+            'status' => 'success',
+            'id' => $attachment_id
+          )
+        );
+
+      } else {
+        echo json_encode(
+          array(
+            'status' => 'error',
+            'message' => 'Please attach a file to upload.',
+          )
+        );
+      }
+
+    }
+
+
+
     break;
 
   default:
