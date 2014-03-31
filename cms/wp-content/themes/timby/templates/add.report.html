@@ -54,11 +54,22 @@
     <div style="float:left; margin-right: 20px">
       Location
       <google-map 
-      center="map.center" 
-      zoom="map.zoom"
-      draggable="true"
-      events="map.events"
-      ></google-map>
+        center="map.center" 
+        zoom="map.zoom"
+        draggable="true"
+        events="map.events"
+      >
+
+        <marker coords="map.clickedMarker">
+          <!--<marker-label content="map.clickedMarker.title" anchor="24 40" class="marker-labels"/>-->
+          <window isIconVisibleOnClick="true">
+            This is my clicked marker!
+            <p class="muted">My marker will reappear when you close me.</p>
+          </window>
+        </marker>
+
+      </google-map>
+
 
 
     </div>

@@ -187,6 +187,10 @@ angular.module('timby.controllers', [])
   };
   $scope.getAllTerms();
 
+  // Enable the new Google Maps visuals until it gets enabled by default.
+  // See http://googlegeodevelopers.blogspot.ca/2013/05/a-fresh-new-look-for-maps-api-for-all.html
+  google.maps.visualRefresh = true;
+
   angular.extend($scope, {
     map : {
       center: {
@@ -194,20 +198,18 @@ angular.module('timby.controllers', [])
         longitude: -73
       },
       zoom: 8,
-      markers: [{
-        latitude: 45,
-        longitude: -74,
-        showWindow: false,
-        title: 'Marker 2'
-      }],
+      clickedMarker: {
+          title: 'Your current position',
+          latitude: null,
+          longitude: null
+      },
       events: {
         click : function(mapModel, eventName, originalEventArgs){
           var e = originalEventArgs[0]
-          $scope.map.markers.push({
-            title: 'You clicked here',
-            latitude: e.latLng.lat(),
-            longitude: e.latLng.lng()
-          })
+          $scope.map.clickedMarker.latitude = $scope.report.lat =  e.latLng.lat();
+          $scope.map.clickedMarker.longitude = $scope.report.lng = e.latLng.lng();
+
+          $scope.$apply();
         }
       }
     }
