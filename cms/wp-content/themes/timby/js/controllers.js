@@ -136,6 +136,7 @@ angular.module('timby.controllers', [])
           }
         }
       }
+
     }
   ]
 )
@@ -146,6 +147,7 @@ angular.module('timby.controllers', [])
 
       $scope.login = function(){
         $scope.working = true;
+        
         AuthService
           .login($scope.username, $scope.password)
           .then(
@@ -227,6 +229,7 @@ angular.module('timby.controllers', [])
         function success(response, status, headers, config) {
           if (response.data.status == 'success') {
             $scope.uploadMedia(response.data.report.ID); //upload the media files selected
+            $scope.working = false;
           }
         },
         function error(response, status, headers, config) {
@@ -288,15 +291,14 @@ angular.module('timby.controllers', [])
    * @return void
    */
   $scope.uploadMedia = function(id){
-    
-    ReportService
-      .uploadMedia('image', $scope.report.photos, id)
+    if( $scope.report.photos && $scope.report.photos.length > 0)
+      ReportService.uploadMedia('image', $scope.report.photos, id)
 
-    ReportService
-      .uploadMedia('video', $scope.report.video, id)
+    if( $scope.report.video && $scope.report.video.length > 0)
+      ReportService.uploadMedia('video', $scope.report.video, id)
 
-    ReportService
-      .uploadMedia('audio', $scope.report.audio, id)
+    if( $scope.report.audio && $scope.report.audio.length > 0)
+      ReportService.uploadMedia('audio', $scope.report.audio, id)
 
   }
 

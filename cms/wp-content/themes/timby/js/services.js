@@ -1,5 +1,5 @@
 angular.module('timby.services', [])
-.factory('ReportService', ['$http','$window', '$upload', function($http, $window, $upload) {
+.factory('ReportService', ['$http','$window', '$upload','AuthService', function($http, $window, $upload, AuthService) {
   return {
     findAll : function(){
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_new_reports');
@@ -36,6 +36,7 @@ angular.module('timby.services', [])
         {
           'post_title' : report.title,
           'post_content' : report.description,
+          'post_author' : AuthService.user.ID,
           'taxonomies' : {
             'sector' : report.sectors,
             'entity' : report.entities
@@ -77,6 +78,7 @@ angular.module('timby.services', [])
   var _self = this, logged_in = false;
 
   return {
+    user: {},
     isAuthenticated : function(){
       return _self.logged_in
     },
