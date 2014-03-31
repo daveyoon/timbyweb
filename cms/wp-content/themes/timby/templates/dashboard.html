@@ -150,7 +150,7 @@
     <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
      
     <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
-      <div class="three" ng-repeat="photo in report.media.photo">
+      <div class="three" ng-repeat="photo in report.media.photos">
         <a href="#" class="thumbnail">
           <img ng-src="{{photo.guid}}">
         </a>

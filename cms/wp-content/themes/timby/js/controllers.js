@@ -291,15 +291,12 @@ angular.module('timby.controllers', [])
     
     ReportService
       .uploadMedia('image', $scope.report.photos, id)
-      .then()
 
     ReportService
       .uploadMedia('video', $scope.report.video, id)
-      .then()
 
     ReportService
       .uploadMedia('audio', $scope.report.audio, id)
-      .then()
 
   }
 
