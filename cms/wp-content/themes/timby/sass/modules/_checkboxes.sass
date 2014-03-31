@@ -1,0 +1,57 @@
+input[type="checkbox"]
+  display: none
+
+// input[type="checkbox"] + label
+//   background-color: #FFF
+//   border: 1px solid #C1CACA
+//   padding: 9px
+//   border-radius: 5px
+//   display: inline-block
+//   position: relative
+//   margin-right: 1em
+//   font-size: .7em
+
+// input[type="checkbox"] + label:active 
+
+// input[type="checkbox"]:checked + label
+//   background-color: $edit-color
+//   border: 1px solid darken($edit-color, 10%)
+//   color: white
+
+// input[type="checkbox"]:checked + label:after 
+//   content: '\2715'
+//   position: absolute
+//   top: 0px
+//   left: 0px
+//   color: white
+//   width: 100%
+//   text-align: center
+//   font-size: 1.4em
+//   padding: 1px 0 0 0
+//   vertical-align: text-top
+
+
+label
+  display: inline-block
+  cursor: pointer
+  position: relative
+
+label:before
+  content: ""
+  display: inline-block
+
+  width: 2em
+  height: 2em
+
+  margin-right: 1em
+  position: relative
+  left: 0
+  background-color: white
+  border: 1px solid $gray
+
+
+input[type=checkbox]:checked + label:before
+  content: "\2713"
+  color: white
+  background: $edit-color
+  text-align: center
