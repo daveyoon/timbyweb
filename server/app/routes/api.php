@@ -516,7 +516,7 @@ $app->group('/api', function () use ($app) {
    * key
    * token
    * title (optional)
-   * object_type : one of (“narrative”, “image”, “video”, “audio”, “entity”)
+   * object_type : one of (“narrative”, “image”, “video”, “audio”)
    * narrative
    * report_id
    * (The object to upload - if it is uploadable)
