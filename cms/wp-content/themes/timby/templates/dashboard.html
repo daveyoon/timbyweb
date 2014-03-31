@@ -16,15 +16,17 @@
 </header>
 <section class="l-main-unit clearfix" ng-class="{ 'filters-hidden': showFilters }">
   <section class="filters l-column">
-    <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button"></button>
+    
     <div class="filters-hide">
       <div class="filters-button" ng-click="showFilters = ! showFilters">
-        <span class="icon-tasks"></span>
+        <span class="fa fa-tasks"></span>
       </div>
+      SHOW<BR/>
       FILTERS
     </div>
     <div class="filters-alive">
       <h4>Filters</h4>
+      <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button"></button>
       <form role="form">
         <div class="form-group">
             <label for="search" class="">Sector</label>
