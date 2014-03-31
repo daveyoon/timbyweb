@@ -25,8 +25,10 @@
       FILTERS
     </div>
     <div class="filters-alive">
-      <h4>Filters</h4>
-      <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button"></button>
+      <div class="clearfix">
+        <h4 class="pull-left">Filters</h4>
+        <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button pull-right btn-small"></button>
+      </div>
       <form role="form">
         <div class="form-group">
             <label for="search" class="">Sector</label>
