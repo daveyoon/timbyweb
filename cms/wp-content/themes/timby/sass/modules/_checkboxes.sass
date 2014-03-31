@@ -30,28 +30,57 @@ input[type="checkbox"]
 //   padding: 1px 0 0 0
 //   vertical-align: text-top
 
+.checkbox
+  @include clearfix
 
-label
-  display: inline-block
-  cursor: pointer
-  position: relative
+  &:first-of-type label
+    border-top: 1px $med-gray solid
+  
 
-label:before
-  content: ""
-  display: inline-block
+  label
+    display: inline-block
+    cursor: pointer
+    position: relative
+    font-size: 100%
+    width: 100%
 
-  width: 2em
-  height: 2em
+    margin-bottom: .5em
+    padding: 0 0 .5em .5em
+    border-bottom: 1px $med-gray solid
+    &:last-of-type
+      margin-bottom: 0
+    &:first-of-type
+      padding-top: .5em
 
-  margin-right: 1em
-  position: relative
-  left: 0
-  background-color: white
-  border: 1px solid $gray
+  label:hover
+    background: $light-gray
+
+  label:before
+    content: "."
+    display: inline-block
+    color: white
+
+    width: 1.6em
+    height: 1.6em
+
+    margin-right: .5em
+    position: relative
+    left: 0
+    background-color: white
+    border: 1px solid $gray
+    border-radius: 2px
 
 
 input[type=checkbox]:checked + label:before
-  content: "\2713"
-  color: white
+  content: "\f00c"
+  font-family: "FontAwesome"
   background: $edit-color
   text-align: center
+  border-color: $edit-color
+
+input[type=checkbox]:checked + label
+  font-weight: 700
+  background: $light-green
+
+
+// ,  
