@@ -54,13 +54,16 @@ chown 777 -R <name of directory>
 Bower. This gives you
 - [Typeplate](https://github.com/typeplate/typeplate.github.io)
 - [Font Awesome](http://fortawesome.github.io/Font-Awesome/icons/)
-- Angular
+- Angular (plus maps, checkbox and file upload helpers)
 - Angular Sanitize
 - Angular Route
 - [TextAngular](https://github.com/fraywing/textAngular)
 - Bourbon
 - Neat
 - RequireJS
+- Chosen (multi-select)
+- Underscore
+- 
 
 ```
 bower install
