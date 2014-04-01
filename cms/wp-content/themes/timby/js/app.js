@@ -12,7 +12,7 @@ angular.module('timby',[
   ]
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
-.config(['$routeProvider', 'BASE_URL', '$sceDelegateProvider', function($routeProvider, BASE_URL, $sceDelegateProvider){
+.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider){
   
   $sceDelegateProvider.resourceUrlWhitelist([
    'self',
@@ -48,5 +48,17 @@ angular.module('timby',[
 
   $routeProvider.otherwise({ redirectTo : '/'});
   
-
+}])
+.run(['$rootScope', 'wordpress', function($rootScope, wordpressProvider){
+  // fetches necessary wordpress data
+  // we require for our app to run, 
+  // this includes taxonomies, api users
+  wordpressProvider
+  .getInfo()
+  .then(function(response){
+    if (response.data.status == 'success') {
+      $rootScope.wordpress = response.data.data
+    }
+  }); 
+  
 }]);

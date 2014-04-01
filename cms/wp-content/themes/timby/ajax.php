@@ -3,6 +3,20 @@ require_once __DIR__ . '/../../../wp-load.php';
 
 
 switch($_REQUEST['action']){
+
+  case 'info':
+
+    echo json_encode(
+      array(
+        'status' => 'success',
+        'data' => array(
+          'terms'     => _get_all_terms(),
+          'api_users' => _get_all_api_users(),
+        )
+      )
+    );
+    break;
+
   case 'get_report':
     $ID = (int) $_REQUEST['id'];
 
@@ -161,25 +175,6 @@ switch($_REQUEST['action']){
     } 
     break;
 
-  case 'get_all_terms':
-    $result = array();
-    $taxonomies = array('sector', 'entity', 'category');
-    foreach($taxonomies as $taxonomy){
-      $terms = get_terms($taxonomy, array('hide_empty' => false, 'fields' => 'id=>name') );
-      $nice_terms = array();
-      foreach($terms as $id=>$name){
-        $nice_terms[] = array('id' => $id, 'name'=> $name);
-      }
-      $result[$taxonomy] = $nice_terms;
-    }
-    echo json_encode(
-      array(
-        'status' => 'success',
-        'terms' => $result,
-      )
-    );
-    break;
-
   case 'upload_media':
     $required_fields = array('reportid', 'media_type', 'nonce');
     foreach ($required_fields as $key ) {
@@ -230,4 +225,34 @@ switch($_REQUEST['action']){
 
   default:
     break;
+}
+
+// utility functions to fetch various info from the cms
+function _get_all_terms(){
+  $result = array();
+  $taxonomies = array('sector', 'entity', 'category');
+  foreach($taxonomies as $taxonomy){
+    $terms = get_terms($taxonomy, array('hide_empty' => false, 'fields' => 'id=>name') );
+    $nice_terms = array();
+    foreach($terms as $id=>$name){
+      $nice_terms[] = array('id' => $id, 'name'=> $name);
+    }
+    $result[$taxonomy] = $nice_terms;
+  }
+  return $result;
+}
+
+function _get_all_api_users(){
+  $args = array(
+    'role' => 'timbymobileapp'
+  );
+  $users = get_users($args);
+  $nice_users = array();
+  foreach ($users as $user) {
+    $nice_users[] = array(
+      'id'   => $user->ID,
+      'name' => $user->display_name,
+    );
+  }
+  return $nice_users;
 }
