@@ -148,7 +148,19 @@
                 {{term.name}} <a href="" title="removetag" ng-click="removeEntity(term)"><i class="fa fa-times"></i></a>
               </span> 
             </div>
+            <div class="l-group">Hello</div>
             <div class="l-group">
+              <div class="six">
+                <select chosen
+                        ng-model="termselected"
+                        data-placeholder="Select a tag" 
+                        ng-options="term.name for term in wordpress.terms.entity"
+                        width="'100%'">
+                        <option value=""></option>
+                </select>
+              </div>
+              <button class="btn-small" ng-click="addEntity()">Add</button>
+=======
               <select chosen
                       ng-model="termselected"
                       data-placeholder="Select a tag" 
