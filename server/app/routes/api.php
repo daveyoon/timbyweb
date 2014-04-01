@@ -229,7 +229,11 @@ $app->group('/api', function () use ($app) {
         'custom_fields' =>  array(
           '_date_reported' => date('c', strtotime($report_date)),
           '_latitude'      => $lat,
-          '_longitude'     => $lng
+          '_longitude'     => $lng,
+          // here the post author becomes the reporter, as compared to a scenario where 
+          // the post author(moderator) creates a report on behalf of the reporter
+          // in this instance, the reporter is not the post author
+          '_report_id'     => $user_id 
         )
       )
     );

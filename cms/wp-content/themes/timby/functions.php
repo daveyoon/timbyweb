@@ -113,8 +113,17 @@ function fetch_new_reports( $args = array()){
 }
 
 function build_report_data($report){
+  // if the reporter id is not set,
+  // set it to the post_author
+  if( ($reporter_id = get_post_meta($report->ID, '_reporter_id', true)) == ''){
+    $reporter_id = $report->post_author;
+  }
+
   //reporter
-  $report->reporter = get_the_author_meta( 'display_name', $report->post_author );
+  $report->reporter = array(
+    'id'    => $reporter_id,
+    'name'  => get_the_author_meta( 'display_name', $reporter_id )
+  );
 
   // report date
   $report->date_reported = date('jS F, Y', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
@@ -278,6 +287,11 @@ function save_custom_report_data( $post_id ) {
   // save the reported_date if not already set
   if( get_post_meta( $post_id, '_date_reported', true) == '' ){
     update_post_meta( $post_id, '_date_reported', date('c', time() ) );
+  }
+
+  // save the reporter as the moderator
+  if( get_post_meta( $post_id, '_reporter_id', true) === ''){
+    update_post_meta( $post_id, '_reporter_id', $_POST['post_author'] );
   }
 }
 add_action( 'save_post', 'save_custom_report_data' );

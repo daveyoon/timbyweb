@@ -44,7 +44,8 @@ angular.module('timby.services', [])
           'nonce' : $window.wp_data.nonce,
           'custom_fields' : {
             '_lat' : report.lat,
-            '_lng' : report.lng
+            '_lng' : report.lng,
+            '_reporter_id' : report.reporter.id
           },
         }
       );
@@ -97,4 +98,15 @@ angular.module('timby.services', [])
 
     }
   }
-}]);
+}])
+.provider('wordpress', function wordpressProvider(){
+
+  this.$get = ['$http','$window', function($http, $window) {
+    return {
+      getInfo : function(){
+        return $http.post($window.wp_data.template_url + '/ajax.php?action=info')
+      }
+    };
+  }];
+
+});

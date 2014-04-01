@@ -95,7 +95,7 @@
           <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
           <h5 class="list-title">{{report.post_title}}</h5>
           <p class="list-content">
-            {{report.date_reported}} by {{report.reporter}}
+            {{report.date_reported}} by {{report.reporter.name}}
           </p>
           <div class="horz-list">
             <i class="fa fa-camera"></i>        {{report.media.photos.length}} &nbsp;&nbsp;
@@ -120,11 +120,15 @@
         <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
           <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
           <div class="edit-pane" ng-show="showList">
+<<<<<<< HEAD
             <div class="checkbox"  ng-repeat="term in terms.sector" >
               <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
               <label for="{{term.id}}">{{term.name}}</label>
             </div>
             <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
+=======
+            <label ng-repeat="term in wordpress.terms.sector" class="checkbox-label">
+>>>>>>> 303a94ef7d335294e5f451506f0483eba575abfe
               <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
             </label> -->
             <div>
@@ -139,7 +143,7 @@
             <div id="report-location"></div>
           </div>
           <div class="nine">
-            <h5 class="subhead">{{report.date_reported}} by {{report.reporter}}</h5>
+            <h5 class="subhead">{{report.date_reported}} by {{report.reporter.name}}</h5>
             <!-- <div>
               <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
             </div> -->
@@ -152,7 +156,7 @@
               <select chosen
                       ng-model="termselected"
                       data-placeholder="Select a tag" 
-                      ng-options="term.name for term in terms.entity"
+                      ng-options="term.name for term in wordpress.terms.entity"
                       width="'100%'">
                       <option value=""></option>
               </select>

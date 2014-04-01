@@ -31,6 +31,14 @@
       Description
       <textarea ng-model="report.description" id="" cols="30" rows="10"></textarea>
     </div>
+    <div style="float:left; margin-right: 20px">
+      Author
+      <select 
+        ng-model="report.reporter"
+        ng-options="user.name for user in wordpress.api_users">
+          <option value="">Select a user</option>
+      </select>
+    </div>
     <div style="">
       <h6>Select Image</h6>
       <input type="file" ng-file-select="onFileSelect('photo', $files)" multiple>
@@ -51,7 +59,7 @@
       <select chosen
               ng-model="report.sectors"
               data-placeholder="Select a sector" 
-              ng-options="term.name for term in terms.sector"
+              ng-options="term.name for term in wordpress.terms.sector"
               width="'100%'">
               <option value=""></option>
       </select>
@@ -61,7 +69,7 @@
       <select chosen
               ng-model="report.entities"
               data-placeholder="Select an entity" 
-              ng-options="term.name for term in terms.entity"
+              ng-options="term.name for term in wordpress.terms.entity"
               width="'100%'">
               <option value=""></option>
       </select>

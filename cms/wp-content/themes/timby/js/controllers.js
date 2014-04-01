@@ -9,31 +9,10 @@ angular.module('timby.controllers', [])
         if( next.authenticate && !AuthService.isAuthenticated()){
           $location.path( "/login" )
         }
-      })
+      });
+
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
-
-      /**
-       * Fetches all terms 
-       * for taxonomies sector, entity
-       * 
-       * @return {[type]} [description]
-       */
-      $scope.getAllTerms = function(){
-        ReportService
-          .getAllTerms()
-          .then(
-            function success(response, status, headers, config) {
-              if (response.data.status == 'success') {
-                $scope.terms = response.data.terms;
-              }
-            },
-            function error(response, status, headers, config) {
-              //notify alert, could not connect to remote server
-            }
-          )
-      };
-      $scope.getAllTerms();
 
       $scope.getAllReports = function(){
         ReportService
@@ -165,6 +144,7 @@ angular.module('timby.controllers', [])
 
             }
           )
+
       }
     }
   ]
@@ -172,22 +152,6 @@ angular.module('timby.controllers', [])
 .controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
   $scope.report = {};
 
-  // improve this later
-  $scope.getAllTerms = function(){
-    ReportService
-      .getAllTerms()
-      .then(
-        function success(response, status, headers, config) {
-          if (response.data.status == 'success') {
-            $scope.terms = response.data.terms;
-          }
-        },
-        function error(response, status, headers, config) {
-          //notify alert, could not connect to remote server
-        }
-      )
-  };
-  $scope.getAllTerms();
 
   // Enable the new Google Maps visuals until it gets enabled by default.
   google.maps.visualRefresh = true;
