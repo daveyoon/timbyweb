@@ -33,9 +33,11 @@ input[type="checkbox"]
 .checkbox
   @include clearfix
 
-  &:first-of-type label
-    border-top: 1px $med-gray solid
-  
+  &.checkbox-lined
+    label
+      border-bottom: 1px $med-gray solid
+    &:first-of-type label
+      border-top: 1px $med-gray solid
 
   label
     display: inline-block
@@ -46,7 +48,6 @@ input[type="checkbox"]
 
     margin-bottom: .5em
     padding: 0 0 .5em .5em
-    border-bottom: 1px $med-gray solid
     &:last-of-type
       margin-bottom: 0
     &:first-of-type
