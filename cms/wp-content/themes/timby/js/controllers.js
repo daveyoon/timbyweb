@@ -185,7 +185,13 @@ angular.module('timby.controllers', [])
     }
   });
 
-  $scope.addReport = function(){
+  $scope.dateOptions = {
+    'year-format': "'yy'",
+    'starting-day': 1
+  };
+
+  $scope.createReport = function(evt){
+
     $scope.working = true;
     ReportService
       .create($scope.report)
@@ -194,6 +200,11 @@ angular.module('timby.controllers', [])
           if (response.data.status == 'success') {
             $scope.uploadMedia(response.data.report.ID); //upload the media files selected
             $scope.working = false;
+
+            // reset the form and
+            // mute the model
+            $scope.report = {};
+            evt.target.reset();
           }
         },
         function error(response, status, headers, config) {

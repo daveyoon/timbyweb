@@ -21,7 +21,7 @@
   </nav>
 </header>
 <section class="l-main-unit clearfix l-container" ng-controller="ReportController">
-  <form action="" ng-submit="addReport()" ng-hide="working">
+  <form action="" ng-submit="createReport($event)" ng-hide="working">
     <h3>Add a new report</h3>
     <div >
       Title
@@ -29,7 +29,7 @@
     </div>
     <div >
       Description
-      <textarea ng-model="report.description" id="" cols="30" rows="10"></textarea>
+      <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.description"></div><!-- end description -->
     </div>
     <div style="float:left; margin-right: 20px">
       Author
@@ -38,6 +38,22 @@
         ng-options="user.name for user in wordpress.api_users">
           <option value="">Select a user</option>
       </select>
+    </div>    
+    <div style="">
+      Date Reported
+      <input 
+      type="text" 
+      class="form-control" 
+      show-weeks="false" 
+      datepicker-popup="{{format}}" 
+      ng-model="report.date_reported" 
+      is-open="opened" 
+      min="minDate" 
+      max="'2015-06-22'" 
+      datepicker-options="dateOptions" 
+      date-disabled="disabled(date, mode)" 
+      ng-required="true" 
+      close-text="Close" />
     </div>
     <div style="">
       <h6>Select Image</h6>
@@ -54,12 +70,15 @@
       <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
       <span ng-show="invalid.audio">{{invalid.audio}}</span>
     </div>
+
     <div style="">
       Sector
       <select chosen
+              multiple
               ng-model="report.sectors"
               data-placeholder="Select a sector" 
               ng-options="term.name for term in wordpress.terms.sector"
+              allow-single-deselect="true"
               width="'100%'">
               <option value=""></option>
       </select>
@@ -67,9 +86,11 @@
     <div style="">
       Entity
       <select chosen
+              multiple
               ng-model="report.entities"
               data-placeholder="Select an entity" 
               ng-options="term.name for term in wordpress.terms.entity"
+              allow-single-deselect="true"
               width="'100%'">
               <option value=""></option>
       </select>

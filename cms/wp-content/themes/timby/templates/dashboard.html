@@ -160,6 +160,15 @@
                 </select>
               </div>
               <button class="btn-small" ng-click="addEntity()">Add</button>
+=======
+              <select chosen
+                      ng-model="termselected"
+                      data-placeholder="Select a tag" 
+                      ng-options="term.name for term in wordpress.terms.entity"
+                      width="'100%'">
+                      <option value=""></option>
+              </select>
+              <input type="button" ng-click="addEntity()" value="Add">
               <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
             </div>
           </div>
