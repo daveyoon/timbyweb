@@ -63,7 +63,6 @@ Bower. This gives you
 - RequireJS
 - Chosen (multi-select)
 - Underscore
-- 
 
 ```
 bower install
