@@ -226,7 +226,21 @@ angular.module('timby.controllers', [])
     }
 
     if( $type == 'video'){
-      if( ! files_are_valid($files, ['video/mp4', 'video/ogg','video/webm', 'video/x-flv']) ){
+      if( ! files_are_valid($files, 
+            [
+              'video/mp4', 'video/ogg','video/webm',
+               //.mov
+              'video/x-flv', 'video/quicktime',
+               //.avi
+              'application/x-troff-msvideo',
+              'video/avi',
+              'video/msvideo',
+              'video/x-msvideo',
+              'video/avs-video',
+              // mkv
+              'video/x-matroska'
+            ]) 
+        ){
         $scope.invalid.video = 'Select only valid video files.';
         return;
       }
