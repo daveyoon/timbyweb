@@ -9,6 +9,7 @@ angular.module('timby',[
     'checklist-model',
     'google-maps',
     'localytics.directives',
+    'angularFileUpload',
     'timby.controllers',
     'timby.services',
     'timby.directives',
@@ -191,6 +192,7 @@ angular.module('timby.controllers', [])
           }
         }
       }
+
     }
   ]
 )
@@ -201,6 +203,7 @@ angular.module('timby.controllers', [])
 
       $scope.login = function(){
         $scope.working = true;
+        
         AuthService
           .login($scope.username, $scope.password)
           .then(
@@ -222,7 +225,7 @@ angular.module('timby.controllers', [])
     }
   ]
 )
-.controller('ReportController', ['$scope','ReportService', function($scope,ReportService){
+.controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
   $scope.report = {};
 
   // improve this later
@@ -242,27 +245,33 @@ angular.module('timby.controllers', [])
   };
   $scope.getAllTerms();
 
+  // Enable the new Google Maps visuals until it gets enabled by default.
+  google.maps.visualRefresh = true;
+
+  // preselected position which is also the map center
+  $scope.report.lat = 75;
+  $scope.report.lng = -73;
+
   angular.extend($scope, {
     map : {
       center: {
-        latitude: 45,
-        longitude: -73
+        latitude: $scope.report.lat,
+        longitude: $scope.report.lng
       },
       zoom: 8,
-      markers: [{
-        latitude: 45,
-        longitude: -74,
-        showWindow: false,
-        title: 'Marker 2'
-      }],
+      clickedMarker: {
+          title: 'Your current position',
+          latitude: null,
+          longitude: null
+      },
       events: {
         click : function(mapModel, eventName, originalEventArgs){
-          var e = originalEventArgs[0]
-          $scope.map.markers.push({
-            title: 'You clicked here',
-            latitude: e.latLng.lat(),
-            longitude: e.latLng.lng()
-          })
+          var e = originalEventArgs[0];
+
+          $scope.map.clickedMarker.latitude = $scope.report.lat =  e.latLng.lat();
+          $scope.map.clickedMarker.longitude = $scope.report.lng = e.latLng.lng();
+
+          $scope.$apply();
         }
       }
     }
@@ -275,6 +284,7 @@ angular.module('timby.controllers', [])
       .then(
         function success(response, status, headers, config) {
           if (response.data.status == 'success') {
+            $scope.uploadMedia(response.data.report.ID); //upload the media files selected
             $scope.working = false;
           }
         },
@@ -284,7 +294,71 @@ angular.module('timby.controllers', [])
       );
   }
 
-}])
+
+  $scope.onFileSelect = function($type, $files){
+    $scope.invalid = {};
+
+    if( $type == 'photo' ){
+      if( ! files_are_valid($files, ['image/jpeg', 'image/png']) ){
+        $scope.invalid.photo = 'Select only valid image files.';
+        return;
+      }
+      $scope.report.photos = $files;
+    }
+
+    if( $type == 'video'){
+      if( ! files_are_valid($files, ['video/mp4', 'video/ogg','video/webm', 'video/x-flv']) ){
+        $scope.invalid.video = 'Select only valid video files.';
+        return;
+      }
+      $scope.report.video = $files;
+    }
+
+    if( $type == 'audio'){
+      if( ! files_are_valid($files, ['audio/mp3','audio/mp4', 'audio/ogg']) ){
+        $scope.invalid.audio = 'Select only valid audio files.';
+        return;
+      }
+      $scope.report.audio = $files;
+    }
+
+    /**
+     * validate the file types,
+     * return on first
+     * @param  {[type]} $files       [description]
+     * @param  {[type]} $valid_types [description]
+     * @return {[type]}              [description]
+     */
+    function files_are_valid($files, $valid_types){
+      var valid = true;
+      for(var i=0; i<=$files.length; $i++){
+        if( $valid_types.indexOf($files[i].type) === -1 )
+          valid = false;
+          break;
+      }
+      return valid;
+    }
+  }
+
+  /**
+   * Upload media attachements
+   *   
+   * @param  string id the report id
+   * @return void
+   */
+  $scope.uploadMedia = function(id){
+    if( $scope.report.photos && $scope.report.photos.length > 0)
+      ReportService.uploadMedia('image', $scope.report.photos, id)
+
+    if( $scope.report.video && $scope.report.video.length > 0)
+      ReportService.uploadMedia('video', $scope.report.video, id)
+
+    if( $scope.report.audio && $scope.report.audio.length > 0)
+      ReportService.uploadMedia('audio', $scope.report.audio, id)
+
+  }
+
+}]);
 
 angular.module('timby.directives', [])
 
@@ -369,7 +443,7 @@ $(function(){
 
 })
 angular.module('timby.services', [])
-.factory('ReportService', ['$http','$window', function($http, $window) {
+.factory('ReportService', ['$http','$window', '$upload','AuthService', function($http, $window, $upload, AuthService) {
   return {
     findAll : function(){
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_new_reports');
@@ -391,7 +465,7 @@ angular.module('timby.services', [])
           'taxonomies' : {
             'sector' : report.sectors,
             'entity' : report.entities,
-            'categorie' : report.categories
+            'category' : report.categories
           },
           'nonce' : $window.wp_data.nonce,
         }
@@ -406,20 +480,49 @@ angular.module('timby.services', [])
         {
           'post_title' : report.title,
           'post_content' : report.description,
+          'post_author' : AuthService.user.ID,
           'taxonomies' : {
             'sector' : report.sectors,
             'entity' : report.entities
           },
           'nonce' : $window.wp_data.nonce,
+          'custom_fields' : {
+            '_lat' : report.lat,
+            '_lng' : report.lng
+          },
         }
       );
+    },
+
+    uploadMedia : function(mediatype, files, reportid){
+      for(var i = 0; i < files.length; i++){
+        var file = files[i];
+        $upload.upload({
+          url: $window.wp_data.template_url + '/ajax.php?action=upload_media',
+          method: 'POST',
+          data: {
+            media_type : mediatype,
+            reportid   : reportid,
+            nonce      : $window.wp_data.nonce
+          },
+          file: file,
+        }).progress(function(evt) {
+          console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total) );
+        }).success(function(data, status, headers, config) {
+          // file is uploaded successfully
+          console.log(data);
+        });
+
+      }
     }
+
   }
 }])
 .factory('AuthService', ['$http','$window', function($http, $window) {
   var _self = this, logged_in = false;
 
   return {
+    user: {},
     isAuthenticated : function(){
       return _self.logged_in
     },
