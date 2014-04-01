@@ -156,9 +156,9 @@ angular.module('timby.controllers', [])
   // Enable the new Google Maps visuals until it gets enabled by default.
   google.maps.visualRefresh = true;
 
-  // preselected position which is also the map center
-  $scope.report.lat = 75;
-  $scope.report.lng = -73;
+  // map center is at Kokoyah, Liberia
+  $scope.report.lat = 6.550676;
+  $scope.report.lng = -9.488156;
 
   angular.extend($scope, {
     map : {
@@ -166,7 +166,7 @@ angular.module('timby.controllers', [])
         latitude: $scope.report.lat,
         longitude: $scope.report.lng
       },
-      zoom: 8,
+      zoom: 7,
       clickedMarker: {
           title: 'Your current position',
           latitude: null,
