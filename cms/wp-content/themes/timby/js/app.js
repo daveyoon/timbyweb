@@ -6,13 +6,14 @@ angular.module('timby',[
     'google-maps',
     'localytics.directives',
     'angularFileUpload',
+    'ui.bootstrap',
     'timby.controllers',
     'timby.services',
     'timby.directives',
   ]
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
-.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider){
+.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig){
   
   $sceDelegateProvider.resourceUrlWhitelist([
    'self',
@@ -48,6 +49,8 @@ angular.module('timby',[
 
   $routeProvider.otherwise({ redirectTo : '/'});
   
+  datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
+
 }])
 .run(['$rootScope', 'wordpress', function($rootScope, wordpressProvider){
   // fetches necessary wordpress data

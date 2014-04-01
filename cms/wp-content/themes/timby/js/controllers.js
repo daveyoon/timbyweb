@@ -184,6 +184,11 @@ angular.module('timby.controllers', [])
       }
     }
   });
+  
+  $scope.dateOptions = {
+    'year-format': "'yy'",
+    'starting-day': 1
+  };
 
   $scope.addReport = function(){
     $scope.working = true;

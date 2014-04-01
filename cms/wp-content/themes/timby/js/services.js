@@ -45,7 +45,8 @@ angular.module('timby.services', [])
           'custom_fields' : {
             '_lat' : report.lat,
             '_lng' : report.lng,
-            '_reporter_id' : report.reporter.id
+            '_reporter_id' : report.reporter.id,
+            '_date_reported' : new Date(report.date_reported).toISOString()
           },
         }
       );

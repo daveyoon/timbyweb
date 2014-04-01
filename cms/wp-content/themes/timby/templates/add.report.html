@@ -38,6 +38,22 @@
         ng-options="user.name for user in wordpress.api_users">
           <option value="">Select a user</option>
       </select>
+    </div>    
+    <div style="">
+      Date Reported
+      <input 
+      type="text" 
+      class="form-control" 
+      show-weeks="false" 
+      datepicker-popup="{{format}}" 
+      ng-model="report.date_reported" 
+      is-open="opened" 
+      min="minDate" 
+      max="'2015-06-22'" 
+      datepicker-options="dateOptions" 
+      date-disabled="disabled(date, mode)" 
+      ng-required="true" 
+      close-text="Close" />
     </div>
     <div style="">
       <h6>Select Image</h6>
@@ -54,6 +70,7 @@
       <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
       <span ng-show="invalid.audio">{{invalid.audio}}</span>
     </div>
+
     <div style="">
       Sector
       <select chosen

@@ -228,6 +228,9 @@ function timby_scripts() {
   wp_enqueue_script( 'angular-file-upload-shim', get_template_directory_uri() .'/bower_components/ng-file-upload/angular-file-upload-shim.min.js', false, false, true );
   wp_enqueue_script( 'angular-file-upload', get_template_directory_uri() .'/bower_components/ng-file-upload/angular-file-upload.min.js', false, false, true );
   
+  //angular ui bootstrap
+  wp_enqueue_script( 'angular-bootstrap', get_template_directory_uri() .'/js/libs/angularui-bootstrap/ui-bootstrap-custom-tpls-0.10.0.js', false, false, true );
+  
   // app, controllers, directives and services
   wp_enqueue_script( 'app', get_template_directory_uri() .'/js/app.js',false, false, true );
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
@@ -252,7 +255,7 @@ add_action( 'wp_enqueue_scripts', 'timby_scripts' );
 
 
 /**
- * When a report is saved, save custom fields
+ * When a report is saved from the backend, save custom fields
  * outside of the cmb library
  * 
  * @param int $post_id The ID of the post being saved.
@@ -269,7 +272,6 @@ function save_custom_report_data( $post_id ) {
     || $_POST['post_type'] != 'report'
   )
     return $post_id;
-
 
   // save the long and latitude
   if( array_key_exists('_lat', $_POST) && array_key_exists('_lng', $_POST)  )

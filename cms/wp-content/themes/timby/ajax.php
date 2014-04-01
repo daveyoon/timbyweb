@@ -56,7 +56,7 @@ switch($_REQUEST['action']){
         // update custom fields if set
         if( isset($data->custom_fields) ){
           foreach ($data->custom_fields as $meta_key => $meta_value) {
-            update_post_meta( $post['ID'], $meta_key, $meta_value );        
+            update_post_meta( $post['ID'], $meta_key, $meta_value );      
           }
         }
 
@@ -103,7 +103,8 @@ switch($_REQUEST['action']){
       if( !property_exists($data, 'custom_fields'))
         $data->custom_fields = new stdClass;
 
-      $data->custom_fields->_date_reported = date('c', time() );
+      if( !isset($data->custom_fields->_date_reported))
+        $data->custom_fields->_date_reported = date('c', time() );
 
       if( ! ($ID = wp_insert_post($post)) == 0 ){
         
