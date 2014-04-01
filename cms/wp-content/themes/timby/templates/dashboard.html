@@ -113,32 +113,30 @@
 
   <section class="report l-column">
     <div class="row l-group">
-      <div class="header-group">
-        <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
-          <h6 class="">{{term.name}}&nbsp;</h6>
-        </div>
-        <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
-          <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
-          <div class="edit-pane" ng-show="showList">
-            <div class="checkbox"  ng-repeat="term in wordpress.terms.sector" >
-              <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
-              <label for="{{term.id}}">{{term.name}}</label>
-            </div>
-            <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
-              <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
-            </label> -->
-            <div>
-              <button ng-click="showList=!showList" class="small">Close</button>
-            </div>
-          </div>
-        </div>
-        <!-- <h3>{{report.post_title}}</h3> -->
-        <input type="text" ng-model="report.post_title" class="h3-input">
-        <div class="row">
           <div class="three">
             <div id="report-location"></div>
           </div>
           <div class="nine">
+            <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
+              <h6 class="">{{term.name}}&nbsp;</h6>
+            </div>
+            <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
+              <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
+              <div class="edit-pane" ng-show="showList">
+                <div class="checkbox"  ng-repeat="term in wordpress.terms.sector" >
+                  <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
+                  <label for="{{term.id}}">{{term.name}}</label>
+                </div>
+                <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
+                  <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
+                </label> -->
+                <div>
+                  <button ng-click="showList=!showList" class="small">Close</button>
+                </div>
+              </div>
+            </div>
+            <!-- <h3>{{report.post_title}}</h3> -->
+            <input type="text" ng-model="report.post_title" class="h3-input">
             <h5 class="subhead">{{report.date_reported}} by {{report.reporter.name}}</h5>
             <!-- <div>
               <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
@@ -162,7 +160,6 @@
               <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
             </div>
           </div>
-        </div>
       </div>
       
     </div><!--- end header group-->
