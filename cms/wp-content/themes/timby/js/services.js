@@ -31,6 +31,12 @@ angular.module('timby.services', [])
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_all_terms');
     },
     create : function(report){
+
+      if( report.reporter )
+        reporter_id = report.reporter.id || AuthService.user.ID
+        else
+          reporter_id = AuthService.user.ID
+
       return $http.post(
         $window.wp_data.template_url + '/ajax.php?action=create_report',
         {
@@ -45,7 +51,7 @@ angular.module('timby.services', [])
           'custom_fields' : {
             '_lat' : report.lat,
             '_lng' : report.lng,
-            '_reporter_id' : report.reporter.id,
+            '_reporter_id' : reporter_id, //default to the signed in user if no reporte is selected
             '_date_reported' : new Date(report.date_reported).toISOString()
           },
         }
