@@ -120,11 +120,15 @@
         <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
           <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
           <div class="edit-pane" ng-show="showList">
-            <label ng-repeat="term in terms.sector" class="checkbox-label">
+            <div class="checkbox"  ng-repeat="term in terms.sector" >
+              <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
+              <label for="{{term.id}}">{{term.name}}</label>
+            </div>
+            <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
               <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
-            </label>
+            </label> -->
             <div>
-              <button ng-click="showList=!showList">close</button>
+              <button ng-click="showList=!showList" class="small">Close</button>
             </div>
           </div>
         </div>
