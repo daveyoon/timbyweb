@@ -20,14 +20,14 @@
     </li>
   </nav>
 </header>
-<section class="l-main-unit clearfix filters-hidden" ng-controller="ReportController">
+<section class="l-main-unit clearfix l-container" ng-controller="ReportController">
   <form action="" ng-submit="addReport()" ng-hide="working">
     <h3>Add a new report</h3>
-    <div style="float:left; margin-right: 20px">
+    <div >
       Title
       <input type="text" ng-model="report.title">
     </div>
-    <div style="float:left; margin-right: 20px">
+    <div >
       Description
       <textarea ng-model="report.description" id="" cols="30" rows="10"></textarea>
     </div>
@@ -39,22 +39,22 @@
           <option value="">Select a user</option>
       </select>
     </div>
-    <div style="float:left; margin-right: 20px">
+    <div style="">
       <h6>Select Image</h6>
       <input type="file" ng-file-select="onFileSelect('photo', $files)" multiple>
       <span ng-show="invalid.photo">{{invalid.photo}}</span>
     </div>
-    <div style="float:left; margin-right: 20px">
+    <div style="">
       <h6>Select a Video</h6>
       <input type="file" ng-file-select="onFileSelect('video',$files)" multiple>
       <span ng-show="invalid.video">{{invalid.video}}</span>
     </div>
-    <div style="float:left; margin-right: 20px">
+    <div style="">
       <h6>Select Audio</h6>
       <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
       <span ng-show="invalid.audio">{{invalid.audio}}</span>
     </div>
-    <div style="float:left; margin-right: 20px">
+    <div style="">
       Sector
       <select chosen
               ng-model="report.sectors"
@@ -64,7 +64,7 @@
               <option value=""></option>
       </select>
     </div>
-    <div style="float:left; margin-right: 20px">
+    <div style="">
       Entity
       <select chosen
               ng-model="report.entities"
@@ -74,7 +74,7 @@
               <option value=""></option>
       </select>
     </div>
-    <div style="float:left; margin-right: 20px">
+    <div style="">
       Location
       <google-map 
         center="map.center" 

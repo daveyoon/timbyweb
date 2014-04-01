@@ -11,12 +11,16 @@
   text-align: center
 
 .filters-button
-  @include size(58px 58px)
-  padding: 4px 8px 8px 11px
+  @include size(58px 52px)
+  font-size: 34px
+  padding: 1px 8px 8px 8px
   background: $light-gray
   margin-bottom: 4px
-  [class^="icon-"]
-    font-size: 36px
+  color: $black
+  &:hover
+    cursor: pointer
+    background: $black
+    color: white
 
 .filters-hidden
   .filters
@@ -28,8 +32,6 @@
     @include transform(translateX(-250px))
   .filters-hide
     @include transform(translateX(0px))
-  .filter-control-button:after
-    content: 'Show' 
 
 .filter-control-button:after
   content: 'Hide'

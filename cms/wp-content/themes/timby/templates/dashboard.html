@@ -25,33 +25,47 @@
       FILTERS
     </div>
     <div class="filters-alive">
-      <h4>Filters</h4>
-      <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button"></button>
+      <div class="clearfix">
+        <h4 class="pull-left">Filters</h4>
+        <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button pull-right btn-small"></button>
+      </div>
       <form role="form">
         <div class="form-group">
-            <label for="search" class="">Sector</label>
-            <div>
-              <input type="checkbox" name="option1" value="timber"> Timber<br>
-              <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
-              <input type="checkbox" name="option1" value="palm"> Mining
+            <h6 class="form-title">Sector</h6>
+            <div class="checkbox">
+              <input id="blah" type="checkbox" name="check1" value="check1">
+              <label for="blah">Timber</label>
             </div>
+            <div class="checkbox">
+              <input id="blah2" type="checkbox" name="check2" value="check2">
+              <label for="blah2">Mining</label>
+            </div>
+            <div class="checkbox">
+              <input id="blah3" type="checkbox" name="check3" value="check3">
+              <label for="blah3">Palm Oil</label>
+            </div>
+            <!-- <div class="checkbox">
+              <div class="dummy-check">.</div>
+              <label for="blah2">Checkbox No. 2</label>
+            </div>
+            <div class="checkbox">
+              <div class="dummy-check active">x</div>
+              <label for="blah2">Checkbox No. 3</label>
+            </div> -->
         </div><!--end Sector-->
         <div class="form-group">
-            <label for="search" class="">Category</label>
-            <div>
-              <input type="checkbox" name="option1" value="timber"> Timber<br>
-              <input type="checkbox" name="option1" value="palm"> Palm Oil<br>
-              <input type="checkbox" name="option1" value="palm"> Mining
-            </div>
-        </div><!--end Sector-->
-        <div class="form-group">
-          <label for="search" >Tags</label>
-          <div>
+          <h6 class="form-title">Tags</h6>
+          <div class="">
             <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
+          </div>
+          <div class="tag-cloud">
+            <span class="tag tag-rounded">Company Name <i class="fa fa-times"></i></span>
+            <span class="tag tag-rounded">Person Name <i class="fa fa-times"></i></span>
+            <span class="tag tag-rounded">Subject <i class="fa fa-times"></i></span>
           </div>
         </div><!--end Tags-->
         <div class="form-group">
-          <label for="search" >Date</label>
+          <h6 class="form-title">Date</h6>
           <div>
             <div class="six">
               <input type="date" placeholder="Start Date">
