@@ -33,7 +33,7 @@
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
             <div class="checkbox" ng-repeat="term in wordpress.terms.sector">
-              <input id="term_{{term.id}}" type="checkbox" checklist-model="reportfilter.sector" checklist-value="term">
+              <input id="term_{{term.id}}" type="checkbox" checklist-model="reportfilter.sectors" checklist-value="term">
               <label for="term_{{term.id}}">{{term.name}}</label>
             </div>
             <!-- <div class="checkbox">
@@ -46,15 +46,16 @@
             </div> -->
         </div><!--end Sector-->
         <div class="form-group">
-          <h6 class="form-title">Tags</h6>
-          <div class="">
-            <input type="search" class="form-control" id="search" placeholder="Start typing to bring up tags">
-          </div>
-          <div class="tag-cloud">
-            <span class="tag tag-rounded">Company Name <i class="fa fa-times"></i></span>
-            <span class="tag tag-rounded">Person Name <i class="fa fa-times"></i></span>
-            <span class="tag tag-rounded">Subject <i class="fa fa-times"></i></span>
-          </div>
+          <h6 class="form-title">Entities</h6>
+          <select chosen
+                  multiple
+                  ng-model="reportfilter.entities"
+                  data-placeholder="Select an entity" 
+                  ng-options="term.name for term in wordpress.terms.entity"
+                  allow-single-deselect="true"
+                  width="'100%'">
+                  <option value=""></option>
+          </select>
         </div><!--end Tags-->
         <div class="form-group">
           <h6 class="form-title">Date</h6>

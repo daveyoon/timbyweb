@@ -4,8 +4,8 @@ angular.module('timby.controllers', [])
     function($scope, $rootScope,ReportService, $sce){
       $scope.authenticated = false;
       $scope.reportfilter = { 
-        sector   : [],
-        entity : []
+        sectors   : [],
+        entities  : []
       };
 
       // redirect all non logged in users
@@ -99,7 +99,7 @@ angular.module('timby.controllers', [])
 
       $scope.addEntity = function(){
         if (angular.isArray($scope.report.entities)) {
-          for(i=0; i<=$scope.report.entities.length; i++){
+          for(i=0; i < $scope.report.entities.length; i++){
             if(angular.equals($scope.termselected, $scope.report.entities[i])){
               $scope.tagexists = true;
               return;
@@ -123,17 +123,28 @@ angular.module('timby.controllers', [])
 
       $scope.filterReports = function(report){
         var _match = true;
-        if( $scope.reportfilter ) {
-          if( $scope.reportfilter.sector.length > 0 && report.sectors.length > 0){
-            for(i=0; i<=report.sectors.length; i++){
-              for(p=0; p<=$scope.reportfilter.sector.length; p++){
-                if( ! angular.equals($scope.reportfilter.sector[p], report.sectors[i]) )
-                  _match = false;           
-              }            
-            }
-          } 
+
+        if( $scope.reportfilter.sectors.length > 0 && report.sectors.length > 0){
+          for(i=0; i<$scope.reportfilter.sectors.length; i++){
+            for(p=0; p<report.sectors.length; p++){
+              if( angular.equals($scope.reportfilter.sectors[p], report.sectors[i]) ){
+                _match = true;
+                break;
+              } else{
+                _match = false;
+              }
+            }            
+          }
         }
 
+        if( $scope.reportfilter.entities.length > 0 && report.entities.length > 0){
+          for(i=0; i<report.entities.length; i++){
+            for(p=0; p<$scope.reportfilter.entities.length; p++){
+              _match = angular.equals($scope.reportfilter.entities[p], report.entities[i]);
+            }            
+          }
+        }
+        
         return _match;
       }
 
