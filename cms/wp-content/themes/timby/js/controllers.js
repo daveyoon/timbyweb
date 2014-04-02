@@ -120,15 +120,21 @@ angular.module('timby.controllers', [])
         }
       }
 
-      $scope.addEntityFilter = function(){
+      $scope.$watch(function(){
+        return $scope.filter_entity_selected
+      }, function(newvalue, oldvalue, scope){
+        if( typeof(newvalue) == 'undefined' )
+          return
+
         for(i=0; i < $scope.reportfilter.entities.length; i++){
-          if(angular.equals($scope.filter_entity_selected, $scope.reportfilter.entities[i])){
+          if(angular.equals(newvalue, $scope.reportfilter.entities[i])){
             $scope.tagexists = true;
             return;
           }
         }
         $scope.reportfilter.entities.push($scope.filter_entity_selected);
-      }
+
+      });
 
       $scope.removeEntityFilter = function(term){
         for (var i = 0; i < $scope.reportfilter.entities.length; i++) {

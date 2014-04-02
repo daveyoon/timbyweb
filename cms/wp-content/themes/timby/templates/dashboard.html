@@ -49,7 +49,7 @@
         <!-- Tags -->
         <div class="form-group">
           <h6 class="form-title">Tags</h6>
-          <div class="six">
+          <div>
             <select chosen
                     ng-model="filter_entity_selected"
                     data-placeholder="Start typing to bring up tags" 
@@ -58,11 +58,10 @@
                     <option value=""></option>
             </select>
           </div>
-          <button class="btn-small" ng-click="addEntityFilter()">Add</button>
 
           <div class="tag-cloud">
             <span class="tag tag-rounded" ng-repeat="term in reportfilter.entities">
-              {{term.name}} <i class="fa fa-times" ng-click="removeEntityFilter(term)"></i>
+              {{term.name}} <a href="" ng-click="removeEntityFilter(term)"><i class="fa fa-times" ></i></a>
             </span>
           </div>
         </div><!--end Tags-->
