@@ -142,30 +142,39 @@ angular.module('timby.controllers', [])
       $scope.filterReports = function(report){
         var _match = true;
 
-        if( $scope.reportfilter.sectors.length > 0 && report.sectors.length > 0){
-          for(i=0; i<$scope.reportfilter.sectors.length; i++){
-            for(p=0; p<report.sectors.length; p++){
-              if( angular.equals($scope.reportfilter.sectors[p], report.sectors[i]) ){
-                _match = true;
-                break;
-              } else{
-                _match = false;
-              }
+        if( $scope.reportfilter.sectors.length > 0){
+          if( report.sectors.length > 0 ) {
+            for(i=0; i<$scope.reportfilter.sectors.length; i++){
+              for(p=0; p<report.sectors.length; p++){
+                if( angular.equals($scope.reportfilter.sectors[p], report.sectors[i]) ){
+                  _match = true;
+                  break;
+                } else{
+                  _match = false;
+                }
+              }            
             }            
+          } else {
+            _match = false; // return false if report has no sectors
           }
         }
 
-        if( $scope.reportfilter.entities.length > 0 && report.entities.length > 0){
-          for(i=0; i<$scope.reportfilter.entities.length; i++){
-            for(p=0; p<report.entities.length; p++){
-              if( angular.equals($scope.reportfilter.entities[p], report.entities[i]) ){
-                _match = true;
-                break;
-              } else{
-                _match = false;
-              }
-            }       
+        if( $scope.reportfilter.entities.length > 0){
+          if( report.entities.length > 0 ) {
+            for(i=0; i<$scope.reportfilter.entities.length; i++){
+              for(p=0; p<report.entities.length; p++){
+                if( angular.equals($scope.reportfilter.entities[p], report.entities[i]) ){
+                  _match = true;
+                  break;
+                } else{
+                  _match = false;
+                }
+              }       
+            }            
+          } else {
+            _match = false; // return false if report has no entities
           }
+
         }
 
 
