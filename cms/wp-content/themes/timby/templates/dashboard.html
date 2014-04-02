@@ -33,7 +33,7 @@
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
             <div class="checkbox checkbox-lined" ng-repeat="term in wordpress.terms.sector">
-              <input id="term_{{term.id}}" type="checkbox" checklist-model="reportfilter.sectors" checklist-value="term">
+              <input id="term_{{term.id}}" type="checkbox" checklist-model="filtercriteria.sectors" checklist-value="term">
               <label for="term_{{term.id}}">{{term.name}}</label>
             </div>
             <!-- <div class="checkbox">
@@ -60,7 +60,7 @@
           </div>
 
           <div class="tag-cloud">
-            <span class="tag tag-rounded" ng-repeat="term in reportfilter.entities">
+            <span class="tag tag-rounded" ng-repeat="term in filtercriteria.entities">
               {{term.name}} <a href="" ng-click="removeEntityFilter(term)"><i class="fa fa-times" ></i></a>
             </span>
           </div>
@@ -87,11 +87,11 @@
       <li class="list-item highlight">
         <div class="form-group">
           <div>
-            <input type="search" id="search" placeholder="Search Reports" ng-model="reportfilter.search">
+            <input type="search" id="search" placeholder="Search Reports" ng-model="filtercriteria.search">
           </div>
         </div>
       </li>
-      <li class="list-item" ng-repeat="report in reports | filter:filterReports" ng-click="viewReport(report.ID)">
+      <li class="list-item" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities" ng-click="viewReport(report.ID)">
         <a href="">
           <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
           <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>

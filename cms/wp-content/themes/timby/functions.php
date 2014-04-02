@@ -236,6 +236,7 @@ function timby_scripts() {
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
   wp_enqueue_script( 'directives', get_template_directory_uri() .'/js/directives.js',false, false, true );
   wp_enqueue_script( 'services', get_template_directory_uri() .'/js/services.js',false, false, true );
+  wp_enqueue_script( 'filters', get_template_directory_uri() .'/js/filters.js',false, false, true );
 
 
 

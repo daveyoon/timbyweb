@@ -3,9 +3,10 @@ angular.module('timby.controllers', [])
   ['$scope', '$rootScope', 'ReportService', '$sce',
     function($scope, $rootScope,ReportService, $sce){
       $scope.authenticated = false;
-      $scope.reportfilter = { 
+      $scope.filtercriteria = { 
         sectors   : [],
-        entities  : []
+        entities  : [],
+        search  : ''
       };
 
       // redirect all non logged in users
@@ -126,70 +127,23 @@ angular.module('timby.controllers', [])
         if( typeof(newvalue) == 'undefined' )
           return
 
-        for(i=0; i < $scope.reportfilter.entities.length; i++){
-          if(angular.equals(newvalue, $scope.reportfilter.entities[i])){
+        for(i=0; i < $scope.filtercriteria.entities.length; i++){
+          if(angular.equals(newvalue, $scope.filtercriteria.entities[i])){
             $scope.tagexists = true;
             return;
           }
         }
-        $scope.reportfilter.entities.push($scope.filter_entity_selected);
+        $scope.filtercriteria.entities.push($scope.filter_entity_selected);
 
       });
 
       $scope.removeEntityFilter = function(term){
-        for (var i = 0; i < $scope.reportfilter.entities.length; i++) {
-          if (angular.equals($scope.reportfilter.entities[i], term)) {
-            $scope.reportfilter.entities.splice(i, 1);
+        for (var i = 0; i < $scope.filtercriteria.entities.length; i++) {
+          if (angular.equals($scope.filtercriteria.entities[i], term)) {
+            $scope.filtercriteria.entities.splice(i, 1);
             break;
           }
         }
-      }
-
-      $scope.filterReports = function(report){
-        var _match = true;
-        
-        if($scope.reportfilter.search){
-          var r = new RegExp($scope.reportfilter.search, 'i'); //case insensitive
-          _match = r.test(report.post_title);
-        }
-
-        if( $scope.reportfilter.sectors.length > 0){
-          if( report.sectors.length > 0 ) {
-            for(i=0; i<$scope.reportfilter.sectors.length; i++){
-              for(p=0; p<report.sectors.length; p++){
-                if( angular.equals($scope.reportfilter.sectors[p], report.sectors[i]) ){
-                  _match = true;
-                  break;
-                } else{
-                  _match = false;
-                }
-              }            
-            }            
-          } else {
-            _match = false; // return false if report has no sectors
-          }
-        }
-
-        if( $scope.reportfilter.entities.length > 0){
-          if( report.entities.length > 0 ) {
-            for(i=0; i<$scope.reportfilter.entities.length; i++){
-              for(p=0; p<report.entities.length; p++){
-                if( angular.equals($scope.reportfilter.entities[p], report.entities[i]) ){
-                  _match = true;
-                  break;
-                } else{
-                  _match = false;
-                }
-              }       
-            }            
-          } else {
-            _match = false; // return false if report has no entities
-          }
-
-        }
-
-
-        return _match;
       }
 
     }

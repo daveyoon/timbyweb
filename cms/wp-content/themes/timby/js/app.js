@@ -10,6 +10,7 @@ angular.module('timby',[
     'timby.controllers',
     'timby.services',
     'timby.directives',
+    'timby.filters',
   ]
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
