@@ -115,9 +115,6 @@
 
   <section class="report l-column">
     <div class="row l-group">
-          <div class="three">
-            <div id="report-location"></div>
-          </div>
           <div class="nine">
             <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
               <h6 class="">{{term.name}}&nbsp;</h6>
@@ -144,8 +141,8 @@
               <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
             </div> -->
             <div class="entity-list l-group">
-              <span class="tag" ng-repeat="term in report.entities">
-                {{term.name}} <a href="" title="removetag" ng-click="removeEntity(term)"><i class="fa fa-times"></i></a>
+              <span class="tag tag-remove" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
+                {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i></a>
               </span> 
             </div>
             <div class="l-group">
@@ -161,6 +158,9 @@
               <button class="btn-small" ng-click="addEntity()">Add</button>
               <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
             </div>
+          </div>
+          <div class="three">
+            <div id="report-location"></div>
           </div>
       </div>
       
