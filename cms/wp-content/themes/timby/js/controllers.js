@@ -120,6 +120,24 @@ angular.module('timby.controllers', [])
         }
       }
 
+      $scope.addEntityFilter = function(){
+        for(i=0; i < $scope.reportfilter.entities.length; i++){
+          if(angular.equals($scope.filter_entity_selected, $scope.reportfilter.entities[i])){
+            $scope.tagexists = true;
+            return;
+          }
+        }
+        $scope.reportfilter.entities.push($scope.filter_entity_selected);
+      }
+
+      $scope.removeEntityFilter = function(term){
+        for (var i = 0; i < $scope.reportfilter.entities.length; i++) {
+          if (angular.equals($scope.reportfilter.entities[i], term)) {
+            $scope.reportfilter.entities.splice(i, 1);
+            break;
+          }
+        }
+      }
 
       $scope.filterReports = function(report){
         var _match = true;
@@ -138,18 +156,15 @@ angular.module('timby.controllers', [])
         }
 
         if( $scope.reportfilter.entities.length > 0 && report.entities.length > 0){
-          var breakout = false;
           for(i=0; i<$scope.reportfilter.entities.length; i++){
             for(p=0; p<report.entities.length; p++){
               if( angular.equals($scope.reportfilter.entities[p], report.entities[i]) ){
                 _match = true;
-                breakout = true;
                 break;
               } else{
                 _match = false;
               }
-            }
-            if (breakout) break;         
+            }       
           }
         }
 

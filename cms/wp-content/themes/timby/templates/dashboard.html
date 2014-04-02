@@ -45,18 +45,28 @@
               <label for="blah2">Checkbox No. 3</label>
             </div> -->
         </div><!--end Sector-->
+        
+        <!-- Tags -->
         <div class="form-group">
-          <h6 class="form-title">Entities</h6>
-          <select chosen
-                  multiple
-                  ng-model="reportfilter.entities"
-                  data-placeholder="Select an entity" 
-                  ng-options="term.name for term in wordpress.terms.entity"
-                  allow-single-deselect="true"
-                  width="'100%'">
-                  <option value=""></option>
-          </select>
+          <h6 class="form-title">Tags</h6>
+          <div class="six">
+            <select chosen
+                    ng-model="filter_entity_selected"
+                    data-placeholder="Start typing to bring up tags" 
+                    ng-options="term.name for term in wordpress.terms.entity"
+                    width="'100%'">
+                    <option value=""></option>
+            </select>
+          </div>
+          <button class="btn-small" ng-click="addEntityFilter()">Add</button>
+
+          <div class="tag-cloud">
+            <span class="tag tag-rounded" ng-repeat="term in reportfilter.entities">
+              {{term.name}} <i class="fa fa-times" ng-click="removeEntityFilter(term)"></i>
+            </span>
+          </div>
         </div><!--end Tags-->
+
         <div class="form-group">
           <h6 class="form-title">Date</h6>
           <div>
