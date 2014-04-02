@@ -32,7 +32,7 @@
       <form role="form">
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
-            <div class="checkbox" ng-repeat="term in wordpress.terms.sector">
+            <div class="checkbox checkbox-lined" ng-repeat="term in wordpress.terms.sector">
               <input id="term_{{term.id}}" type="checkbox" checklist-model="reportfilter.sectors" checklist-value="term">
               <label for="term_{{term.id}}">{{term.name}}</label>
             </div>
