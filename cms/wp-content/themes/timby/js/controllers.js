@@ -138,13 +138,22 @@ angular.module('timby.controllers', [])
         }
 
         if( $scope.reportfilter.entities.length > 0 && report.entities.length > 0){
-          for(i=0; i<report.entities.length; i++){
-            for(p=0; p<$scope.reportfilter.entities.length; p++){
-              _match = angular.equals($scope.reportfilter.entities[p], report.entities[i]);
-            }            
+          var breakout = false;
+          for(i=0; i<$scope.reportfilter.entities.length; i++){
+            for(p=0; p<report.entities.length; p++){
+              if( angular.equals($scope.reportfilter.entities[p], report.entities[i]) ){
+                _match = true;
+                breakout = true;
+                break;
+              } else{
+                _match = false;
+              }
+            }
+            if (breakout) break;         
           }
         }
-        
+
+
         return _match;
       }
 
