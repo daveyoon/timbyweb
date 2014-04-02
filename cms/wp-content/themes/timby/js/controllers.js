@@ -3,6 +3,10 @@ angular.module('timby.controllers', [])
   ['$scope', '$rootScope', 'ReportService', '$sce',
     function($scope, $rootScope,ReportService, $sce){
       $scope.authenticated = false;
+      $scope.reportfilter = { 
+        sector   : [],
+        entity : []
+      };
 
       // redirect all non logged in users
       $rootScope.$on('$routeChangeStart', function(event, next, current){
@@ -114,6 +118,23 @@ angular.module('timby.controllers', [])
             }
           }
         }
+      }
+
+
+      $scope.filterReports = function(report){
+        var _match = true;
+        if( $scope.reportfilter ) {
+          if( $scope.reportfilter.sector.length > 0 && report.sectors.length > 0){
+            for(i=0; i<=report.sectors.length; i++){
+              for(p=0; p<=$scope.reportfilter.sector.length; p++){
+                if( ! angular.equals($scope.reportfilter.sector[p], report.sectors[i]) )
+                  _match = false;           
+              }            
+            }
+          } 
+        }
+
+        return _match;
       }
 
     }

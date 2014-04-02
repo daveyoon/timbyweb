@@ -32,17 +32,9 @@
       <form role="form">
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
-            <div class="checkbox">
-              <input id="blah" type="checkbox" name="check1" value="check1">
-              <label for="blah">Timber</label>
-            </div>
-            <div class="checkbox">
-              <input id="blah2" type="checkbox" name="check2" value="check2">
-              <label for="blah2">Mining</label>
-            </div>
-            <div class="checkbox">
-              <input id="blah3" type="checkbox" name="check3" value="check3">
-              <label for="blah3">Palm Oil</label>
+            <div class="checkbox" ng-repeat="term in wordpress.terms.sector">
+              <input id="term_{{term.id}}" type="checkbox" checklist-model="reportfilter.sector" checklist-value="term">
+              <label for="term_{{term.id}}">{{term.name}}</label>
             </div>
             <!-- <div class="checkbox">
               <div class="dummy-check">.</div>
@@ -89,7 +81,7 @@
           </div>
         </div>
       </li>
-      <li class="list-item" ng-repeat="report in reports" ng-click="viewReport(report.ID)">
+      <li class="list-item" ng-repeat="report in reports | filter:filterReports" ng-click="viewReport(report.ID)">
         <a href="">
           <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
           <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
