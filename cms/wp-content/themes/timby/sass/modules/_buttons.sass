@@ -1,4 +1,4 @@
-button
+button, .btn
   padding: .5em 1em
   background: white
   border: 1px $gray solid
@@ -12,8 +12,12 @@ button
     cursor: default
   &:disabled
     background: $light-gray
+    color: $med-gray
+    border-color: $med-gray
   &:disabled:active
     color: $dark-gray
+  &.active:disabled
+    color: $med-gray
   &:disabled:hover
     background: $light-gray
     color: $dark-gray
@@ -32,4 +36,7 @@ button
 .btn-small
   padding: .25em .5em
   font-size: .875em
+
+input[type="submit"].btn
+  @include appearance(none)
 
