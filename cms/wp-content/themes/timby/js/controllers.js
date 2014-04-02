@@ -141,6 +141,11 @@ angular.module('timby.controllers', [])
 
       $scope.filterReports = function(report){
         var _match = true;
+        
+        if($scope.reportfilter.search){
+          var r = new RegExp($scope.reportfilter.search, 'i'); //case insensitive
+          _match = r.test(report.post_title);
+        }
 
         if( $scope.reportfilter.sectors.length > 0){
           if( report.sectors.length > 0 ) {
