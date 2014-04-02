@@ -98,17 +98,6 @@ angular.module('timby.controllers', [])
         return $sce.trustAsResourceUrl(src);
       }
 
-      $scope.addEntity = function(){
-        if (angular.isArray($scope.report.entities)) {
-          for(i=0; i < $scope.report.entities.length; i++){
-            if(angular.equals($scope.termselected, $scope.report.entities[i])){
-              $scope.tagexists = true;
-              return;
-            }
-          }
-          $scope.report.entities.push($scope.termselected);
-        }
-      }
 
       $scope.removeEntity = function(term){
         if (angular.isArray($scope.report.entities)) {
@@ -121,6 +110,7 @@ angular.module('timby.controllers', [])
         }
       }
 
+      // watch the entity select while filtering
       $scope.$watch(function(){
         return $scope.filter_entity_selected
       }, function(newvalue, oldvalue, scope){
@@ -136,6 +126,27 @@ angular.module('timby.controllers', [])
         $scope.filtercriteria.entities.push($scope.filter_entity_selected);
 
       });
+
+      // watch the entity select while adding new entities to select
+      $scope.$watch(function(){
+        return $scope.termselected
+      }, function(newvalue, oldvalue, scope){
+        $scope.tagexists = false;
+        if( typeof(newvalue) == 'undefined' )
+          return
+
+        if (angular.isArray($scope.report.entities)) {
+          for(i=0; i < $scope.report.entities.length; i++){
+            if(angular.equals($scope.termselected, $scope.report.entities[i])){
+              $scope.tagexists = true;
+              return;
+            }
+          }
+          $scope.report.entities.push($scope.termselected);
+        }
+
+      });
+
 
       $scope.removeEntityFilter = function(term){
         for (var i = 0; i < $scope.filtercriteria.entities.length; i++) {
