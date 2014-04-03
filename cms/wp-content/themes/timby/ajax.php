@@ -189,6 +189,7 @@ switch($_REQUEST['action']){
         exit(0);
       }
     }
+
     if( !empty($_POST) && wp_verify_nonce( $_POST['nonce'], 'timbyweb_front_nonce') == true ){
       
       if (!empty($_FILES['file'])) {
@@ -220,10 +221,29 @@ switch($_REQUEST['action']){
 
     }
 
-
-
     break;
 
+  case 'detach_media_object':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){
+
+      $args = array(
+        'ID'     => $data->media_ID,
+        'post_parent' =>  null, //reset the parent of this object
+      );
+
+      if( ! is_wp_error(wp_update_post($args, true))){
+        echo json_encode(
+          array(
+            'status' => 'success',
+            'message' => 'Media object detached succesfuly'
+          )
+        );
+      }
+    }
+
+    break;
   default:
     break;
 }
