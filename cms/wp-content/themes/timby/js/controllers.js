@@ -78,7 +78,7 @@ angular.module('timby.controllers', [])
       $scope.isActive = function(id){
         if($scope.report)
           return $scope.report.ID == id;
-        
+
         return false;
       }
 
@@ -104,11 +104,16 @@ angular.module('timby.controllers', [])
         $scope.report.verified = !$scope.report.verified;
         $scope.updateReport();
       }
+
       $scope.trustSrc = function(src){
         return $sce.trustAsResourceUrl(src);
       }
 
-
+      /**
+       * Remove an entity tag from a report
+       * @param  object term 
+       * @return void
+       */
       $scope.removeEntity = function(term){
         if (angular.isArray($scope.report.entities)) {
           for (var i = 0; i < $scope.report.entities.length; i++) {
@@ -119,6 +124,26 @@ angular.module('timby.controllers', [])
           }
         }
       }
+
+      /**
+       * Detach the media object from a report
+       * @param  integer id object ID
+       * @return void
+       */
+      $scope.detachMedia = function(id, $event){
+        var elem = angular.element($event.target);
+        elem.parents('.l-media-grid').fadeOut(500, function(){
+          this.remove()
+        });
+
+        ReportService
+          .detachMediaObject(id, $scope.report.ID)
+          .then(function(response, status, headers, config){
+            if( response.data.status == 'success'){
+              $scope.getAllReports();
+            }
+          });
+      };
 
       // watch the entity select while filtering
       $scope.$watch(function(){

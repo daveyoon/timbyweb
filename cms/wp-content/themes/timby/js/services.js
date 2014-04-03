@@ -78,8 +78,20 @@ angular.module('timby.services', [])
         });
 
       }
-    }
+    },
 
+    detachMediaObject : function(id, reportid){
+
+      return $http.post(
+        $window.wp_data.template_url + '/ajax.php?action=detach_media_object',
+        {
+          'media_ID' : id,
+          'report_ID' : reportid,
+          'nonce' : $window.wp_data.nonce,
+        }
+      );
+
+    }
   }
 }])
 .factory('AuthService', ['$http','$window', function($http, $window) {
