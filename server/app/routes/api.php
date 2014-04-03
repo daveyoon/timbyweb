@@ -50,9 +50,9 @@ if( !function_exists('error')){
 $app->hook('upload', function ($params) use($app) {
 
   // upload the file
-  $upload_file_path = $app->config('TEMPORARY_UPLOADS_DIR') . $_FILES['attachment']['name'];
+  $upload_file_path = $app->config('TEMPORARY_UPLOADS_DIR') . $_FILES['userfile']['name'];
 
-  if(move_uploaded_file($_FILES['attachment']['tmp_name'], $upload_file_path)){
+  if(move_uploaded_file($_FILES['userfile']['tmp_name'], $upload_file_path)){
     $params['attachment'] = '@'. $upload_file_path; // attachment will be available to wordpress in $_FILES
 
     //upload the attachment
