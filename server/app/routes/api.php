@@ -543,6 +543,8 @@ $app->group('/api', function () use ($app) {
       switch( $app->request->post('object_type'))
       {
         case 'image':
+          print_r($_FILES);
+          exit;
           if( in_array($_FILES['user_file']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
           {
             $params['media_type'] = 'image';
