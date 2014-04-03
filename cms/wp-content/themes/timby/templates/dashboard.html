@@ -60,8 +60,8 @@
           </div>
 
           <div class="tag-cloud">
-            <span class="tag tag-rounded" ng-repeat="term in filtercriteria.entities">
-              {{term.name}} <a href="" ng-click="removeEntityFilter(term)"><i class="fa fa-times" ></i></a>
+            <span class="tag tag-rounded tag-remove" ng-click="removeEntityFilter(term)" ng-repeat="term in filtercriteria.entities">
+              {{term.name}} <i class="fa fa-times" ></i>
             </span>
           </div>
         </div><!--end Tags-->
