@@ -91,7 +91,7 @@
           </div>
         </div>
       </li>
-      <li class="list-item" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities" ng-click="viewReport(report.ID)">
+      <li class="list-item" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities" ng-click="viewReport(report.ID)" ng-class="isActive(report.ID) ? 'list-item-active' : '' ">
         <a href="">
           <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
           <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>

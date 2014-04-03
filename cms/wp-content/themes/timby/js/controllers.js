@@ -72,6 +72,16 @@ angular.module('timby.controllers', [])
           )
       }
 
+      /**
+       * Checks whether the current item in the repeat is active
+       */
+      $scope.isActive = function(id){
+        if($scope.report)
+          return $scope.report.ID == id;
+        
+        return false;
+      }
+
       $scope.updateReport = function(){
         $scope.working = true;
         ReportService
