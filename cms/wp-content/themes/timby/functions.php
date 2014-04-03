@@ -213,7 +213,7 @@ function timby_scripts() {
   // chosen
   wp_enqueue_script( 'chosen', get_template_directory_uri() .'/bower_components/chosen/chosen.jquery.js', false, false, true );
   wp_enqueue_script( 'angular-chosen', get_template_directory_uri() .'/bower_components/angular-chosen-localytics/chosen.js', false, false, true );
-  wp_enqueue_style( 'chosen-css', get_template_directory_uri() .'/bower_components/chosen/chosen.min.css', false, false, false );
+  //wp_enqueue_style( 'chosen-css', get_template_directory_uri() .'/bower_components/chosen/chosen.min.css', false, false, false );
   wp_enqueue_style( 'chosen-angular-spinner-css', get_template_directory_uri() .'/bower_components/angular-chosen-localytics/chosen-spinner.css', false, false, false );
   
   // textangular
@@ -238,6 +238,7 @@ function timby_scripts() {
   wp_enqueue_script( 'services', get_template_directory_uri() .'/js/services.js',false, false, true );
   wp_enqueue_script( 'filters', get_template_directory_uri() .'/js/filters.js',false, false, true );
 
+  // local css
 
 
   //localize ajaxurl and nonce to the app script

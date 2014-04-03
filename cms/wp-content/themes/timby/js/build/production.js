@@ -10,13 +10,15 @@ angular.module('timby',[
     'google-maps',
     'localytics.directives',
     'angularFileUpload',
+    'ui.bootstrap',
     'timby.controllers',
     'timby.services',
     'timby.directives',
+    'timby.filters',
   ]
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
-.config(['$routeProvider', 'BASE_URL', '$sceDelegateProvider', function($routeProvider, BASE_URL, $sceDelegateProvider){
+.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig){
   
   $sceDelegateProvider.resourceUrlWhitelist([
    'self',
@@ -52,44 +54,42 @@ angular.module('timby',[
 
   $routeProvider.otherwise({ redirectTo : '/'});
   
+  datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
 
+}])
+.run(['$rootScope', 'wordpress', function($rootScope, wordpressProvider){
+  // fetches necessary wordpress data
+  // we require for our app to run, 
+  // this includes taxonomies, api users
+  wordpressProvider
+  .getInfo()
+  .then(function(response){
+    if (response.data.status == 'success') {
+      $rootScope.wordpress = response.data.data
+    }
+  }); 
+  
 }]);
 angular.module('timby.controllers', [])
 .controller('MainController', 
   ['$scope', '$rootScope', 'ReportService', '$sce',
     function($scope, $rootScope,ReportService, $sce){
       $scope.authenticated = false;
+      $scope.filtercriteria = { 
+        sectors   : [],
+        entities  : [],
+        search  : ''
+      };
 
       // redirect all non logged in users
       $rootScope.$on('$routeChangeStart', function(event, next, current){
         if( next.authenticate && !AuthService.isAuthenticated()){
           $location.path( "/login" )
         }
-      })
+      });
+
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
-
-      /**
-       * Fetches all terms 
-       * for taxonomies sector, entity
-       * 
-       * @return {[type]} [description]
-       */
-      $scope.getAllTerms = function(){
-        ReportService
-          .getAllTerms()
-          .then(
-            function success(response, status, headers, config) {
-              if (response.data.status == 'success') {
-                $scope.terms = response.data.terms;
-              }
-            },
-            function error(response, status, headers, config) {
-              //notify alert, could not connect to remote server
-            }
-          )
-      };
-      $scope.getAllTerms();
 
       $scope.getAllReports = function(){
         ReportService
@@ -144,6 +144,16 @@ angular.module('timby.controllers', [])
           )
       }
 
+      /**
+       * Checks whether the current item in the repeat is active
+       */
+      $scope.isActive = function(id){
+        if($scope.report)
+          return $scope.report.ID == id;
+        
+        return false;
+      }
+
       $scope.updateReport = function(){
         $scope.working = true;
         ReportService
@@ -170,17 +180,6 @@ angular.module('timby.controllers', [])
         return $sce.trustAsResourceUrl(src);
       }
 
-      $scope.addEntity = function(){
-        if (angular.isArray($scope.report.entities)) {
-          for(i=0; i<=$scope.report.entities.length; i++){
-            if(angular.equals($scope.termselected, $scope.report.entities[i])){
-              $scope.tagexists = true;
-              return;
-            }
-          }
-          $scope.report.entities.push($scope.termselected);
-        }
-      }
 
       $scope.removeEntity = function(term){
         if (angular.isArray($scope.report.entities)) {
@@ -189,6 +188,53 @@ angular.module('timby.controllers', [])
               $scope.report.entities.splice(i, 1);
               break;
             }
+          }
+        }
+      }
+
+      // watch the entity select while filtering
+      $scope.$watch(function(){
+        return $scope.filter_entity_selected
+      }, function(newvalue, oldvalue, scope){
+        if( typeof(newvalue) == 'undefined' )
+          return
+
+        for(i=0; i < $scope.filtercriteria.entities.length; i++){
+          if(angular.equals(newvalue, $scope.filtercriteria.entities[i])){
+            $scope.tagexists = true;
+            return;
+          }
+        }
+        $scope.filtercriteria.entities.push($scope.filter_entity_selected);
+
+      });
+
+      // watch the entity select while adding new entities to select
+      $scope.$watch(function(){
+        return $scope.termselected
+      }, function(newvalue, oldvalue, scope){
+        $scope.tagexists = false;
+        if( typeof(newvalue) == 'undefined' )
+          return
+
+        if (angular.isArray($scope.report.entities)) {
+          for(i=0; i < $scope.report.entities.length; i++){
+            if(angular.equals($scope.termselected, $scope.report.entities[i])){
+              $scope.tagexists = true;
+              return;
+            }
+          }
+          $scope.report.entities.push($scope.termselected);
+        }
+
+      });
+
+
+      $scope.removeEntityFilter = function(term){
+        for (var i = 0; i < $scope.filtercriteria.entities.length; i++) {
+          if (angular.equals($scope.filtercriteria.entities[i], term)) {
+            $scope.filtercriteria.entities.splice(i, 1);
+            break;
           }
         }
       }
@@ -221,36 +267,32 @@ angular.module('timby.controllers', [])
 
             }
           )
+
       }
     }
   ]
 )
 .controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
   $scope.report = {};
-
-  // improve this later
-  $scope.getAllTerms = function(){
-    ReportService
-      .getAllTerms()
-      .then(
-        function success(response, status, headers, config) {
-          if (response.data.status == 'success') {
-            $scope.terms = response.data.terms;
-          }
-        },
-        function error(response, status, headers, config) {
-          //notify alert, could not connect to remote server
-        }
-      )
+  $scope.report.placeholderText = "Type your description here";
+  $scope.placeholder = function(){
+    var editor = angular.element('#taTextElement');
+    var toolbar = angular.element('.ta-toolbar');
+    if (editor.text() == $scope.report.placeholderText){
+      editor.text('');
+    }
+    // console.log(angular.element('.ta-toolbar').hasClass('hide'));
+    if (toolbar.hasClass('hide') == 'true'){
+      toolbar.removeClass('hide');
+    }
   };
-  $scope.getAllTerms();
 
   // Enable the new Google Maps visuals until it gets enabled by default.
   google.maps.visualRefresh = true;
 
-  // preselected position which is also the map center
-  $scope.report.lat = 75;
-  $scope.report.lng = -73;
+  // map center is at Kokoyah, Liberia
+  $scope.report.lat = 6.550676;
+  $scope.report.lng = -9.488156;
 
   angular.extend($scope, {
     map : {
@@ -258,7 +300,7 @@ angular.module('timby.controllers', [])
         latitude: $scope.report.lat,
         longitude: $scope.report.lng
       },
-      zoom: 8,
+      zoom: 7,
       clickedMarker: {
           title: 'Your current position',
           latitude: null,
@@ -277,7 +319,13 @@ angular.module('timby.controllers', [])
     }
   });
 
-  $scope.addReport = function(){
+  $scope.dateOptions = {
+    'year-format': "'yy'",
+    'starting-day': 1
+  };
+
+  $scope.createReport = function(evt){
+
     $scope.working = true;
     ReportService
       .create($scope.report)
@@ -286,6 +334,11 @@ angular.module('timby.controllers', [])
           if (response.data.status == 'success') {
             $scope.uploadMedia(response.data.report.ID); //upload the media files selected
             $scope.working = false;
+
+            // reset the form and
+            // mute the model
+            $scope.report = {};
+            evt.target.reset();
           }
         },
         function error(response, status, headers, config) {
@@ -307,7 +360,21 @@ angular.module('timby.controllers', [])
     }
 
     if( $type == 'video'){
-      if( ! files_are_valid($files, ['video/mp4', 'video/ogg','video/webm', 'video/x-flv']) ){
+      if( ! files_are_valid($files, 
+            [
+              'video/mp4', 'video/ogg','video/webm',
+               //.mov
+              'video/x-flv', 'video/quicktime',
+               //.avi
+              'application/x-troff-msvideo',
+              'video/avi',
+              'video/msvideo',
+              'video/x-msvideo',
+              'video/avs-video',
+              // mkv
+              'video/x-matroska'
+            ]) 
+        ){
         $scope.invalid.video = 'Select only valid video files.';
         return;
       }
@@ -362,6 +429,80 @@ angular.module('timby.controllers', [])
 
 angular.module('timby.directives', [])
 
+angular.module('timby.filters', [])
+.filter('searchFilter', function(){
+  return function(reports, search){
+    if( search.length === 0) return reports;
+
+    var r = new RegExp(search, 'i');
+    var result = [];
+
+    // filter via search
+    if( search.length === 0 ) 
+      return reports;
+
+    if(search.length > 0){
+      angular.forEach(reports, function(report, key){
+        if(r.test(report.post_title)){
+          result.push(report);
+        }
+      });
+    }
+
+    return result;
+
+  }
+})
+.filter('sectorFilter', function(){
+  return function(reports, sectors){
+
+    if( sectors.length === 0) return reports;
+
+    var result = [];
+    var _sector_ids = sectors.map(function(sector){
+      return sector.id
+    });
+
+    if( sectors.length > 0 ){
+      angular.forEach(reports, function(report, key){
+        if( report.sectors.length > 0){
+          angular.forEach(report.sectors, function(sector, key){
+            if( _sector_ids.indexOf(sector.id) != -1){
+              result.push(report);
+            }
+          });
+        }
+      });      
+    }
+
+    return result;
+  }
+})
+.filter('entityFilter', function(){
+  return function(reports, entities){
+
+    if( entities.length === 0) return reports;
+
+    var result = [];
+    var _entity_ids = entities.map(function(sector){
+      return sector.id
+    });
+
+    if( entities.length > 0 ){
+      angular.forEach(reports, function(report, key){
+        if( report.entities.length > 0){
+          angular.forEach(report.entities, function(sector, key){
+            if( _entity_ids.indexOf(sector.id) != -1){
+              result.push(report);
+            }
+          });
+        }
+      });      
+    }
+
+    return result;
+  }
+})
 // $(document).ready(function(){
     // $('#filterbutton').toggle(function(e){
     //   e.preventDefault();
@@ -475,6 +616,12 @@ angular.module('timby.services', [])
       return $http.get($window.wp_data.template_url + '/ajax.php?action=get_all_terms');
     },
     create : function(report){
+
+      if( report.reporter )
+        reporter_id = report.reporter.id || AuthService.user.ID
+        else
+          reporter_id = AuthService.user.ID
+
       return $http.post(
         $window.wp_data.template_url + '/ajax.php?action=create_report',
         {
@@ -488,7 +635,9 @@ angular.module('timby.services', [])
           'nonce' : $window.wp_data.nonce,
           'custom_fields' : {
             '_lat' : report.lat,
-            '_lng' : report.lng
+            '_lng' : report.lng,
+            '_reporter_id' : reporter_id, //default to the signed in user if no reporte is selected
+            '_date_reported' : new Date(report.date_reported).toISOString()
           },
         }
       );
@@ -541,4 +690,15 @@ angular.module('timby.services', [])
 
     }
   }
-}]);
+}])
+.provider('wordpress', function wordpressProvider(){
+
+  this.$get = ['$http','$window', function($http, $window) {
+    return {
+      getInfo : function(){
+        return $http.post($window.wp_data.template_url + '/ajax.php?action=info')
+      }
+    };
+  }];
+
+});

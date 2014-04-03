@@ -6,21 +6,23 @@
   padding: 1em
   border-bottom: 1px solid $med-gray
   position: relative
-  &:hover, &.highlight
+  &:hover, &.list-highlight
     background: $light-gray
   > .form-group
     margin-bottom: 0
+.list-clickable
+  cursor: pointer
 .list-title
   margin-bottom: 2px
 .list-content
   margin-bottom: 0px
-  color: $med-gray
 
 .list-item.is-verified
   border-left: 6px solid $black
 
-.list-item-active
+.list-item-active, .list-item-active:hover
   background: $black
   color: white
   .list-title
     color: white
+
