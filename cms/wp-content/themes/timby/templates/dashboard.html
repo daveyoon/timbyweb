@@ -62,7 +62,7 @@
           <div class="tag-cloud">
             <span class="tag tag-rounded tag-remove" ng-click="removeEntityFilter(term)" ng-repeat="term in filtercriteria.entities">
               {{term.name}} <i class="fa fa-times" ></i>
-            </span>
+            </span> 
           </div>
         </div><!--end Tags-->
 
@@ -84,22 +84,22 @@
   <section class="results l-column">
     <!-- <h4>Reports</h4> -->
     <ul class="list">
-      <li class="list-item highlight">
+      <li class="list-item list-highlight">
         <div class="form-group">
           <div>
             <input type="search" id="search" placeholder="Search Reports" ng-model="filtercriteria.search">
           </div>
         </div>
       </li>
-      <li class="list-item" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities" ng-click="viewReport(report.ID)" ng-class="isActive(report.ID) ? 'list-item-active' : '' ">
+      <li class="list-item list-clickable" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities" ng-click="viewReport(report.ID)" ng-class="isActive(report.ID) ? 'list-item-active' : '' ">
         <a href="">
           <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
           <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-          <h5 class="list-title">{{report.post_title}}</h5>
-          <p class="list-content">
+          <h6 class="list-title">{{report.post_title}}</h6>
+          <p class="list-content text-muted">
             {{report.date_reported}} by {{report.reporter.name}}
           </p>
-          <div class="horz-list">
+          <div class="horz-list text-muted">
             <i class="fa fa-camera"></i>        {{report.media.photos.length}} &nbsp;&nbsp;
             <i class="fa fa-video-camera"></i>  {{report.media.video.length}} &nbsp;&nbsp;
             <i class="fa fa-volume-up"></i>     {{report.media.audio.length}}
@@ -115,16 +115,15 @@
 
   <section class="report l-column">
     <div class="placeholder" ng-if="!report">
-      <h2>Click on a report to preview it here</h2>
+      <div class="centered-box">
+        Click a report on the left to load it here
+      </div>
     </div>
     
     <div ng-if="report">
       <div class="row l-group">
           <div class="nine">
-            <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
-              <h6 class="">{{term.name}}&nbsp;</h6>
-            </div>
-            <div class="pull-left" style="position:relative; margin: -5px 0 0 12px;">
+            <div class="pull-left" style="position:relative; margin: -5px 12px 0 0;">
               <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
               <div class="edit-pane" ng-show="showList">
                 <div class="checkbox"  ng-repeat="term in wordpress.terms.sector" >
@@ -139,22 +138,25 @@
                 </div>
               </div>
             </div>
+            <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
+              <h6 class="">{{term.name}}&nbsp;</h6>
+            </div>
             <!-- <h3>{{report.post_title}}</h3> -->
             <input type="text" ng-model="report.post_title" class="h3-input">
-            <h5 class="subhead">{{report.date_reported}} by {{report.reporter.name}}</h5>
+            <h6 class="subhead">{{report.date_reported}} by {{report.reporter.name}}</h6>
             <!-- <div>
               <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
             </div> -->
             <div class="entity-list l-group">
-              <span class="tag tag-remove" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
-                {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i></a>
-              </span> 
+              <span class="tag tag-remove tag-rounded" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
+                {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i>&nbsp; </a>
+              </span>
             </div>
             <div class="l-group">
               <div class="six">
                 <select chosen
                         ng-model="termselected"
-                        data-placeholder="Select a tag" 
+                        data-placeholder="Select to add a tag" 
                         ng-options="term.name for term in wordpress.terms.entity"
                         width="'100%'">
                         <option value=""></option>
