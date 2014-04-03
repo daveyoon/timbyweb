@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Custom Post types
@@ -57,7 +57,7 @@ if ( ! function_exists( 'timbyweb_setup' ) ) :
       array(
         'post_name' => 'signin'
       )
-    );      
+    );
 
   }
 endif; // timbyweb_setup
@@ -134,7 +134,7 @@ function build_report_data($report){
   $report->media->audio = fetch_attachments('audio', $report->ID);
   $report->media->video = fetch_attachments('video', $report->ID);
   $report->media->photos = fetch_attachments('image', $report->ID);
-  
+
   //verification status
   $report->verified = (get_post_meta($report->ID, '_cmb_verified', true ) == 'on');
 
@@ -180,14 +180,14 @@ function fetch_attachments($type = '', $post_parent = '')
     if( $type == 'audio' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
       $trackdata = json_decode(get_post_meta($attachment->ID, '_soundcloud_track_data', true ));
       $trackdata->embed_url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/".$trackdata->id."%3Fsecret_token%3D".$trackdata->secret_token."&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true";
-      $attachment->soundcloud = $trackdata;        
+      $attachment->soundcloud = $trackdata;
     }
     if( $type == 'video' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
       $video_id = get_post_meta($attachment->ID, '_vimeo_video_id', true);
-      $attachment->vimeo = array( 
+      $attachment->vimeo = array(
         'video_id' => get_post_meta($attachment->ID, '_vimeo_video_id', true),
         'embed_url' => "//player.vimeo.com/video/".$video_id
-      );        
+      );
     }
     $attachments[$key] = $attachment;
   }
@@ -199,8 +199,8 @@ function fetch_attachments($type = '', $post_parent = '')
  */
 function timby_scripts() {
   //remove jquery from the header, stick it at the footer
-  wp_deregister_script('jquery'); 
-  wp_register_script('jquery', '/wp-includes/js/jquery/jquery.js', false, '1.10.2', true); 
+  wp_deregister_script('jquery');
+  wp_register_script('jquery', '/wp-includes/js/jquery/jquery.js', false, '1.10.2', true);
   wp_enqueue_script('jquery');
 
 
@@ -215,22 +215,22 @@ function timby_scripts() {
   wp_enqueue_script( 'angular-chosen', get_template_directory_uri() .'/bower_components/angular-chosen-localytics/chosen.js', false, false, true );
   //wp_enqueue_style( 'chosen-css', get_template_directory_uri() .'/bower_components/chosen/chosen.min.css', false, false, false );
   wp_enqueue_style( 'chosen-angular-spinner-css', get_template_directory_uri() .'/bower_components/angular-chosen-localytics/chosen-spinner.css', false, false, false );
-  
+
   // textangular
   wp_enqueue_script( 'textangular', get_template_directory_uri() .'/bower_components/textAngular/textAngular.min.js', false, false, true );
-  
+
   wp_enqueue_script( 'google-maps', '//maps.googleapis.com/maps/api/js?sensor=false', false, false, true );
-  
+
   // angular-google-maps, depends on underscore
   wp_enqueue_script( 'angular-google-maps', get_template_directory_uri() .'/bower_components/angular-google-maps/dist/angular-google-maps.min.js', array('underscore'), false, true );
-  
+
   //angular file upload
   wp_enqueue_script( 'angular-file-upload-shim', get_template_directory_uri() .'/bower_components/ng-file-upload/angular-file-upload-shim.min.js', false, false, true );
   wp_enqueue_script( 'angular-file-upload', get_template_directory_uri() .'/bower_components/ng-file-upload/angular-file-upload.min.js', false, false, true );
-  
+
   //angular ui bootstrap
   wp_enqueue_script( 'angular-bootstrap', get_template_directory_uri() .'/js/libs/angularui-bootstrap/ui-bootstrap-custom-tpls-0.10.0.js', false, false, true );
-  
+
   // app, controllers, directives and services
   wp_enqueue_script( 'app', get_template_directory_uri() .'/js/app.js',false, false, true );
   wp_enqueue_script( 'controllers', get_template_directory_uri() .'/js/controllers.js',false, false, true );
@@ -242,14 +242,14 @@ function timby_scripts() {
 
 
   //localize ajaxurl and nonce to the app script
-  wp_localize_script( 
-    'app', 
-    'wp_data', 
-    array( 
+  wp_localize_script(
+    'app',
+    'wp_data',
+    array(
       'ajaxurl'      => admin_url( 'admin-ajax.php' ),
       'nonce'        => wp_create_nonce('timbyweb_front_nonce'),
       'template_url' => get_template_directory_uri()
-    ) 
+    )
   );
 }
 add_action( 'wp_enqueue_scripts', 'timby_scripts' );
@@ -259,7 +259,7 @@ add_action( 'wp_enqueue_scripts', 'timby_scripts' );
 /**
  * When a report is saved from the backend, save custom fields
  * outside of the cmb library
- * 
+ *
  * @param int $post_id The ID of the post being saved.
  */
 function save_custom_report_data( $post_id ) {
@@ -278,11 +278,11 @@ function save_custom_report_data( $post_id ) {
   // save the long and latitude
   if( array_key_exists('_lat', $_POST) && array_key_exists('_lng', $_POST)  )
   {
-    $lat = sanitize_text_field($_POST['_lat']);    
+    $lat = sanitize_text_field($_POST['_lat']);
     $lng = sanitize_text_field($_POST['_lng']);
   } else {
     $lng = '0';
-    $lat = '0'; 
+    $lat = '0';
   }
   // Update the meta field in the database.
   update_post_meta( $post_id, '_lat', $lat );
@@ -303,7 +303,7 @@ add_action( 'save_post', 'save_custom_report_data' );
 
 
 /**
- * A cron job running every 10 mins checking 
+ * A cron job running every 10 mins checking
  * if there are any new posts, new posts are essentially
  * posts with no _cartodb_id custom field
  */
@@ -344,7 +344,7 @@ add_action( 'save_post', 'save_custom_report_data' );
 
 //       // try inserting data into table
 //       $cartoreport = $cartodb->insertRow(
-//         'reports', 
+//         'reports',
 //         array(
 //           'post_id' => "'".$post->ID."'",
 //           'the_geom' => "ST_SetSRID(ST_Point(".$lnglat['lng'].", ".$lnglat['lat']."),4326)"
@@ -355,7 +355,7 @@ add_action( 'save_post', 'save_custom_report_data' );
 //       if( isset($cartoreport['return']['rows'][0]->id) ) {
 //         update_post_meta($post->ID, '_cartodb_id', $cartoreport->rows->id );
 //       }
-//     }    
+//     }
 //   }
 
 // }

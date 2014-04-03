@@ -3,7 +3,7 @@ echo "Database Name:"
 read -e dbname
 echo "Database User:"
 read -e dbuser
-echo "Database Password:" 
+echo "Database Password:"
 read -s dbpass
 echo "run install? (y/n)"
 read -e run

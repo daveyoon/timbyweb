@@ -4,8 +4,8 @@
     <div class="pull-left">
       <h3>Timby</h3>
     </div>
-    <div class="pull-right">
-      <button>Logout</button>
+    <div class="pull-right" ng-controller="LoginController">
+      <button ng-click="logout()">Logout</button>
     </div>
   </div>
   <nav class="tabs">
@@ -16,7 +16,7 @@
 </header>
 <section class="l-main-unit clearfix" ng-class="{ 'filters-hidden': showFilters }">
   <section class="filters l-column">
-    
+
     <div class="filters-hide">
       <div class="filters-button" ng-click="showFilters = ! showFilters">
         <span class="fa fa-tasks"></span>
@@ -45,14 +45,14 @@
               <label for="blah2">Checkbox No. 3</label>
             </div> -->
         </div><!--end Sector-->
-        
+
         <!-- Tags -->
         <div class="form-group">
           <h6 class="form-title">Tags</h6>
           <div>
             <select chosen
                     ng-model="filter_entity_selected"
-                    data-placeholder="Choose a tag" 
+                    data-placeholder="Choose a tag"
                     ng-options="term.name for term in wordpress.terms.entity"
                     width="'100%'">
                     <option value=""></option>
@@ -62,7 +62,7 @@
           <div class="tag-cloud">
             <span class="tag tag-rounded tag-remove" ng-click="removeEntityFilter(term)" ng-repeat="term in filtercriteria.entities">
               {{term.name}} <i class="fa fa-times" ></i>
-            </span> 
+            </span>
           </div>
         </div><!--end Tags-->
 
@@ -80,7 +80,7 @@
       </form>
     </div>
   </section>
-  
+
   <section class="results l-column">
     <!-- <h4>Reports</h4> -->
     <ul class="list">
@@ -104,8 +104,8 @@
             <i class="fa fa-video-camera"></i>  {{report.media.video.length}} &nbsp;&nbsp;
             <i class="fa fa-volume-up"></i>     {{report.media.audio.length}}
 
-            <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp; 
-            <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp; 
+            <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
+            <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
             <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
           </div>
         </a>
@@ -119,7 +119,7 @@
         Click a report on the left to load it here
       </div>
     </div>
-    
+
     <div ng-if="report">
       <div class="row l-group">
           <div class="nine">
@@ -156,7 +156,7 @@
               <div class="six">
                 <select chosen
                         ng-model="termselected"
-                        data-placeholder="Click to add a tag" 
+                        data-placeholder="Click to add a tag"
                         ng-options="term.name for term in wordpress.terms.entity"
                         width="'100%'">
                         <option value=""></option>
@@ -171,7 +171,7 @@
       </div>
 
       <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
-       
+
       <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
         <div class="three" ng-repeat="photo in report.media.photos">
           <a href="#" class="thumbnail">
@@ -180,20 +180,20 @@
           <a href="" ng-click="detachMedia(photo.ID, $event)">remove</a>
         </div>
       </div><!-- end photos -->
-              
+
       <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
         <div class="three" ng-repeat="audio in report.media.audio">
           <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
           <a href="" ng-click="detachMedia(audio.ID, $event)">remove</a>
         </div>
       </div><!-- end audio -->
-        
+
       <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
         <div class="six" ng-repeat="video in report.media.video">
-          <iframe 
-              ng-src="{{trustSrc(video.vimeo.embed_url)}}" 
-              width="500" 
-              height="281" 
+          <iframe
+              ng-src="{{trustSrc(video.vimeo.embed_url)}}"
+              width="500"
+              height="281"
               frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
           </iframe>
           <a href="" ng-click="detachMedia(video.ID, $event)">remove</a>
@@ -207,9 +207,9 @@
             <span ng-show="!report.verified" ng-click="verifyReport()">Verify this Report</span>
             <span ng-show="report.verified" ng-click="verifyReport()">Unverify this Report</span>
           </button>
-          <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button> 
+          <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button>
         </div>
-      </div>      
+      </div>
     </div>
 
 

@@ -1,5 +1,5 @@
 angular.module('timby',[
-    'ngRoute', 
+    'ngRoute',
     'ngSanitize',
     'textAngular',
     'checklist-model',
@@ -15,17 +15,17 @@ angular.module('timby',[
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
 .config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig){
-  
+
   $sceDelegateProvider.resourceUrlWhitelist([
    'self',
    "http://api.soundcloud.com/**"
   ]);
 
   $routeProvider
-    .when('/', 
-      { 
+    .when('/',
+      {
         templateUrl : BASE_URL + '/templates/login.html',
-        controller : ['$location', 'AuthService', 
+        controller : ['$location', 'AuthService',
         function($location, AuthService){
           if( AuthService.isAuthenticated() )
             $location.path( "/dashboard" )
@@ -33,29 +33,37 @@ angular.module('timby',[
         authenticate : false
       }
     )
-    .when('/dashboard', 
-      { 
+    .when('/dashboard',
+      {
         templateUrl : BASE_URL + '/templates/dashboard.html',
         controller : 'MainController',
-        authenticate : false
+        authenticate : true
       }
     )
-    .when('/addreport', 
-      { 
+    .when('/addreport',
+      {
         templateUrl : BASE_URL + '/templates/add.report.html',
         controller : 'ReportController',
-        authenticate : false
+        authenticate : true
       }
     )
 
   $routeProvider.otherwise({ redirectTo : '/'});
-  
+
   datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
 
 }])
-.run(['$rootScope', 'wordpress', function($rootScope, wordpressProvider){
+.run(['$rootScope', 'wordpress','$location','AuthService', function($rootScope, wordpressProvider, $location, AuthService){
+
+  // redirect all non logged in users
+  $rootScope.$on('$routeChangeStart', function(event, next, current){
+    if( next.$$route.authenticate && !AuthService.isAuthenticated()){
+      $location.path( "/" )
+    }
+  });
+
   // fetches necessary wordpress data
-  // we require for our app to run, 
+  // we require for our app to run,
   // this includes taxonomies, api users
   wordpressProvider
   .getInfo()
@@ -63,6 +71,6 @@ angular.module('timby',[
     if (response.data.status == 'success') {
       $rootScope.wordpress = response.data.data
     }
-  }); 
-  
+  });
+
 }]);

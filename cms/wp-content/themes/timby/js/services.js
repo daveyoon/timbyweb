@@ -95,16 +95,14 @@ angular.module('timby.services', [])
   }
 }])
 .factory('AuthService', ['$http','$window', function($http, $window) {
-  var _self = this, logged_in = false;
-
   return {
     user: {},
     isAuthenticated : function(){
-      return _self.logged_in
+      return this.logged_in
     },
     login : function(user, password){
       return  $http.post(
-                $window.wp_data.template_url + '/ajax.php?action=login', 
+                $window.wp_data.template_url + '/ajax.php?action=login',
                 {
                   'user' : user,
                   'password' : password,

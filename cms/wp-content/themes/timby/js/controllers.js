@@ -1,20 +1,13 @@
 angular.module('timby.controllers', [])
-.controller('MainController', 
+.controller('MainController',
   ['$scope', '$rootScope', 'ReportService', '$sce',
     function($scope, $rootScope,ReportService, $sce){
       $scope.authenticated = false;
-      $scope.filtercriteria = { 
+      $scope.filtercriteria = {
         sectors   : [],
         entities  : [],
         search  : ''
       };
-
-      // redirect all non logged in users
-      $rootScope.$on('$routeChangeStart', function(event, next, current){
-        if( next.authenticate && !AuthService.isAuthenticated()){
-          $location.path( "/login" )
-        }
-      });
 
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
@@ -31,7 +24,7 @@ angular.module('timby.controllers', [])
             function error(response, status, headers, config) {
               //notify alert, could not connect to remote server
             }
-          )        
+          )
       };
       $scope.getAllReports();
 
@@ -111,7 +104,7 @@ angular.module('timby.controllers', [])
 
       /**
        * Remove an entity tag from a report
-       * @param  object term 
+       * @param  object term
        * @return void
        */
       $scope.removeEntity = function(term){
@@ -197,12 +190,12 @@ angular.module('timby.controllers', [])
 )
 .controller('LoginController',
   [
-    '$scope', '$rootScope', 'AuthService', '$location', 
-    function($scope,$rootScope, AuthService, $location){
+    '$scope', '$rootScope', '$location', 'AuthService', '$location',
+    function($scope,$rootScope, $location, AuthService, $location){
 
       $scope.login = function(){
         $scope.working = true;
-        
+
         AuthService
           .login($scope.username, $scope.password)
           .then(
@@ -220,7 +213,17 @@ angular.module('timby.controllers', [])
 
             }
           )
+      }
 
+      /**
+       * Unset the user object and
+       * set login status to false
+       * and go to start page
+       */
+      $scope.logout = function(){
+        AuthService.user = {};
+        AuthService.logged_in = false;
+        $location.path('/');
       }
     }
   ]
@@ -313,7 +316,7 @@ angular.module('timby.controllers', [])
     }
 
     if( $type == 'video'){
-      if( ! files_are_valid($files, 
+      if( ! files_are_valid($files,
             [
               'video/mp4', 'video/ogg','video/webm',
                //.mov
@@ -326,7 +329,7 @@ angular.module('timby.controllers', [])
               'video/avs-video',
               // mkv
               'video/x-matroska'
-            ]) 
+            ])
         ){
         $scope.invalid.video = 'Select only valid video files.';
         return;
@@ -362,7 +365,7 @@ angular.module('timby.controllers', [])
 
   /**
    * Upload media attachements
-   *   
+   *
    * @param  string id the report id
    * @return void
    */
