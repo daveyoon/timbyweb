@@ -543,9 +543,7 @@ $app->group('/api', function () use ($app) {
       switch( $app->request->post('object_type'))
       {
         case 'image':
-          print_r($_FILES);
-          exit;
-          if( in_array($_FILES['user_file']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
+          if( in_array($_FILES['userfile']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
           {
             $params['media_type'] = 'image';
             $app->applyHook('upload', $params);
@@ -555,18 +553,18 @@ $app->group('/api', function () use ($app) {
           }
           break;
         case 'video':
-          if( in_array($_FILES['user_file']['type'], array('application/octet-stream','video/mp4', 'video/ogg','video/webm', 'video/x-flv') ) )
+          if( in_array($_FILES['userfile']['type'], array('application/octet-stream','video/mp4', 'video/ogg','video/webm', 'video/x-flv') ) )
           {
             $params['media_type'] = 'video';
             $app->applyHook('upload', $params);
           } else
           {
-            error('Please upload a valid video type, you uploaded' . $_FILES['user_file']['type']);
+            error('Please upload a valid video type, you uploaded' . $_FILES['userfile']['type']);
             return;
           }
           break;
         case 'audio':
-          if( in_array($_FILES['user_file']['type'], array('audio/mp3','audio/mp4', 'audio/ogg') ) )
+          if( in_array($_FILES['userfile']['type'], array('audio/mp3','audio/mp4', 'audio/ogg') ) )
           {
             $params['media_type'] = 'audio';
             $app->applyHook('upload', $params);
