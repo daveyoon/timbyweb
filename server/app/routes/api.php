@@ -13,7 +13,7 @@ if( !function_exists('success')){
               'message' => $message
             )
           );
-  }  
+  }
 }
 
 
@@ -37,13 +37,13 @@ if( !function_exists('error')){
 
 /**
  * Upload hook
- *  
+ *
  *  Does a few things here
  *  1. Uploading the file to a temporary location
  *  2. Forwarding the uploaded file to the Wordpress api
  *  3. Returning a response
  *  4. Deleting the temporary file
- *   
+ *
  * @return null
  */
 
@@ -65,7 +65,7 @@ $app->hook('upload', function ($params) use($app) {
     $responsebody = json_decode($response);
     if( $responsebody->status == 'ok' ){
       success(
-        array( 
+        array(
           'object_id' => $responsebody->id
         )
       );
@@ -115,10 +115,10 @@ $app->hook('slim.after', function() use($app){
 
 
 /**
-*  
+*
 *         THE API
 *  Api calls are grouped in /api
-*                                                 
+*
 **********************************************/
 
 $app->group('/api', function () use ($app) {
@@ -127,19 +127,19 @@ $app->group('/api', function () use ($app) {
 
   /**
    * Login
-   * 
+   *
    * Params
    *   user_name
    *   password
-   *   
+   *
    */
   $app->post('/login', function() use ($app) {
     $user_name = $app->request->post('user_name');
     $password = $app->request->post('password');
 
     $response = Requests::post(
-      $app->config('wordpress_site_url').'/api/users.authenticate', 
-      array('Accept' => 'application/json'), 
+      $app->config('wordpress_site_url').'/api/users.authenticate',
+      array('Accept' => 'application/json'),
       array(
         'username' => $user_name,
         'password' => $password
@@ -164,7 +164,7 @@ $app->group('/api', function () use ($app) {
 
   /**
    * Create Report
-   * 
+   *
    * Params
    *   user_id
    *   token
@@ -176,7 +176,7 @@ $app->group('/api', function () use ($app) {
    *   lat (optional)
    *   long (optional)
    *   key
-   *   
+   *
    */
   $app->post('/createreport', function() use($app) {
     // check the params provided against required params
@@ -206,8 +206,8 @@ $app->group('/api', function () use ($app) {
       );
     }
 
-    // entities should be a comma 
-    // separated string of terms 
+    // entities should be a comma
+    // separated string of terms
     if( $entity = $app->request->post('entity') ){
       $terms[] = array(
         'taxonomy' => 'entity',
@@ -217,7 +217,7 @@ $app->group('/api', function () use ($app) {
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/posts/create_post',
-      array('Accept' => 'application/json'), 
+      array('Accept' => 'application/json'),
       array(
         'title'   => $title,
         'content' => $description,
@@ -230,10 +230,10 @@ $app->group('/api', function () use ($app) {
           '_date_reported' => date('c', strtotime($report_date)),
           '_latitude'      => $lat,
           '_longitude'     => $lng,
-          // here the post author becomes the reporter, as compared to a scenario where 
+          // here the post author becomes the reporter, as compared to a scenario where
           // the post author(moderator) creates a report on behalf of the reporter
           // in this instance, the reporter is not the post author
-          '_report_id'     => $user_id 
+          '_report_id'     => $user_id
         )
       )
     );
@@ -253,11 +253,11 @@ $app->group('/api', function () use ($app) {
 
   /**
    * Logout the current user
-   * 
+   *
    * Params
    *   username
    *   password
-   *   
+   *
    */
   $app->post('/logout', function() use($app) {
 
@@ -266,7 +266,7 @@ $app->group('/api', function () use ($app) {
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.logout',
-      array('Accept' => 'application/json'), 
+      array('Accept' => 'application/json'),
       array(
         'username' => $username,
         'password' => $password
@@ -283,14 +283,14 @@ $app->group('/api', function () use ($app) {
 
 
   /**
-   * Checks to see the status of a token (if still valid). 
-   * No API Key required for this (the only function that will not require a key, 
+   * Checks to see the status of a token (if still valid).
+   * No API Key required for this (the only function that will not require a key,
    * which is outside of login and logout).
-   * 
+   *
    * Params
    *   user_id
    *   token
-   *   
+   *
    */
   $app->post('/tokencheck', function() use($app) {
 
@@ -299,7 +299,7 @@ $app->group('/api', function () use ($app) {
 
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/users.tokenstatus',
-      array('Accept' => 'application/json'), 
+      array('Accept' => 'application/json'),
       array(
         'user_id' => $user_id,
         'token' => $token
@@ -347,7 +347,7 @@ $app->group('/api', function () use ($app) {
 
     // all other optional parameters for hte update
     $_optional_params = array(
-      "title","description", "category", 
+      "title","description", "category",
       "sector", "report_date", "lat", "long"
     );
 
@@ -362,7 +362,7 @@ $app->group('/api', function () use ($app) {
     // response
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/posts/update_post',
-      array('Accept' => 'application/json'), 
+      array('Accept' => 'application/json'),
       $params
     );
 
@@ -381,7 +381,7 @@ $app->group('/api', function () use ($app) {
     }
 
   });
-  
+
   /**
    * Delete an existing report
    *
@@ -405,7 +405,7 @@ $app->group('/api', function () use ($app) {
     // response
     $response = Requests::post(
       $app->config('wordpress_site_url').'/api/posts/delete_post',
-      array('Accept' => 'application/json'), 
+      array('Accept' => 'application/json'),
       $params
     );
 
@@ -415,7 +415,7 @@ $app->group('/api', function () use ($app) {
     } else {
       error($responsebody->error);
     }
-  }); 
+  });
 
 
   /**
@@ -455,7 +455,7 @@ $app->group('/api', function () use ($app) {
         );
       }
       success(
-        array( 
+        array(
           'categories' => $categories
         )
       );
@@ -500,7 +500,7 @@ $app->group('/api', function () use ($app) {
         );
       }
       success(
-        array( 
+        array(
           'sectors' => $sectors
         )
       );
@@ -515,7 +515,7 @@ $app->group('/api', function () use ($app) {
 
   /**
    * Insert an object, creates a wordpress media object
-   * 
+   *
    * user_id
    * key
    * token
@@ -543,38 +543,38 @@ $app->group('/api', function () use ($app) {
       switch( $app->request->post('object_type'))
       {
         case 'image':
-          if( in_array($_FILES['attachment']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
+          if( in_array($_FILES['user_file']['type'], array('application/octet-stream','image/jpeg', 'image/png') ) )
           {
             $params['media_type'] = 'image';
-            $app->applyHook('upload', $params);            
+            $app->applyHook('upload', $params);
           }else{
             error('Please upload a valid image type');
-            return;            
+            return;
           }
           break;
         case 'video':
-          if( in_array($_FILES['attachment']['type'], array('application/octet-stream','video/mp4', 'video/ogg','video/webm', 'video/x-flv') ) )
+          if( in_array($_FILES['user_file']['type'], array('application/octet-stream','video/mp4', 'video/ogg','video/webm', 'video/x-flv') ) )
           {
             $params['media_type'] = 'video';
             $app->applyHook('upload', $params);
-          } else 
+          } else
           {
-            error('Please upload a valid video type, you uploaded' . $_FILES['attachment']['type']);
-            return;            
+            error('Please upload a valid video type, you uploaded' . $_FILES['user_file']['type']);
+            return;
           }
           break;
         case 'audio':
-          if( in_array($_FILES['attachment']['type'], array('audio/mp3','audio/mp4', 'audio/ogg') ) )
+          if( in_array($_FILES['user_file']['type'], array('audio/mp3','audio/mp4', 'audio/ogg') ) )
           {
             $params['media_type'] = 'audio';
-            $app->applyHook('upload', $params);    
+            $app->applyHook('upload', $params);
           } else {
             error('Please upload a valid audio type');
-            return;        
+            return;
           }
           break;
         default:
-          break;        
+          break;
       }
 
     }
@@ -585,24 +585,44 @@ $app->group('/api', function () use ($app) {
 
   /**
    * Get entities, where entities = reports
-   * 
+   *
    * user_id
    * key
    * token
    */
   $app->post('/getentities', function() use($app){
     $params = array(
-      'author'    => $app->request->post('user_id'),
-      'key'       => $app->request->post('key'),
-      'token'     => $app->request->post('token'),
-      'post_type' => 'report'
+      'user_id' => $_POST['user_id'],
+      'key'     => $_POST['key'],
+      'token'   => $_POST['token'],
+      'taxonomy' => 'entity'
     );
 
     $response = Requests::post(
-      $app->config('wordpress_site_url').'/api/get_posts',
+      $app->config('wordpress_site_url').'/api/get_all_terms_for_taxonomy',
       array('Accept' => 'application/json'),
       $params
     );
+
+    $responsebody = json_decode($response->body);
+    if( $responsebody->terms){
+      $entities = array();
+
+      foreach ($responsebody->terms as $term) {
+        $entities[] = array(
+          'id'       => $term->id,
+          'entity' => $term->title,
+          'slug'     => $term->slug
+        );
+      }
+      success(
+        array(
+          'entities' => $entities
+        )
+      );
+    } else {
+      error($responsebody->error);
+    }
 
   });
 
