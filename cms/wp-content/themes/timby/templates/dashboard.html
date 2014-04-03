@@ -114,7 +114,12 @@
   </section>
 
   <section class="report l-column">
-    <div class="row l-group">
+    <div class="placeholder" ng-if="!report">
+      <h2>Click on a report to preview it here</h2>
+    </div>
+    
+    <div ng-if="report">
+      <div class="row l-group">
           <div class="nine">
             <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
               <h6 class="">{{term.name}}&nbsp;</h6>
@@ -162,46 +167,47 @@
             <div id="report-location"></div>
           </div>
       </div>
-      
-    </div><!--- end header group-->
 
-    <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
-     
-    <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
-      <div class="three" ng-repeat="photo in report.media.photos">
-        <a href="#" class="thumbnail">
-          <img ng-src="{{photo.guid}}">
-        </a>
-      </div>
-    </div><!-- end photos -->
-            
-    <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
-      <div class="three" ng-repeat="audio in report.media.audio">
-        <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
-      </div>
-    </div><!-- end audio -->
-      
-    <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
-      <div class="six" ng-repeat="video in report.media.video">
-        <iframe 
-            ng-src="{{trustSrc(video.vimeo.embed_url)}}" 
-            width="500" 
-            height="281" 
-            frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
-        </iframe> 
-      </div>
-    </div><!-- end videos -->
-    <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
-    <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
-    <div class="row">
-      <div class="twelve">
-        <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left">
-          <span ng-show="!report.verified" ng-click="verifyReport()">Verify this Report</span>
-          <span ng-show="report.verified" ng-click="verifyReport()">Unverify this Report</span>
-        </button>
-        <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button> 
-      </div>
+      <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
+       
+      <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
+        <div class="three" ng-repeat="photo in report.media.photos">
+          <a href="#" class="thumbnail">
+            <img ng-src="{{photo.guid}}">
+          </a>
+        </div>
+      </div><!-- end photos -->
+              
+      <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
+        <div class="three" ng-repeat="audio in report.media.audio">
+          <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
+        </div>
+      </div><!-- end audio -->
+        
+      <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
+        <div class="six" ng-repeat="video in report.media.video">
+          <iframe 
+              ng-src="{{trustSrc(video.vimeo.embed_url)}}" 
+              width="500" 
+              height="281" 
+              frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+          </iframe> 
+        </div>
+      </div><!-- end videos -->
+      <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
+      <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
+      <div class="row">
+        <div class="twelve">
+          <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left">
+            <span ng-show="!report.verified" ng-click="verifyReport()">Verify this Report</span>
+            <span ng-show="report.verified" ng-click="verifyReport()">Unverify this Report</span>
+          </button>
+          <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button> 
+        </div>
+      </div>      
     </div>
+
+
   </section>
 </section>
 
