@@ -564,7 +564,7 @@ $app->group('/api', function () use ($app) {
           }
           break;
         case 'audio':
-          if( in_array($_FILES['userfile']['type'], array('audio/mp3','audio/mp4', 'audio/ogg') ) )
+          if( in_array($_FILES['userfile']['type'], array('audio/mp3','audio/3gpp','audio/mp4', 'audio/ogg') ) )
           {
             $params['media_type'] = 'audio';
             $app->applyHook('upload', $params);
