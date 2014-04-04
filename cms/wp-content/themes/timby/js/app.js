@@ -53,13 +53,26 @@ angular.module('timby',[
   datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
 
 }])
-.run(['$rootScope', 'wordpress','$location','AuthService', function($rootScope, wordpressProvider, $location, AuthService){
+.run(['$rootScope', '$window', 'wordpress','$location','AuthService', function($rootScope, $window, wordpressProvider, $location, AuthService){
 
   // redirect all non logged in users
   $rootScope.$on('$routeChangeStart', function(event, next, current){
-    if( next.$$route.authenticate && !AuthService.isAuthenticated()){
-      $location.path( "/" )
+    if( next.$$route.authenticate){
+      
+      //validate an existing session
+      if( $window.sessionStorage.user_id && $window.sessionStorage.user_token ) {
+        AuthService
+          .tokenCheck()
+          .then(function(response){
+            if( response.data.status == 'error'){
+              $location.path( "/" );
+            }
+          });        
+      } else{
+        $location.path( "/" );
+      }
     }
+    
   });
 
   // fetches necessary wordpress data

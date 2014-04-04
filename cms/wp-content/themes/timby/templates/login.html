@@ -1,6 +1,7 @@
 <div class="l-main-unit">
   <form class="form-horizontal" ng-submit="login()" novalidate ng-controller="LoginController">
     <h3 ng-show="working">Loading</h3>
+    <h3 ng-show="error_message">{{error_message}}</h3>
     <div class="form-group">
       <label for="inputEmail3" class="two">Login</label>
       <div class="ten">

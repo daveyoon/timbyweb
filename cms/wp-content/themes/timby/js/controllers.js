@@ -191,8 +191,8 @@ angular.module('timby.controllers', [])
 )
 .controller('LoginController',
   [
-    '$scope', '$rootScope', '$location', 'AuthService',
-    function($scope,$rootScope, $location, AuthService){
+    '$scope', '$rootScope','$window', '$location', 'AuthService',
+    function($scope,$rootScope,$window, $location, AuthService){
 
       $scope.login = function(){
         $scope.working = true;
@@ -205,9 +205,14 @@ angular.module('timby.controllers', [])
               if(response.data.status == 'success' && response.data.user){
                 AuthService.logged_in = true;
                 AuthService.user = response.data.user;
+
+                // persistent session storage
+                $window.sessionStorage.user_id = response.data.user.id;
+                $window.sessionStorage.user_token = response.data.user.token;
+
                 $location.path('/dashboard');
               } else{
-                $scope.error_message = "Invalid login, please try again";
+                $scope.error_message = "Wrong user or password";
               }
             },
             function(){
@@ -222,9 +227,21 @@ angular.module('timby.controllers', [])
        * and go to start page
        */
       $scope.logout = function(){
-        AuthService.user = {};
-        AuthService.logged_in = false;
-        $location.path('/');
+        if( $window.sessionStorage.user_id && $window.sessionStorage.user_token){
+          AuthService
+            .logout()
+            .then(function(response){
+              AuthService.user = {};
+              AuthService.logged_in = false;
+
+              $window.sessionStorage.user_id = null;
+              $window.sessionStorage.user_token = null;
+
+              $location.path('/');
+            });
+        }
+
+        $location.path('/'); //redirect anyway
       }
     }
   ]

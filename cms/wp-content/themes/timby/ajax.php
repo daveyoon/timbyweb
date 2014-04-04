@@ -164,16 +164,79 @@ switch($_REQUEST['action']){
           'user_password' => sanitize_text_field($data->password) 
         ), false); 
 
-        if( !is_wp_error($user) ) { 
+        if( !is_wp_error($user) ) {
+          // create a user token and save it
+          $token = sha1(time());
+          update_user_meta( $user->data->ID, '_login_token', $token );
+
+          $niceuser = array(
+            'id'    => $user->data->ID,
+            'name'  => $user->data->display_name,
+            'token' => $token
+          );
+
           echo json_encode(
             array(
               'status' => 'success',
-              'user' => $user
+              'user' => $niceuser
             )
           );
-        } 
+        } else {
+          echo json_encode(
+            array(
+              'status' => 'error',
+              'user' => 'Invalid login'
+            )
+          );
+        }
       }
     } 
+    break;
+
+  case 'tokencheck':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){
+      if( isset($data->user_id) && isset($data->user_token) ){
+        if( $data->user_token == get_user_meta($data->user_id, '_login_token', true) ){
+          echo json_encode(
+            array(
+              'status' => 'success',
+              'message' => 'Token is valid',
+            )
+          );
+        } else{
+          echo json_encode(
+            array(
+              'status' => 'error',
+              'message' => 'Bad token provided',
+            )
+          );
+        }
+      }
+    }
+    break;
+
+  case 'logout':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){
+      if( isset($data->user_id) && isset($data->user_token) ){
+        if( $data->user_token == get_user_meta($data->user_id, '_login_token', true) ){
+          // clear the token
+          update_user_meta($data->user_id, '_login_token', '');
+
+          echo json_encode(
+            array(
+              'status' => 'success',
+              'message' => 'Logged out successfuly',
+            )
+          );
+        }
+      }
+    }
     break;
 
   case 'upload_media':

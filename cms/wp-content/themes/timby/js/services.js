@@ -95,14 +95,16 @@ angular.module('timby.services', [])
   }
 }])
 .factory('AuthService', ['$http','$window', function($http, $window) {
+  var _self = this, logged_in = false;
+
   return {
     user: {},
     isAuthenticated : function(){
-      return this.logged_in
+      return _self.logged_in
     },
     login : function(user, password){
       return  $http.post(
-                $window.wp_data.template_url + '/ajax.php?action=login',
+                $window.wp_data.template_url + '/ajax.php?action=login', 
                 {
                   'user' : user,
                   'password' : password,
@@ -112,7 +114,26 @@ angular.module('timby.services', [])
 
     },
     logout : function(){
+      // clear the token
+      return $http.post(
+                $window.wp_data.template_url + '/ajax.php?action=logout', 
+                {
+                  'user_id'         : $window.sessionStorage.user_id,
+                  'user_token'      : $window.sessionStorage.user_token,
+                  'nonce'           : $window.wp_data.nonce,
+                }
+              )
 
+    },
+    tokenCheck : function(){
+      return $http.post(
+                $window.wp_data.template_url + '/ajax.php?action=tokencheck', 
+                {
+                  'user_id'     : $window.sessionStorage.user_id,
+                  'user_token'       : $window.sessionStorage.user_token,
+                  'nonce'       : $window.wp_data.nonce,
+                }
+              )
     }
   }
 }])
