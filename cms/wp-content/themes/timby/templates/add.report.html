@@ -21,19 +21,20 @@
   </nav>
 </header>
 <section class="l-main-unit clearfix l-container l-padding-item" ng-controller="ReportController">
-  <form action="" ng-submit="createReport($event)" ng-hide="working">
+  <form action="" name="addreportform" ng-submit="createReport($event)" ng-hide="working" novalidate>
     <div class="l-group">
-      <input type="text" ng-model="report.title" placeholder="Type the report's title here" class="h3-input">
+      <input type="text" ng-model="report.title" placeholder="Type the report's title here" class="h3-input" required>
     </div>
     <div class="l-group">
-      <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{report.placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
+      <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
     </div>
     <div class="row l-group">
       <div class="six">
         <h6 class="form-title">Author</h6>
         <select 
           ng-model="report.reporter"
-          ng-options="user.name for user in wordpress.api_users">
+          ng-options="user.name for user in wordpress.api_users"
+          required>
             <option value="">Select a user</option>
         </select>
       </div>
@@ -52,7 +53,8 @@
         datepicker-options="dateOptions" 
         date-disabled="disabled(date, mode)" 
         ng-required="true" 
-        close-text="Close" />
+        close-text="Close" 
+        required/>
       </div>
     </div>
 
@@ -65,7 +67,8 @@
                 data-placeholder="Select a sector" 
                 ng-options="term.name for term in wordpress.terms.sector"
                 allow-single-deselect="true"
-                width="'100%'">
+                width="'100%'"
+                required>
                 <option value=""></option>
         </select>
       </div>
@@ -77,7 +80,8 @@
                 data-placeholder="Select an entity" 
                 ng-options="term.name for term in wordpress.terms.entity"
                 allow-single-deselect="true"
-                width="'100%'">
+                width="'100%'"
+                required>
                 <option value=""></option>
         </select>
       </div>
@@ -101,6 +105,7 @@
           </marker>
 
         </google-map>
+        <div ng-show="location_error">{{location_error}}</div>
       </div>
       <div class="six">
         <div class="l-group">
@@ -119,7 +124,7 @@
           <span ng-show="invalid.audio">{{invalid.audio}}</span>
         </div>
         <div class="l-group">
-          <input type="submit" value="Add Report" class="btn btn-edit">
+          <input type="submit" value="Add Report" class="btn btn-edit" ng-disabled="addreportform.$invalid">
         </div>
       </div>
     </div>

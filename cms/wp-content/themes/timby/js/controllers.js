@@ -248,11 +248,12 @@ angular.module('timby.controllers', [])
 )
 .controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
   $scope.report = {};
-  $scope.report.placeholderText = "Type your description here";
+  $scope.placeholderText = "Type your description here";
+
   $scope.placeholder = function(){
     var editor = angular.element('#taTextElement');
     var toolbar = angular.element('.ta-toolbar');
-    if (editor.text() == $scope.report.placeholderText){
+    if (editor.text() == $scope.placeholderText){
       editor.text('');
     }
     // console.log(angular.element('.ta-toolbar').hasClass('hide'));
@@ -264,15 +265,14 @@ angular.module('timby.controllers', [])
   // Enable the new Google Maps visuals until it gets enabled by default.
   google.maps.visualRefresh = true;
 
-  // map center is at Kokoyah, Liberia
-  $scope.report.lat = 6.550676;
-  $scope.report.lng = -9.488156;
+
 
   angular.extend($scope, {
     map : {
       center: {
-        latitude: $scope.report.lat,
-        longitude: $scope.report.lng
+        // map center is at Kokoyah, Liberia
+        latitude: 6.550676,
+        longitude: -9.488156
       },
       zoom: 7,
       clickedMarker: {
@@ -299,6 +299,13 @@ angular.module('timby.controllers', [])
   };
 
   $scope.createReport = function(evt){
+
+    if( !$scope.report.lat || !$scope.report.lng ) {
+      $scope.location_error = 'Please select a location on the map';
+      return;
+    } else{
+      $scope.location_error = null;
+    }
 
     $scope.working = true;
     ReportService
