@@ -72,3 +72,23 @@ angular.module('timby.filters', [])
     return result;
   }
 })
+.filter('verifiedStatusFilter', function(){
+  return function(reports, status){
+    if( typeof(status) === 'undefined' ) return reports;
+
+    var result = [];
+ 
+    angular.forEach(reports, function(report, key){
+      if( status == 'verified' && report.verified){
+        result.push(report);
+      } 
+      if( status == 'unverified' && !report.verified){
+        result.push(report);
+      } 
+      if( status == 'all' ) {
+        result.push(report);
+      }
+    });
+    return result;
+  }
+})

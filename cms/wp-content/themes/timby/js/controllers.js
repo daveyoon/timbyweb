@@ -191,8 +191,8 @@ angular.module('timby.controllers', [])
 )
 .controller('LoginController',
   [
-    '$scope', '$rootScope', '$location', 'AuthService', '$location',
-    function($scope,$rootScope, $location, AuthService, $location){
+    '$scope', '$rootScope', '$location', 'AuthService',
+    function($scope,$rootScope, $location, AuthService){
 
       $scope.login = function(){
         $scope.working = true;

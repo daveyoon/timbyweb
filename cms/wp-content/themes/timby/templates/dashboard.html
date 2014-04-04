@@ -66,6 +66,20 @@
           </div>
         </div><!--end Tags-->
 
+        <!-- Tags -->
+        <div class="form-group">
+          <h6 class="form-title">Verification Status</h6>
+          <label>
+            <input type="radio" name="status" value="verified" ng-model="filtercriteria.status"> Verified
+          </label>
+          <label>
+            <input type="radio" name="status" value="unverified" ng-model="filtercriteria.status"> Unverified
+          </label>
+          <label>
+            <input type="radio" name="status" value="all" ng-model="filtercriteria.status"> All
+          </label>
+        </div><!--end Tags-->
+
         <div class="form-group">
           <h6 class="form-title">Date</h6>
           <div>
@@ -91,7 +105,7 @@
           </div>
         </div>
       </li>
-      <li class="list-item list-clickable" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities" ng-click="viewReport(report.ID)" ng-class="isActive(report.ID) ? 'list-item-active' : '' ">
+      <li class="list-item list-clickable" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities | verifiedStatusFilter:filtercriteria.status" ng-click="viewReport(report.ID)" ng-class="isActive(report.ID) ? 'list-item-active' : '' ">
         <a href="">
           <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
           <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
