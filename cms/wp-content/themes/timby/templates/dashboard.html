@@ -138,96 +138,100 @@
     </div>
 
     <div ng-if="report">
-      <div class="row l-group">
-          <div class="nine">
-            <div class="pull-left" style="position:relative; margin: -5px 12px 0 0;">
-              <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
-              <div class="edit-pane" ng-show="showList">
-                <div class="checkbox"  ng-repeat="term in wordpress.terms.sector" >
-                  <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
-                  <label for="{{term.id}}">{{term.name}}</label>
-                </div>
-                <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
-                  <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
-                </label> -->
-                <div>
-                  <button ng-click="showList=!showList" class="small">Close</button>
+      <div class="l-padding-item">
+        <div class="row l-group">
+            <div class="nine">
+              <div class="pull-left" style="position:relative; margin: -5px 12px 0 0;">
+                <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
+                <div class="edit-pane" ng-show="showList">
+                  <div class="checkbox"  ng-repeat="term in wordpress.terms.sector" >
+                    <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
+                    <label for="{{term.id}}">{{term.name}}</label>
+                  </div>
+                  <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
+                    <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
+                  </label> -->
+                  <div>
+                    <button ng-click="showList=!showList" class="small">Close</button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
-              <h6 class="">{{term.name}}&nbsp;</h6>
-            </div>
-            <!-- <h3>{{report.post_title}}</h3> -->
-            <input type="text" ng-model="report.post_title" class="h3-input">
-            <h6 class="subhead">{{report.date_reported}} by {{report.reporter.name}}</h6>
-            <!-- <div>
-              <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
-            </div> -->
-            <div class="entity-list l-group">
-              <span class="tag tag-remove tag-rounded" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
-                {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i>&nbsp; </a>
-              </span>
-            </div>
-
-            <div class="l-group">
-              <div class="six">
-                <select chosen
-                        ng-model="report.termselected"
-                        data-placeholder="Click to add a tag"
-                        ng-options="term.name for term in wordpress.terms.entity"
-                        width="'100%'">
-                        <option value=""></option>
-                </select>
+              <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
+                <h6 class="">{{term.name}}&nbsp;</h6>
               </div>
-              <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
+              <!-- <h3>{{report.post_title}}</h3> -->
+              <input type="text" ng-model="report.post_title" class="h3-input">
+              <h6 class="subhead">{{report.date_reported}} by {{report.reporter.name}}</h6>
+              <!-- <div>
+                <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
+              </div> -->
+              <div class="entity-list l-group">
+                <span class="tag tag-remove tag-rounded" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
+                  {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i>&nbsp; </a>
+                </span>
+              </div>
+        
+              <div class="l-group">
+                <div class="six">
+                  <select chosen
+                          ng-model="report.termselected"
+                          data-placeholder="Click to add a tag"
+                          ng-options="term.name for term in wordpress.terms.entity"
+                          width="'100%'">
+                          <option value=""></option>
+                  </select>
+                </div>
+                <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
+              </div>
             </div>
+            <div class="three">
+              <div id="report-location"></div>
+            </div>
+        </div>
+        
+        <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
+        
+        <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
+          <div class="three media-item" ng-repeat="photo in report.media.photos">
+            <a href="#" class="thumbnail">
+              <img ng-src="{{photo.guid}}">
+            </a>
+            <a href="" ng-click="detachMedia(photo.ID, $event)">remove</a>
           </div>
-          <div class="three">
-            <div id="report-location"></div>
+        </div><!-- end photos -->
+        
+        <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
+          <div class="three media-item" ng-repeat="audio in report.media.audio">
+            <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
+            <a href="" ng-click="detachMedia(audio.ID, $event)">remove</a>
           </div>
+        </div><!-- end audio -->
+        
+        <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
+          <div class="six media-item" ng-repeat="video in report.media.video">
+            <iframe
+                ng-src="{{trustSrc(video.vimeo.embed_url)}}"
+                width="500"
+                height="281"
+                frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+            </iframe>
+            <a href="" ng-click="detachMedia(video.ID, $event)">remove</a>
+          </div>
+        </div><!-- end videos -->
+        
+        <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
+        <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
       </div>
 
-      <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
-
-      <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
-        <div class="three media-item" ng-repeat="photo in report.media.photos">
-          <a href="#" class="thumbnail">
-            <img ng-src="{{photo.guid}}">
-          </a>
-          <a href="" ng-click="detachMedia(photo.ID, $event)">remove</a>
-        </div>
-      </div><!-- end photos -->
-
-      <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
-        <div class="three media-item" ng-repeat="audio in report.media.audio">
-          <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
-          <a href="" ng-click="detachMedia(audio.ID, $event)">remove</a>
-        </div>
-      </div><!-- end audio -->
-
-      <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
-        <div class="six media-item" ng-repeat="video in report.media.video">
-          <iframe
-              ng-src="{{trustSrc(video.vimeo.embed_url)}}"
-              width="500"
-              height="281"
-              frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
-          </iframe>
-          <a href="" ng-click="detachMedia(video.ID, $event)">remove</a>
-        </div>
-      </div><!-- end videos -->
-      <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
-      <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
-      <div class="row">
-        <div class="twelve">
-          <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left">
+    <div class="action-bar">
+        <div>
+          <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left" style="margin-right:2em;">
             <span ng-show="!report.verified" ng-click="verifyReport()">Verify this Report</span>
             <span ng-show="report.verified" ng-click="verifyReport()">Unverify this Report</span>
           </button>
-          <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button>
+          <button href="" ng-click="updateReport()" class="btn-edit pull-left">Save</button>
         </div>
-      </div>
+    </div>
     </div>
 
 
