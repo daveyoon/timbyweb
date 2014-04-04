@@ -1,38 +1,38 @@
 <div class="l-main-unit">
-  <form class="form-horizontal" ng-submit="login()" novalidate ng-controller="LoginController">
-    <div class="loader" ng-show="working">
-      <h3>Loading</h3>
-    </div>
-   <div class="form-group">
-      <h3>Login to Timby</h3>
-   </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="two">Login</label>
-      <div class="five">
+  <form class="form-horizontal row" ng-submit="login()" novalidate ng-controller="LoginController">
+    <div class="five">
+      <div class="page-loader" ng-show="working">
+        
+        <div class="page-loader-message">
+        <div class="loader"></div>
+        <h4>Loading</h4></div>
+        <!-- <h4 class="page-loader-message">Loading</h4> -->
+      </div>
+     <div class="form-group">
+        <h3>Login to Timby</h3>
+     </div>
+      <div class="form-group">
+        <label for="inputEmail3" class="four">Login</label>
         <input type="text" ng-model="username" name="username" class="form-control" placeholder="Username/Email"  required />
       </div>
-    </div>
-    <div class="form-group">
-      <label for="inputPassword3" class="two control-label">Password</label>
-      <div class="five">
+      <div class="form-group">
+        <label for="inputPassword3" class="four control-label">Password</label>
         <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required >
       </div>
-    </div>
-    <div class="form-group">
-      <div class="five">
-        <div class="error" ng-show="error_message">
-          {{error_message}}
+      <div class="form-group" ng-show="error_message">
+          <div class="error">
+            {{error_message}}
+          </div>
+      </div>
+      <div class="form-group">
+        <div class="four">
+          <button type="submit" class="btn btn-default btn-edit">Sign in</button>
         </div>
+        <p class="right text-right">
+          <a href="wp-login.php?action=lostpassword">Forgot your password?</a>
+        </p> 
       </div>
+      <input type="hidden" name="redirect_to" value="<?php echo esc_url( home_url('/') ) ?>" />
     </div>
-    <div class="form-group">
-      <div class="two">
-        <button type="submit" class="btn btn-default btn-edit">Sign in</button>
-      </div>
-      <p class="three text-right">
-        <a href="wp-login.php?action=lostpassword">Forgot your password?</a>
-      </p> 
-    </div>
-    <input type="hidden" name="redirect_to" value="<?php echo esc_url( home_url('/') ) ?>" />
   </form>
 </div>

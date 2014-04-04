@@ -1,0 +1,64 @@
+$loader-size: 80px
+
+.page-loader
+  position: absolute
+  background: rgba(255,255,255,.7)
+  height: 100%
+  width: 100%
+  padding: 2em
+  z-index: 5
+
+.page-loader-message
+  width: 150px
+  height: 150px
+  position: absolute
+  left: 50%
+  top: 50%
+  margin: -75px 0 0 -75px
+  text-align: center
+  background: white
+  border: 1px solid $med-gray
+  h4
+    color: $edit-color
+    margin-top: 110px
+
++keyframes(expand)
+  0%
+    +transform(scale(0))
+  50%
+    +transform(scale(1))
+  100%
+    z-index: 1
+
+
+
+.loader
+  @include transition(all .3s)
+  position: absolute
+  left: 50%
+  top: 0
+  margin: 1.5em 0 0 (-$loader-size/2)
+  background-color: $edit-color
+  border-radius: 50%
+  // box-shadow: 0 0 0 $loader-size/6 white
+  +size($loader-size)
+
+  &:before,
+  &:after
+    content: ""
+    position: absolute
+    left: 50%
+    top: 50%
+    display: block
+    margin: (-$loader-size/2 - 1) 0 0 (-$loader-size/2 - 1)
+    border-radius: 50%
+    z-index: 2
+    +size($loader-size + 2)
+
+  &:before
+    background-color: white
+    +animation(expand 1.6s linear infinite both)
+
+  &:after
+    background-color: $edit-color
+    +animation(expand 1.6s linear 0.8s infinite both)
