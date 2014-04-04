@@ -1,24 +1,35 @@
 <div class="l-main-unit">
   <form class="form-horizontal" ng-submit="login()" novalidate ng-controller="LoginController">
-    <h3 ng-show="working">Loading</h3>
-    <h3 ng-show="error_message">{{error_message}}</h3>
+    <div class="loader" ng-show="working">
+      <h3>Loading</h3>
+    </div>
+   <div class="form-group">
+      <h3>Login to Timby</h3>
+   </div>
     <div class="form-group">
       <label for="inputEmail3" class="two">Login</label>
-      <div class="ten">
+      <div class="five">
         <input type="text" ng-model="username" name="username" class="form-control" placeholder="Username/Email"  required />
       </div>
     </div>
     <div class="form-group">
       <label for="inputPassword3" class="two control-label">Password</label>
-      <div class="ten">
+      <div class="five">
         <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required >
       </div>
     </div>
     <div class="form-group">
-      <div class="ten">
-        <button type="submit" class="btn btn-default">Sign in</button>
+      <div class="five">
+        <div class="error" ng-show="error_message">
+          {{error_message}}
+        </div>
       </div>
-      <p>
+    </div>
+    <div class="form-group">
+      <div class="two">
+        <button type="submit" class="btn btn-default btn-edit">Sign in</button>
+      </div>
+      <p class="three text-right">
         <a href="wp-login.php?action=lostpassword">Forgot your password?</a>
       </p> 
     </div>
