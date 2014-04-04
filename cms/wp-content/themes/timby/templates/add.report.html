@@ -20,114 +20,125 @@
     </li>
   </nav>
 </header>
-<section class="l-main-unit clearfix l-container l-padding-item" ng-controller="ReportController">
+<section class="l-normal-page l-container clearfix l-fixed-footer" ng-controller="ReportController">
+  <div class="page-loader" ng-show="working">
+    <div class="page-loader-message">
+    <div class="loader"></div>
+    <h4>Saving</h4></div>
+    <!-- <h4 class="page-loader-message">Loading</h4> -->
+  </div>
   <form action="" name="addreportform" ng-submit="createReport($event)" ng-hide="working" novalidate>
-    <div class="l-group">
-      <input type="text" ng-model="report.title" placeholder="Type the report's title here" class="h3-input" required>
-    </div>
-    <div class="l-group">
-      <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
-    </div>
-    <div class="row l-group">
-      <div class="six">
-        <h6 class="form-title">Author</h6>
-        <select 
-          ng-model="report.reporter"
-          ng-options="user.name for user in wordpress.api_users"
-          required>
-            <option value="">Select a user</option>
-        </select>
+    <div class="l-padding-item row">
+      <div class="l-group">
+        <input type="text" ng-model="report.title" placeholder="Type the report's title here" class="h3-input" required>
       </div>
-       
-      <div class="six">
-        <h6 class="form-title">Date Reported</h6>
-        <input 
-        type="text" 
-        class="form-control" 
-        show-weeks="false" 
-        datepicker-popup="{{format}}" 
-        ng-model="report.date_reported" 
-        is-open="opened" 
-        min="minDate" 
-        max="'2015-06-22'" 
-        datepicker-options="dateOptions" 
-        date-disabled="disabled(date, mode)" 
-        ng-required="true" 
-        close-text="Close" 
-        required/>
+      <div class="l-group">
+        <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
+      </div>
+      <div class="row l-group">
+        <div class="six">
+          <!-- <div class="page-loader page-loader-error " ng-show="location_error">
+            <div class="page-loader-message page-loader-horz"><h5>{{location_error}}</h5></div>
+          </div> -->
+          <div class="l-group">
+            <h6 class="form-title">Location <span class="required">*</span> <span class="error-message" ng-show"location_error">{{location_error}}</span></h6> 
+            <google-map 
+              center="map.center" 
+              zoom="map.zoom"
+              draggable="true"
+              events="map.events"
+              >
+              <marker coords="map.clickedMarker">
+                <!--<marker-label content="map.clickedMarker.title" anchor="24 40" class="marker-labels"/>-->
+                <window isIconVisibleOnClick="true">
+                  This is my clicked marker!
+                  <p class="muted">My marker will reappear when you close me.</p>
+                </window>
+              </marker>
+            </google-map>
+          </div>
+        </div>
+         
+        <div class="six">
+          <div class="l-group">
+            <h6 class="form-title">Author <span class="required">*</span></h6>
+            <select 
+              ng-model="report.reporter"
+              ng-options="user.name for user in wordpress.api_users"
+              required>
+                <option value="">Select a user</option>
+            </select>
+          </div>
+          <div class="l-group">
+            <h6 class="form-title">Date Reported <span class="required">*</span></h6>
+            <input 
+            type="text" 
+            class="form-control" 
+            show-weeks="false" 
+            datepicker-popup="{{format}}" 
+            ng-model="report.date_reported" 
+            is-open="opened" 
+            min="minDate" 
+            max="'2015-06-22'" 
+            datepicker-options="dateOptions" 
+            date-disabled="disabled(date, mode)" 
+            ng-required="true" 
+            close-text="Close" 
+            required/>
+          </div>
+          <div class="l-group">
+            <h6 class="form-title">Sector <span class="required">*</span></h6>
+            <select chosen
+                    multiple
+                    ng-model="report.sectors"
+                    data-placeholder="Select a sector" 
+                    ng-options="term.name for term in wordpress.terms.sector"
+                    allow-single-deselect="true"
+                    width="'100%'"
+                    required>
+                    <option value=""></option>
+            </select>
+          </div>
+          <div class="l-group">
+            <h6 class="form-title">Entity</h6>
+            <select chosen
+                    multiple
+                    ng-model="report.entities"
+                    data-placeholder="Select an entity" 
+                    ng-options="term.name for term in wordpress.terms.entity"
+                    allow-single-deselect="true"
+                    width="'100%'">
+                    <option value=""></option>
+            </select>
+          </div>
+          <div class="l-group">
+            <h6 class="form-title">Select Image</h6>
+            <input type="file" ng-file-select="onFileSelect('photo', $files)" multiple>
+            <span ng-show="invalid.photo">{{invalid.photo}}</span>
+          </div>
+          <div class="l-group">
+            <h6 class="form-title">Select a Video</h6>
+            <input type="file" ng-file-select="onFileSelect('video',$files)" multiple>
+            <span ng-show="invalid.video">{{invalid.video}}</span>
+          </div>
+          <div class="l-group">
+            <h6 class="form-title">Select Audio</h6>
+            <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
+            <span ng-show="invalid.audio">{{invalid.audio}}</span>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+    </div>
+    <div class="action-bar action-bar-full-page">
+      <div class="row">
+        <input type="submit" value="Add Report" class="btn btn-edit" ng-disabled="addreportform.$invalid">
+        <span class="error" ng-show="location_error">{{location_error}}</span>
       </div>
     </div>
 
-    <div class="row l-group">
-      <div class="six">
-        <h6 class="form-title">Sector</h6>
-        <select chosen
-                multiple
-                ng-model="report.sectors"
-                data-placeholder="Select a sector" 
-                ng-options="term.name for term in wordpress.terms.sector"
-                allow-single-deselect="true"
-                width="'100%'"
-                required>
-                <option value=""></option>
-        </select>
-      </div>
-      <div class="six">
-        <h6 class="form-title">Entity</h6>
-        <select chosen
-                multiple
-                ng-model="report.entities"
-                data-placeholder="Select an entity" 
-                ng-options="term.name for term in wordpress.terms.entity"
-                allow-single-deselect="true"
-                width="'100%'">
-                <option value=""></option>
-        </select>
-      </div>
-    </div>
-    <div class="row l-group">
-      <div class="six">
-        <h6 class="form-title">Location</h6>
-        <google-map 
-          center="map.center" 
-          zoom="map.zoom"
-          draggable="true"
-          events="map.events"
-        >
-
-          <marker coords="map.clickedMarker">
-            <!--<marker-label content="map.clickedMarker.title" anchor="24 40" class="marker-labels"/>-->
-            <window isIconVisibleOnClick="true">
-              This is my clicked marker!
-              <p class="muted">My marker will reappear when you close me.</p>
-            </window>
-          </marker>
-
-        </google-map>
-        <div ng-show="location_error">{{location_error}}</div>
-      </div>
-      <div class="six">
-        <div class="l-group">
-          <h6 class="form-title">Select Image</h6>
-          <input type="file" ng-file-select="onFileSelect('photo', $files)" multiple>
-          <span ng-show="invalid.photo">{{invalid.photo}}</span>
-        </div>
-        <div class="l-group">
-          <h6 class="form-title">Select a Video</h6>
-          <input type="file" ng-file-select="onFileSelect('video',$files)" multiple>
-          <span ng-show="invalid.video">{{invalid.video}}</span>
-        </div>
-        <div class="l-group">
-          <h6 class="form-title">Select Audio</h6>
-          <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
-          <span ng-show="invalid.audio">{{invalid.audio}}</span>
-        </div>
-        <div class="l-group">
-          <input type="submit" value="Add Report" class="btn btn-edit" ng-disabled="addreportform.$invalid">
-        </div>
-      </div>
-    </div>
   </form>
-  <h2 ng-show="working">Saving...</h2>
 </section>
 
