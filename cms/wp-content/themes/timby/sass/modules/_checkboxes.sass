@@ -1,4 +1,4 @@
-input[type="checkbox"]
+input[type="checkbox"], input[type="radio"]
   display: none
 
 // input[type="checkbox"] + label
@@ -30,10 +30,10 @@ input[type="checkbox"]
 //   padding: 1px 0 0 0
 //   vertical-align: text-top
 
-.checkbox
+.checkbox, .radio
   @include clearfix
 
-  &.checkbox-lined
+  &.checkbox-lined, &.radio-lined
     label
       border-bottom: 1px $med-gray solid
     &:first-of-type label
@@ -72,16 +72,13 @@ input[type="checkbox"]
     border-radius: 2px
 
 
-input[type=checkbox]:checked + label:before
+input[type=checkbox]:checked + label:before, input[type=radio]:checked + label:before
   content: "\f00c"
   font-family: "FontAwesome"
   background: $edit-color
   text-align: center
   border-color: $edit-color
 
-input[type=checkbox]:checked + label
+input[type=checkbox]:checked + label, input[type=radio]:checked + label
   font-weight: 700
   background: $light-green
-
-
-// ,  

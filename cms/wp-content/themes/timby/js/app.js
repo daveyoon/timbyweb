@@ -56,11 +56,11 @@ angular.module('timby',[
 .run(['$rootScope', 'wordpress','$location','AuthService', function($rootScope, wordpressProvider, $location, AuthService){
 
   // redirect all non logged in users
-  $rootScope.$on('$routeChangeStart', function(event, next, current){
-    if( next.$$route.authenticate && !AuthService.isAuthenticated()){
-      $location.path( "/" )
-    }
-  });
+  // $rootScope.$on('$routeChangeStart', function(event, next, current){
+  //   if( next.$$route.authenticate && !AuthService.isAuthenticated()){
+  //     $location.path( "/" )
+  //   }
+  // });
 
   // fetches necessary wordpress data
   // we require for our app to run,

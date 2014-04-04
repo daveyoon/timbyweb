@@ -60,7 +60,7 @@
           </div>
 
           <div class="tag-cloud">
-            <span class="tag tag-rounded tag-remove" ng-click="removeEntityFilter(term)" ng-repeat="term in filtercriteria.entities">
+            <span class="tag tag-rounded tag-remove tag-positive" ng-click="removeEntityFilter(term)" ng-repeat="term in filtercriteria.entities">
               {{term.name}} <i class="fa fa-times" ></i>
             </span>
           </div>
@@ -69,15 +69,18 @@
         <!-- Tags -->
         <div class="form-group">
           <h6 class="form-title">Verification Status</h6>
-          <label>
-            <input type="radio" name="status" value="verified" ng-model="filtercriteria.status"> Verified
-          </label>
-          <label>
-            <input type="radio" name="status" value="unverified" ng-model="filtercriteria.status"> Unverified
-          </label>
-          <label>
-            <input type="radio" name="status" value="all" ng-model="filtercriteria.status"> All
-          </label>
+          <div class="radio radio-lined">
+            <input type="radio" name="status" id="verified" value="verified" ng-model="filtercriteria.status" >
+            <label for="verified">Verified</label>
+          </div>
+          <div class="radio radio-lined">
+            <input type="radio" name="status" id="unverified" value="unverified" ng-model="filtercriteria.status">
+            <label for="unverified" >Unverified</label>
+          </div>
+          <div class="radio radio-lined">
+            <input type="radio" name="status" id="all" value="all" ng-model="filtercriteria.status">
+            <label for="all" >All Reports</label>
+          </div>
         </div><!--end Tags-->
 
         <div class="form-group">
