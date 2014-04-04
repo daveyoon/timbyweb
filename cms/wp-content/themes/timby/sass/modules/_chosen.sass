@@ -93,17 +93,11 @@
       -moz-box-sizing: border-box
       box-sizing: border-box
       margin: 1px 0
-      padding: 4px 20px 4px 5px
+      padding: .25em .5em
       width: 100%
       height: auto
       outline: 0
       border: 1px solid #aaa
-      background: white url('chosen-sprite.png') no-repeat 100% -20px
-      background: url('chosen-sprite.png') no-repeat 100% -20px, -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #eeeeee), color-stop(15%, white))
-      background: url('chosen-sprite.png') no-repeat 100% -20px, -webkit-linear-gradient(#eeeeee 1%, white 15%)
-      background: url('chosen-sprite.png') no-repeat 100% -20px, -moz-linear-gradient(#eeeeee 1%, white 15%)
-      background: url('chosen-sprite.png') no-repeat 100% -20px, -o-linear-gradient(#eeeeee 1%, white 15%)
-      background: url('chosen-sprite.png') no-repeat 100% -20px, linear-gradient(#eeeeee 1%, white 15%)
       font-size: 1em
       font-family: $font-family
       line-height: normal
@@ -167,17 +161,12 @@
     -moz-box-sizing: border-box
     box-sizing: border-box
     margin: 0
-    padding: 0
+    padding: .5em
     width: 100%
     height: auto !important
     height: 1%
-    border: 1px solid #aaa
+    border: 1px solid $med-gray
     background-color: #fff
-    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #eeeeee), color-stop(15%, white))
-    background-image: -webkit-linear-gradient(#eeeeee 1%, white 15%)
-    background-image: -moz-linear-gradient(#eeeeee 1%, white 15%)
-    background-image: -o-linear-gradient(#eeeeee 1%, white 15%)
-    background-image: linear-gradient(#eeeeee 1%, white 15%)
     cursor: text
     li
       float: left
@@ -189,13 +178,13 @@
         input[type="text"]
           margin: 1px 0
           padding: 5px
-          height: 15px
+          height: 2em
           outline: 0
           border: 0 !important
           background: transparent !important
           box-shadow: none
-          color: #666
-          font-size: 100%
+          color: $dark-gray
+          font-size: 14px
           font-family: $font-family
           line-height: normal
           border-radius: 0
@@ -207,7 +196,7 @@
         padding: 3px 20px 3px 5px
         border: 1px solid #aaa
         border-radius: 3px
-        background-color: white
+        background-color: $light-green
         color: $dark-gray
         line-height: 13px
         cursor: default
@@ -218,7 +207,7 @@
           display: block
           width: 12px
           height: 12px
-          background: url('chosen-sprite.png') -42px 1px no-repeat
+          background: url('../bower_components/chosen/chosen-sprite.png') -42px 1px no-repeat
           font-size: 1px
           &:hover
             background-position: -42px -10px
