@@ -20,7 +20,7 @@
     </li>
   </nav>
 </header>
-<section class="l-main-unit clearfix l-container" ng-controller="ReportController">
+<section class="l-main-unit clearfix l-container l-padding-item" ng-controller="ReportController">
   <form action="" ng-submit="createReport($event)" ng-hide="working">
     <div class="l-group">
       <input type="text" ng-model="report.title" placeholder="Type the report's title here" class="h3-input">
@@ -118,7 +118,9 @@
           <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
           <span ng-show="invalid.audio">{{invalid.audio}}</span>
         </div>
-        <input type="submit" value="Add Report" class="btn btn-edit">
+        <div class="l-group">
+          <input type="submit" value="Add Report" class="btn btn-edit">
+        </div>
       </div>
     </div>
   </form>

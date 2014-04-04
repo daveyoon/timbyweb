@@ -1,8 +1,7 @@
-input[type="text"], input[type="search"], input[type="date"], input[type="password"],
-.six .chosen-container-multi .chosen-choices, .six .chosen-container-multi .chosen-choices li.search-field input[type=text]
+input[type="text"], input[type="search"], input[type="date"], input[type="password"]
   box-shadow: none
   border: 1px solid $med-gray
-  padding: .5em
+  padding: .75em
   border-radius: 2px
   @include box-sizing(border-box)
   background-image: none
@@ -25,9 +24,12 @@ input[type="text"].h3-input
 
 select
   @include appearance(none)
-  padding: .5em .5em
+  padding: .75em
   border-color: $med-gray
   border-radius: 2px
-  background-image: url('data:image/svg+xml;base64, PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iM3B4IiB2aWV3Qm94PSIwIDAgNiAzIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA2IDMiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwb2x5Z29uIHBvaW50cz0iNS45OTIsMCAyLjk5MiwzIC0wLjAwOCwwICIvPjwvc3ZnPg==')
+  background: url('data:image/svg+xml;base64, PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iM3B4IiB2aWV3Qm94PSIwIDAgNiAzIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA2IDMiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwb2x5Z29uIHBvaW50cz0iNS45OTIsMCAyLjk5MiwzIC0wLjAwOCwwICIvPjwvc3ZnPg==')
   background-repeat: no-repeat
   background-position: 97% center
+  &:hover
+    background-color: $light-gray
+    cursor: pointer
