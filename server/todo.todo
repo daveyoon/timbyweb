@@ -1,5 +1,5 @@
  ✔ creating a slim framework workflow and directory structure @done (14-02-21 11:00)
- ☐ creating an api controller with slim
+ ✔ creating an api controller with slim @done (14-04-04 10:07)
  ✔ creating a configuration file, managing environments @done (14-02-21 11:00)
  ✔ app directory structure posts @done (14-02-21 11:00)
     http://www.littlehart.net/atthekeyboard/2012/02/14/organizing-slim-framework-apps/
@@ -29,5 +29,6 @@
  ☐ filtering between pins
  ☐ caching of layer data
  ☐ find out a way to route to custom theme templates 
- ☐ localize the ajax script and preferrably the app.js angular script together with nonces
- ☐ change the login to use a nonce
+ ✔ localize the ajax script and preferrably the app.js angular script together with nonces @done (14-04-04 10:07)
+ ✔ change the login to use a nonce @done (14-04-04 10:07)
+ ☐ once signed in, set a cookie with login status

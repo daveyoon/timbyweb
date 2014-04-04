@@ -125,7 +125,7 @@ angular.module('timby.controllers', [])
        */
       $scope.detachMedia = function(id, $event){
         var elem = angular.element($event.target);
-        elem.parents('.l-media-grid').fadeOut(500, function(){
+        elem.parents('.media-item').fadeOut(500, function(){
           this.remove()
         });
 
@@ -157,7 +157,8 @@ angular.module('timby.controllers', [])
 
       // watch the entity select while adding new entities to select
       $scope.$watch(function(){
-        return $scope.termselected
+        if( $scope.report && typeof($scope.report.termselected) !== 'undefined' )
+          return $scope.report.termselected
       }, function(newvalue, oldvalue, scope){
         $scope.tagexists = false;
         if( typeof(newvalue) == 'undefined' )
@@ -165,12 +166,12 @@ angular.module('timby.controllers', [])
 
         if (angular.isArray($scope.report.entities)) {
           for(i=0; i < $scope.report.entities.length; i++){
-            if(angular.equals($scope.termselected, $scope.report.entities[i])){
+            if(angular.equals($scope.report.termselected, $scope.report.entities[i])){
               $scope.tagexists = true;
               return;
             }
           }
-          $scope.report.entities.push($scope.termselected);
+          $scope.report.entities.push($scope.report.termselected);
         }
 
       });
