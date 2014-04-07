@@ -327,8 +327,37 @@ angular.module('timby.controllers', [])
       .then(
         function success(response, status, headers, config) {
           if (response.data.status == 'success') {
-            $scope.uploadMedia(response.data.report.ID); //upload the media files selected
-            $scope.working = false;
+
+            $scope.filecount = 0;
+
+            var uploadedcounter = 0;
+
+            /**
+             * Keeps track of the number of files uploaded
+             * passed as a callback to uploadMedia
+             */
+            var uploadComplete = function(){
+              uploadedcounter++
+              console.log(uploadedcounter);
+              if( uploadedcounter == $scope.filecount){
+                $scope.working = false;
+              }
+            }
+
+            if( $scope.report.photos && $scope.report.photos.length > 0){
+              $scope.filecount += $scope.report.photos.length;
+              ReportService.uploadMedia('image', $scope.report.photos, response.data.report.ID, uploadComplete);
+            }
+
+            if( $scope.report.video && $scope.report.video.length > 0){
+              $scope.filecount += $scope.report.video.length;
+              ReportService.uploadMedia('video', $scope.report.video, response.data.report.ID, uploadComplete);
+            }
+
+            if( $scope.report.audio && $scope.report.audio.length > 0){
+              $scope.filecount += $scope.report.audio.length;
+              ReportService.uploadMedia('audio', $scope.report.audio, response.data.report.ID, uploadComplete);
+            }
 
             // reset the form and
             // mute the model
@@ -402,22 +431,6 @@ angular.module('timby.controllers', [])
     }
   }
 
-  /**
-   * Upload media attachements
-   *
-   * @param  string id the report id
-   * @return void
-   */
-  $scope.uploadMedia = function(id){
-    if( $scope.report.photos && $scope.report.photos.length > 0)
-      ReportService.uploadMedia('image', $scope.report.photos, id)
 
-    if( $scope.report.video && $scope.report.video.length > 0)
-      ReportService.uploadMedia('video', $scope.report.video, id)
-
-    if( $scope.report.audio && $scope.report.audio.length > 0)
-      ReportService.uploadMedia('audio', $scope.report.audio, id)
-
-  }
 
 }]);

@@ -58,7 +58,7 @@ angular.module('timby.services', [])
       );
     },
 
-    uploadMedia : function(mediatype, files, reportid){
+    uploadMedia : function(mediatype, files, reportid, success){
       for(var i = 0; i < files.length; i++){
         var file = files[i];
         $upload.upload({
@@ -74,7 +74,7 @@ angular.module('timby.services', [])
           console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total) );
         }).success(function(data, status, headers, config) {
           // file is uploaded successfully
-          console.log(data);
+          success();
         });
 
       }
