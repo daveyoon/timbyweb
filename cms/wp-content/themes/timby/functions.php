@@ -175,7 +175,7 @@ function fetch_attachments($type = '', $post_parent = '')
     )
   );
   $attachments = get_posts($args);
-
+  
   foreach($attachments as $key=>$attachment) {
     $attachment->uploaded = get_post_meta($attachment->ID, '_uploaded', true ) == 'true';
     

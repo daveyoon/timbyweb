@@ -263,15 +263,25 @@ switch($_REQUEST['action']){
         $attachment_id = media_handle_upload('file', $_POST['reportid']);
         unset($_FILES['file']);
 
-        // set the media type as a meta
-        update_post_meta($attachment_id, '_media_type', $_POST['media_type']);
+        if (!is_wp_error( $attachment_id ) ) {
+          // set the media type as a meta
+          update_post_meta($attachment_id, '_media_type', $_POST['media_type']);
 
-        echo json_encode(
-          array(
-            'status' => 'success',
-            'id' => $attachment_id
-          )
-        );
+          echo json_encode(
+            array(
+              'status' => 'success',
+              'id' => $attachment_id
+            )
+          );          
+        } else {
+          echo json_encode(
+            array(
+              'status' => 'error',
+              'message' => 'Error uploading media item'
+            )
+          );
+        }
+
 
       } else {
         echo json_encode(
