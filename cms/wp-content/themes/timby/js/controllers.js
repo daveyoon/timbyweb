@@ -13,11 +13,13 @@ angular.module('timby.controllers', [])
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
       $scope.getAllReports = function(){
+        $scope.working = true;
         ReportService
           .findAll()
           .then(
             function success(response, status, headers, config) {
               if (response.data.status == 'success') {
+                $scope.working = false;
                 $scope.reports = response.data.reports;
               }
             },
@@ -97,10 +99,6 @@ angular.module('timby.controllers', [])
             function success(response, status, headers, config) {
               $scope.working = false;
               toaster.pop('success', 'Success', 'Report saved successfuly');
-
-              if (response.data.status == 'success') {
-                $scope.getAllReports();
-              }
             },
             function error(response, status, headers, config) {
               $scope.working = false;
