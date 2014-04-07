@@ -210,8 +210,11 @@
               <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
             </div>
             <div ng-if="!audio.uploaded">
-              <div class="media_placeholder audio">
-                Upload to Soundcloud in progress...
+              <div class="media-placeholder media-placeholder-audio">
+                <div class="media-placeholder-content">
+                  <span class="fa fa-volumen-up"></span>
+                  Upload to Soundcloud in progress...
+                </div>
               </div>
             </div>
             <a href="" ng-click="detachMedia(audio.ID, $event)">remove</a>
@@ -229,7 +232,7 @@
               </iframe>              
             </div>
             <div ng-if="!video.uploaded">
-              <div class="media_placeholder video">
+              <div class="media-placeholder media-placeholder-video">
                 Upload to Vimeo in progress...
               </div>
             </div>
