@@ -212,7 +212,7 @@
             <div ng-if="!audio.uploaded">
               <div class="media-placeholder media-placeholder-audio">
                 <div class="media-placeholder-content">
-                  <span class="fa fa-volumen-up"></span>
+                  <span class="fa fa-volume-up media-placeholder-icon"></span>
                   Upload to Soundcloud in progress...
                 </div>
               </div>
@@ -220,7 +220,24 @@
             <a href="" ng-click="detachMedia(audio.ID, $event)">remove</a>
           </div>
         </div><!-- end audio -->
-        
+
+      <!--   <div class="row l-media-grid l-group" >
+          <div class="six media-item">
+            <div class="media-placeholder media-placeholder-video">
+                <span class="fa fa-video-camera media-placeholder-icon"></span>
+                  Upload to Vimeo in progress...
+            </div>
+          </div>
+        </div>
+        <div class="row l-media-grid l-group" >
+          <div class="three media-item">
+            <div class="media-placeholder media-placeholder-audio">
+                <span class="fa fa-volume-up media-placeholder-icon"></span>
+                  Upload to SoundCloud in progress...
+            </div>
+          </div>
+        </div> -->
+
         <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
           <div class="six media-item" ng-repeat="video in report.media.video">
             <div ng-if="video.uploaded">
@@ -233,10 +250,11 @@
             </div>
             <div ng-if="!video.uploaded">
               <div class="media-placeholder media-placeholder-video">
-                Upload to Vimeo in progress...
+                <span class="fa fa-video-camera media-placeholder-icon"></span>
+                  Upload to Vimeo in progress...
               </div>
             </div>
-            <a href="" ng-click="detachMedia(video.ID, $event)">remove</a>
+            <button href="" ng-click="detachMedia(video.ID, $event)">Remove</button>
           </div>
         </div><!-- end videos -->
       </div>
