@@ -37,6 +37,13 @@ button, .btn
   padding: .25em .5em
   font-size: .875em
 
+.btn-big
+  padding: 1em 1.25em
+  font-size: 1em
+
 input[type="submit"].btn
   @include appearance(none)
+  &:disabled:hover
+    color: $med-gray !important
+
 
