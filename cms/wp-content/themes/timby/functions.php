@@ -164,9 +164,8 @@ function fetch_attachments($type = '', $post_parent = '')
 {
   $args = array(
     'posts_per_page' => -1,
-    'cache_results' => false,
     'post_type'   => 'attachment',
-    'post_status' => null,
+    'post_status' => 'any',
     'post_parent' => $post_parent,
     'meta_query' => array(
       array(
