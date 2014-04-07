@@ -177,6 +177,8 @@ function fetch_attachments($type = '', $post_parent = '')
   $attachments = get_posts($args);
 
   foreach($attachments as $key=>$attachment) {
+    $attachment->uploaded = get_post_meta($attachment->ID, '_uploaded', true ) == 'true';
+    
     if( $type == 'audio' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
       $trackdata = json_decode(get_post_meta($attachment->ID, '_soundcloud_track_data', true ));
       $trackdata->embed_url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/".$trackdata->id."%3Fsecret_token%3D".$trackdata->secret_token."&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true";

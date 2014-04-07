@@ -206,19 +206,33 @@
         
         <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
           <div class="three media-item" ng-repeat="audio in report.media.audio">
-            <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
+            <div ng-if="audio.uploaded">
+              <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
+            </div>
+            <div ng-if="!audio.uploaded">
+              <div class="media_placeholder audio">
+                Upload to Soundcloud in progress...
+              </div>
+            </div>
             <a href="" ng-click="detachMedia(audio.ID, $event)">remove</a>
           </div>
         </div><!-- end audio -->
         
         <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
           <div class="six media-item" ng-repeat="video in report.media.video">
-            <iframe
-                ng-src="{{trustSrc(video.vimeo.embed_url)}}"
-                width="500"
-                height="281"
-                frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
-            </iframe>
+            <div ng-if="video.uploaded">
+              <iframe
+                  ng-src="{{trustSrc(video.vimeo.embed_url)}}"
+                  width="500"
+                  height="281"
+                  frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+              </iframe>              
+            </div>
+            <div ng-if="!video.uploaded">
+              <div class="media_placeholder video">
+                Upload to Vimeo in progress...
+              </div>
+            </div>
             <a href="" ng-click="detachMedia(video.ID, $event)">remove</a>
           </div>
         </div><!-- end videos -->
