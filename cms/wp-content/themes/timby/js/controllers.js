@@ -399,15 +399,15 @@ angular.module('timby.controllers', [])
               'video/x-matroska'
             ])
         ){
-        $scope.invalid.video = 'Select only valid video files.';
+        $scope.invalid.video = 'Sorry we can only accept x-flv, mp4, x-troff-msvideo, av, msvideo, x-msvideo and x-matroska video files.';
         return;
       }
       $scope.report.video = $files;
     }
 
     if( $type == 'audio'){
-      if( ! files_are_valid($files, ['audio/mp3','audio/mp4', 'audio/ogg']) ){
-        $scope.invalid.audio = 'Select only valid audio files.';
+      if( ! files_are_valid($files, ['audio/mp3','audio/mp4','audio/m4a', 'audio/ogg']) ){
+        $scope.invalid.audio = 'Sorry we can only accept mp3, mp4, m4a and ogg audio files.';
         return;
       }
       $scope.report.audio = $files;
