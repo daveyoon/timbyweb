@@ -41,7 +41,10 @@
             <div class="page-loader-message page-loader-horz"><h5>{{location_error}}</h5></div>
           </div> -->
           <div class="l-group">
-            <h6 class="form-title">Location <span class="required">*</span> <span class="error-message" ng-show"location_error">{{location_error}}</span></h6> 
+            <div class="header-group">
+              <h6 class="form-title">Location <span class="required">*</span> <span class="error-message" ng-show"location_error">{{location_error}}</span></h6>
+              <p>Click on the map to show where exactly the report was located.</p>
+            </div>
             <google-map 
               center="map.center" 
               zoom="map.zoom"
@@ -112,17 +115,26 @@
             </select>
           </div>
           <div class="l-group">
-            <h6 class="form-title">Select Image</h6>
+            <div class="header-group">
+              <h6 class="form-title">Select Image</h6>
+              <p>You can upload .png, .jpg and .gif files</p>
+            </div>
             <input type="file" ng-file-select="onFileSelect('photo', $files)" multiple>
             <span ng-show="invalid.photo">{{invalid.photo}}</span>
           </div>
           <div class="l-group">
-            <h6 class="form-title">Select a Video</h6>
+            <div class="header-group">
+              <h6 class="form-title">Select a Video</h6>
+              <p>You can upload .avi, .mkv, .mov, .ogg and .mp4 files</p>
+            </div>
             <input type="file" ng-file-select="onFileSelect('video',$files)" multiple>
             <span ng-show="invalid.video">{{invalid.video}}</span>
           </div>
           <div class="l-group">
-            <h6 class="form-title">Select Audio</h6>
+            <div class="header-group">
+              <h6 class="form-title">Select Audio</h6>
+              <p>You can upload .mp4, .mp3 and .m4a files</p>
+            </div>
             <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
             <span ng-show="invalid.audio">{{invalid.audio}}</span>
           </div>
