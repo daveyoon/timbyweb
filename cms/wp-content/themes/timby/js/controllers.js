@@ -1,7 +1,7 @@
 angular.module('timby.controllers', [])
 .controller('MainController',
-  ['$scope', '$rootScope', 'ReportService', '$sce',
-    function($scope, $rootScope,ReportService, $sce){
+  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster',
+    function($scope, $rootScope,ReportService, $sce, toaster){
       $scope.authenticated = false;
       $scope.filtercriteria = {
         sectors   : [],
@@ -29,40 +29,54 @@ angular.module('timby.controllers', [])
       $scope.getAllReports();
 
       $scope.viewReport = function(id){
-        $scope.working = true;
 
-        ReportService
-          .findById(id)
-          .then(
-            function success(response, status, headers, config) {
-              $scope.working = false;
-
-              if (response.data.status == 'success') {
-                $scope.report = response.data.report;
-
-                // initialize the map
-                var map = new google.maps.Map(
-                  document.getElementById('report-location'),
-                  {
-                    zoom: 7,
-                    center: new google.maps.LatLng(response.data.report.lat,response.data.report.lng)
-                  }
-                );
-
-                var marker = new google.maps.Marker({
-                  position: new google.maps.LatLng(
-                    response.data.report.lat,
-                    response.data.report.lng
-                  ),
-                  map: map
-                });
-
-              }
-            },
-            function error(response, status, headers, config) {
-              //notify alert, could not connect to remote server
+        // do a lookup from the object cache
+        if( $scope.reports.length > 0){
+          // find this report from our report cache
+          for (var i = $scope.reports.length - 1; i >= 0; i--) {
+            if( id == $scope.reports[i].ID ){
+              $scope.report = $scope.reports[i];
+              break;
             }
-          )
+          }
+        }
+
+        // if report still not found
+        // load it from the server
+        if ( ! $scope.report ) {
+          ReportService
+            .findById(id)
+            .then(
+              function success(response, status, headers, config) {
+                $scope.working = false;
+
+                if (response.data.status == 'success') {
+                  $scope.report = response.data.report;
+                }
+              },
+              function error(response, status, headers, config) {
+                //notify alert, could not connect to remote server
+              }
+            )          
+        }
+
+        // initialize the map
+        var map = new google.maps.Map(
+          document.getElementById('report-location'),
+          {
+            zoom: 7,
+            center: new google.maps.LatLng($scope.report.lat,$scope.report.lng)
+          }
+        );
+
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(
+            $scope.report.lat,
+            $scope.report.lng
+          ),
+          map: map
+        });
+
       }
 
       /**
@@ -82,6 +96,8 @@ angular.module('timby.controllers', [])
           .then(
             function success(response, status, headers, config) {
               $scope.working = false;
+              toaster.pop('success', 'Success', 'Report saved successfuly');
+
               if (response.data.status == 'success') {
                 $scope.getAllReports();
               }

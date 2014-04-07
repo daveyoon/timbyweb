@@ -137,7 +137,8 @@
       </div>
     </div>
 
-    <div ng-if="report">
+    <div ng-if="report" ng-class="{ loading : working }">
+      <h2 ng-show="working">Loading</h2>
       <div class="l-padding-item">
         <div class="row l-group">
             <div class="nine">
