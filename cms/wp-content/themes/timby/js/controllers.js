@@ -10,9 +10,9 @@ angular.module('timby.controllers', [])
         search  : ''
       };
 
-
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
+      $scope.logout = function(){}
       $scope.getAllReports = function(){
         $scope.working = true;
         ReportService
