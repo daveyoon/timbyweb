@@ -99,9 +99,6 @@ angular.module('timby.filters', [])
       if( status == 'unverified' && !report.verified){
         result.push(report);
       } 
-      if( status == 'all' ) {
-        result.push(report);
-      }
     });
     return result;
   }

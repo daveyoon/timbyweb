@@ -69,17 +69,13 @@
         <!-- Tags -->
         <div class="form-group">
           <h6 class="form-title">Verification Status</h6>
-          <div class="radio radio-lined">
-            <input type="radio" name="status" id="verified" value="verified" ng-model="filtercriteria.status" >
+          <div class="checkbox checkbox-lined">
+            <input type="checkbox" name="verified" id="verified" checklist-model="filtercriteria.status" checklist-value="status" >
             <label for="verified">Verified</label>
           </div>
-          <div class="radio radio-lined">
-            <input type="radio" name="status" id="unverified" value="unverified" ng-model="filtercriteria.status">
+          <div class="checkbox checkbox-lined">
+            <input type="checkbox" name="unverified" id="unverified" checklist-model="filtercriteria.status" checklist-value="status">
             <label for="unverified" >Unverified</label>
-          </div>
-          <div class="radio radio-lined">
-            <input type="radio" name="status" id="all" value="all" ng-model="filtercriteria.status">
-            <label for="all" >All Reports</label>
           </div>
         </div><!--end Tags-->
 
