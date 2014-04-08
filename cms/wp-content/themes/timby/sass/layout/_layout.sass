@@ -17,9 +17,10 @@ body, html
   width: 220px
   padding: 1.5em
   height: 100%
+  border-right: 1px $med-gray solid
 .results
   width: 330px
-  border-left: 1px $med-gray solid
+  border-right: 1px $med-gray solid
   overflow-y: auto
   height: 100%
   // padding-top: 1em
@@ -27,7 +28,7 @@ body, html
   position: absolute
   left: 550px
   right: 0
-  border-left: 1px $med-gray solid
+  // border-left: 1px $med-gray solid
   // padding: 1.5em
   overflow-y: auto
   height: 100%
@@ -46,12 +47,22 @@ body, html
   position: relative
   top: 113px
   z-index: 2
+  height: 100%
 
 .l-fixed-footer
   padding-bottom: 5em
   &.l-padding-item
     padding-bottom: 7em
 
+.l-story-creator
+  .results
+    position: fixed
+    left: 0px
+    top: 113px
+    bottom: 0
+.l-story-creator.l-fixed-footer
+  .results
+    // bottom: 61px
 
 
 //media grid to fill in responsive grid with images, etc
