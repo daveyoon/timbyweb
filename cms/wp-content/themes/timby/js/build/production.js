@@ -275,11 +275,13 @@ angular.module('timby.controllers', [])
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
       $scope.getAllReports = function(){
+        $scope.working = true;
         ReportService
           .findAll()
           .then(
             function success(response, status, headers, config) {
               if (response.data.status == 'success') {
+                $scope.working = false;
                 $scope.reports = response.data.reports;
               }
             },
@@ -291,40 +293,54 @@ angular.module('timby.controllers', [])
       $scope.getAllReports();
 
       $scope.viewReport = function(id){
-        $scope.working = true;
 
-        ReportService
-          .findById(id)
-          .then(
-            function success(response, status, headers, config) {
-              $scope.working = false;
-
-              if (response.data.status == 'success') {
-                $scope.report = response.data.report;
-
-                // initialize the map
-                var map = new google.maps.Map(
-                  document.getElementById('report-location'),
-                  {
-                    zoom: 7,
-                    center: new google.maps.LatLng(response.data.report.lat,response.data.report.lng)
-                  }
-                );
-
-                var marker = new google.maps.Marker({
-                  position: new google.maps.LatLng(
-                    response.data.report.lat,
-                    response.data.report.lng
-                  ),
-                  map: map
-                });
-
-              }
-            },
-            function error(response, status, headers, config) {
-              //notify alert, could not connect to remote server
+        // do a lookup from the object cache
+        if( $scope.reports.length > 0){
+          // find this report from our report cache
+          for (var i = $scope.reports.length - 1; i >= 0; i--) {
+            if( id == $scope.reports[i].ID ){
+              $scope.report = $scope.reports[i];
+              break;
             }
-          )
+          }
+        }
+
+        // if report still not found
+        // load it from the server
+        if ( ! $scope.report ) {
+          ReportService
+            .findById(id)
+            .then(
+              function success(response, status, headers, config) {
+                $scope.working = false;
+
+                if (response.data.status == 'success') {
+                  $scope.report = response.data.report;
+                }
+              },
+              function error(response, status, headers, config) {
+                //notify alert, could not connect to remote server
+              }
+            )          
+        }
+
+        // initialize the map
+        var map = new google.maps.Map(
+          document.getElementById('report-location'),
+          {
+            zoom: 7,
+            center: new google.maps.LatLng($scope.report.lat,$scope.report.lng)
+          }
+        );
+
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(
+            $scope.report.lat,
+            $scope.report.lng
+          ),
+          map: map
+        });
+
       }
 
       /**
@@ -344,10 +360,7 @@ angular.module('timby.controllers', [])
           .then(
             function success(response, status, headers, config) {
               $scope.working = false;
-              toaster.pop('success', "title", '<ul><li>Render html</li></ul>', 5000, 'trustedHtml');
-              if (response.data.status == 'success') {
-                $scope.getAllReports();
-              }
+              toaster.pop('success', 'Success', 'Report saved successfuly');
             },
             function error(response, status, headers, config) {
               $scope.working = false;
@@ -576,8 +589,37 @@ angular.module('timby.controllers', [])
       .then(
         function success(response, status, headers, config) {
           if (response.data.status == 'success') {
-            $scope.uploadMedia(response.data.report.ID); //upload the media files selected
-            $scope.working = false;
+
+            $scope.filecount = 0;
+
+            var uploadedcounter = 0;
+
+            /**
+             * Keeps track of the number of files uploaded
+             * passed as a callback to uploadMedia
+             */
+            var uploadComplete = function(){
+              uploadedcounter++
+              
+              if( uploadedcounter == $scope.filecount){
+                $scope.working = false;
+              }
+            }
+
+            if( $scope.report.photos && $scope.report.photos.length > 0){
+              $scope.filecount += $scope.report.photos.length;
+              ReportService.uploadMedia('image', $scope.report.photos, response.data.report.ID, uploadComplete);
+            }
+
+            if( $scope.report.video && $scope.report.video.length > 0){
+              $scope.filecount += $scope.report.video.length;
+              ReportService.uploadMedia('video', $scope.report.video, response.data.report.ID, uploadComplete);
+            }
+
+            if( $scope.report.audio && $scope.report.audio.length > 0){
+              $scope.filecount += $scope.report.audio.length;
+              ReportService.uploadMedia('audio', $scope.report.audio, response.data.report.ID, uploadComplete);
+            }
 
             // reset the form and
             // mute the model
@@ -619,15 +661,15 @@ angular.module('timby.controllers', [])
               'video/x-matroska'
             ])
         ){
-        $scope.invalid.video = 'Select only valid video files.';
+        $scope.invalid.video = 'Sorry we can only accept .mov, .mp4, .avi and .mkv video files.';
         return;
       }
       $scope.report.video = $files;
     }
 
     if( $type == 'audio'){
-      if( ! files_are_valid($files, ['audio/mp3','audio/mp4', 'audio/ogg']) ){
-        $scope.invalid.audio = 'Select only valid audio files.';
+      if( ! files_are_valid($files, ['audio/mpeg', 'video/mp4', 'audio/mp4a-latm', 'audio/ogg']) ){
+        $scope.invalid.audio = 'Sorry we can only accept mp3, mp4, m4a, m4b, m4p and ogg audio files.';
         return;
       }
       $scope.report.audio = $files;
@@ -651,23 +693,7 @@ angular.module('timby.controllers', [])
     }
   }
 
-  /**
-   * Upload media attachements
-   *
-   * @param  string id the report id
-   * @return void
-   */
-  $scope.uploadMedia = function(id){
-    if( $scope.report.photos && $scope.report.photos.length > 0)
-      ReportService.uploadMedia('image', $scope.report.photos, id)
 
-    if( $scope.report.video && $scope.report.video.length > 0)
-      ReportService.uploadMedia('video', $scope.report.video, id)
-
-    if( $scope.report.audio && $scope.report.audio.length > 0)
-      ReportService.uploadMedia('audio', $scope.report.audio, id)
-
-  }
 
 }]);
 
@@ -701,22 +727,31 @@ angular.module('timby.filters', [])
 
     if( sectors.length === 0) return reports;
 
-    var result = [];
-    var _sector_ids = sectors.map(function(sector){
-      return sector.id
-    });
-
+  
     if( sectors.length > 0 ){
+      var result = [];
+      var _sector_ids = sectors.map(grab_object_id);
+
       angular.forEach(reports, function(report, key){
         if( report.sectors.length > 0){
-          angular.forEach(report.sectors, function(sector, key){
-            if( _sector_ids.indexOf(sector.id) != -1){
-              result.push(report);
+          // find single sector
+          if( _sector_ids.length == 1){
+            for (var i = report.sectors.length - 1; i >= 0; i--) {
+              if( _sector_ids.indexOf(report.sectors[i].id) !== -1 ) 
+                result.push(report); //push report
             }
-          });
+          } else{
+            // find multiple sectors
+            var _report_sectors = report.sectors.map(grab_object_id);
+            if( _sector_ids.sort().join() == _report_sectors.sort().join()){
+              result.push(report);
+            }   
+          }
         }
       });      
     }
+    // console.log('Total sectors selected '+_sector_ids.length);
+    // console.log('Total results found '+result.length);
 
     return result;
   }
@@ -727,20 +762,25 @@ angular.module('timby.filters', [])
     if( entities.length === 0) return reports;
 
     var result = [];
-    var _entity_ids = entities.map(function(sector){
-      return sector.id
-    });
 
     if( entities.length > 0 ){
+      var _entity_ids = entities.map(grab_object_id);
+
       angular.forEach(reports, function(report, key){
-        if( report.entities.length > 0){
-          angular.forEach(report.entities, function(sector, key){
-            if( _entity_ids.indexOf(sector.id) != -1){
-              result.push(report);
-            }
-          });
+        // find single entity
+        if( _entity_ids.length == 1){
+          for (var i = report.entities.length - 1; i >= 0; i--) {
+            if( _entity_ids.indexOf(report.entities[i].id) !== -1 ) 
+              result.push(report); //push report
+          }
+        } else{
+          // find multiple entities
+          var _report_entities = report.entities.map(grab_object_id);
+          if( _entity_ids.sort().join() == _report_entities.sort().join()){
+            result.push(report);
+          }   
         }
-      });      
+      });
     }
 
     return result;
@@ -765,7 +805,11 @@ angular.module('timby.filters', [])
     });
     return result;
   }
-})
+});
+
+function grab_object_id(item){
+  return item.id
+}
 // $(document).ready(function(){
     // $('#filterbutton').toggle(function(e){
     //   e.preventDefault();
@@ -906,7 +950,7 @@ angular.module('timby.services', [])
       );
     },
 
-    uploadMedia : function(mediatype, files, reportid){
+    uploadMedia : function(mediatype, files, reportid, success){
       for(var i = 0; i < files.length; i++){
         var file = files[i];
         $upload.upload({
@@ -922,7 +966,7 @@ angular.module('timby.services', [])
           console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total) );
         }).success(function(data, status, headers, config) {
           // file is uploaded successfully
-          console.log(data);
+          success();
         });
 
       }

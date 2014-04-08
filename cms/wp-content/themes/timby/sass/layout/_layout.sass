@@ -60,6 +60,10 @@ body, html
   margin-bottom: 1.5em
   &:last-of-type
     margin-bottom: 0
+  @include clearfix
+
+.l-group > p:only-child
+  margin-bottom: 1em !important
 
 p:last-of-type
   margin-bottom: 0
