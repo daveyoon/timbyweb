@@ -12,7 +12,6 @@ angular.module('timby.controllers', [])
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
-      
       $scope.getAllReports = function(){
         $scope.working = true;
         ReportService
@@ -209,7 +208,7 @@ angular.module('timby.controllers', [])
     '$scope', '$rootScope','$window', '$location', 'AuthService',
     function($scope,$rootScope,$window, $location, AuthService){
 
-       $scope.login = function(){
+      $scope.login = function(){
         $scope.working = true;
 
         AuthService
