@@ -99,7 +99,7 @@ angular.module('timby.services', [])
 
   return {
     user: {},
-    isAuthenticated : function(){
+    isLoggedIn : function(){
       return _self.logged_in
     },
     login : function(user, password){
@@ -147,4 +147,19 @@ angular.module('timby.services', [])
     };
   }];
 
-});
+})
+// this service is called by route resolve and checks
+// whether the current user is authorised to access a route
+// this is when a user loads a route location directly
+// and the browser does a page load
+.factory('checkAuthStatus', [
+  '$q', '$location', '$window','AuthService', 
+  function($q, $location, $window, AuthService){
+    var deferred = $q.defer();
+    if( !$window.sessionStorage.user_id && !$window.sessionStorage.user_token ) {
+      $location.path( "/" );
+    }
+    deferred.resolve();
+    return deferred.promise;
+  }
+])

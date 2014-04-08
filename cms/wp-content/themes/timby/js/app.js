@@ -27,40 +27,53 @@ angular.module('timby',[
     .when('/',
       {
         templateUrl : BASE_URL + '/templates/login.html',
-        controller : ['$location', 'AuthService',
-        function($location, AuthService){
-          if( AuthService.isAuthenticated() )
-            $location.path( "/dashboard" )
-        }],
-        authenticate : false
+        authenticate : false,
+        resolve: ['$q', '$location', '$window', 
+          function($q, $location, $window) {
+            var deferred = $q.defer(); 
+            if ($window.sessionStorage.user_id && $window.sessionStorage.user_token) {
+               $location.path('/dashboard');
+            }
+            deferred.resolve();
+            return deferred.promise;
+          }
+        ]
       }
     )
     .when('/dashboard',
       {
         templateUrl : BASE_URL + '/templates/dashboard.html',
         controller : 'MainController',
-        authenticate : true
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
       }
     )
     .when('/addreport',
       {
         templateUrl : BASE_URL + '/templates/add.report.html',
         controller : 'ReportController',
-        authenticate : true
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
       }
     )
     .when('/story/create',
       {
         templateUrl : BASE_URL + '/templates/story.create.html',
         controller : 'ReportController',
-        authenticate : true
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
       }
     )
     .when('/story',
       {
         templateUrl : BASE_URL + '/templates/story.list.html',
         controller : 'ReportController',
-        authenticate : true
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
       }
     )
 
@@ -69,26 +82,16 @@ angular.module('timby',[
   datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
 
 }])
-.run(['$rootScope', '$window', 'wordpress','$location','AuthService', function($rootScope, $window, wordpressProvider, $location, AuthService){
+.run(['$rootScope', '$window', 'wordpress','$location', function($rootScope, $window, wordpressProvider, $location){
 
   // redirect all non logged in users
+  // this is when a route changes
   $rootScope.$on('$routeChangeStart', function(event, next, current){
-    if( next.$$route.authenticate){
-      
-      //validate an existing session
-      if( $window.sessionStorage.user_id && $window.sessionStorage.user_token ) {
-        AuthService
-          .tokenCheck()
-          .then(function(response){
-            if( response.data.status == 'error'){
-              $location.path( "/" );
-            }
-          });        
-      } else{
-        $location.path( "/" );
-      }
+    //validate an existing session
+    if( !$window.sessionStorage.user_id && !$window.sessionStorage.user_token ) {
+      $location.path( "/" );       
     }
-    
+
   });
 
   // fetches necessary wordpress data
@@ -103,3 +106,4 @@ angular.module('timby',[
   });
 
 }]);
+
