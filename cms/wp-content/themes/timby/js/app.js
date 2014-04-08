@@ -56,6 +56,13 @@ angular.module('timby',[
         authenticate : true
       }
     )
+    .when('/story',
+      {
+        templateUrl : BASE_URL + '/templates/story.list.html',
+        controller : 'ReportController',
+        authenticate : true
+      }
+    )
 
   $routeProvider.otherwise({ redirectTo : '/'});
 
