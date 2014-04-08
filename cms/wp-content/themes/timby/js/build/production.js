@@ -219,6 +219,13 @@ angular.module('timby',[
         authenticate : true
       }
     )
+    .when('/story',
+      {
+        templateUrl : BASE_URL + '/templates/story.list.html',
+        controller : 'ReportController',
+        authenticate : true
+      }
+    )
 
   $routeProvider.otherwise({ redirectTo : '/'});
 
@@ -268,6 +275,7 @@ angular.module('timby.controllers', [])
       $scope.filtercriteria = {
         sectors   : [],
         entities  : [],
+        status : ['verified', 'unverified'],
         search  : ''
       };
 
@@ -791,17 +799,14 @@ angular.module('timby.filters', [])
     if( typeof(status) === 'undefined' ) return reports;
 
     var result = [];
- 
+  
     angular.forEach(reports, function(report, key){
-      if( status == 'verified' && report.verified){
+      if( report.verified && status.indexOf('verified') !== -1 ){
         result.push(report);
       } 
-      if( status == 'unverified' && !report.verified){
+      if( !report.verified && status.indexOf('unverified') !== -1){
         result.push(report);
       } 
-      if( status == 'all' ) {
-        result.push(report);
-      }
     });
     return result;
   }
