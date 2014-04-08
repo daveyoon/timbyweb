@@ -26,10 +26,11 @@ class JSON_API_Posts_Controller {
   }
   
   public function create_attachment(){
-
-    // if (!$this->author_has_valid_token($_POST['author'], $_POST['token'])) {
-    //   $json_api->error("Your token has expired, please try logging in again");
-    // }   
+    global $json_api;
+    
+    if (!$this->author_has_valid_token($_POST['author'], $_POST['token'])) {
+      $json_api->error("Your token has expired, please try logging in again");
+    }   
 
     $post_data = array(
       'post_parent'  => $_POST['id'],

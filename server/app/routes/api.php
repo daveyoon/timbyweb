@@ -162,6 +162,59 @@ $app->group('/api', function () use ($app) {
 
   });
 
+
+  /**
+   *  Update user
+   *
+   * Params
+   *   user_id
+   *   token
+   *   username - new username
+   *   password - new passphrase
+   */
+  $app->post('/updateuser', function() use($app){
+    $default_params = array(
+      'user_id' => '',
+      'token' => '',
+      'user_name' => '',
+      'password' => ''
+    );
+    $allPostVars = $app->request->post();
+    extract($allPostVars);
+
+    if( empty($user_id) || empty($token) || empty($user_name) || empty($password) ){
+      error('Missing parameters in request.');
+      return;      
+    }
+
+
+
+    foreach($allPostVars as $key => $val) {
+      if( isset($default_params[$key]) )
+        $default_params[$key] = $val;
+    }
+
+    $response = Requests::post(
+      $app->config('wordpress_site_url').'/api/users.update',
+      array('Accept' => 'application/json'),
+      $default_params
+    );
+
+    $responsebody = json_decode($response->body);
+
+    if( isset($responsebody->id) ) {
+      success(
+        array(
+          'id' => $responsebody->id
+        )
+      );
+    } else {
+      error($responsebody->error);
+    }
+
+
+  });
+  
   /**
    * Create Report
    *
@@ -305,6 +358,9 @@ $app->group('/api', function () use ($app) {
         'token' => $token
       )
     );
+
+    echo $response->body;
+    return;
 
     $data = json_decode($response->body);
     if(isset($data->token_status) ) {
