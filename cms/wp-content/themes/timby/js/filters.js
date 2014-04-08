@@ -27,22 +27,31 @@ angular.module('timby.filters', [])
 
     if( sectors.length === 0) return reports;
 
-    var result = [];
-    var _sector_ids = sectors.map(function(sector){
-      return sector.id
-    });
-
+  
     if( sectors.length > 0 ){
+      var result = [];
+      var _sector_ids = sectors.map(grab_object_id);
+
       angular.forEach(reports, function(report, key){
         if( report.sectors.length > 0){
-          angular.forEach(report.sectors, function(sector, key){
-            if( _sector_ids.indexOf(sector.id) != -1){
-              result.push(report);
+          // find single sector
+          if( _sector_ids.length == 1){
+            for (var i = report.sectors.length - 1; i >= 0; i--) {
+              if( _sector_ids.indexOf(report.sectors[i].id) !== -1 ) 
+                result.push(report); //push report
             }
-          });
+          } else{
+            // find multiple sectors
+            var _report_sectors = report.sectors.map(grab_object_id);
+            if( _sector_ids.sort().join() == _report_sectors.sort().join()){
+              result.push(report);
+            }   
+          }
         }
       });      
     }
+    // console.log('Total sectors selected '+_sector_ids.length);
+    // console.log('Total results found '+result.length);
 
     return result;
   }
@@ -53,20 +62,25 @@ angular.module('timby.filters', [])
     if( entities.length === 0) return reports;
 
     var result = [];
-    var _entity_ids = entities.map(function(sector){
-      return sector.id
-    });
 
     if( entities.length > 0 ){
+      var _entity_ids = entities.map(grab_object_id);
+
       angular.forEach(reports, function(report, key){
-        if( report.entities.length > 0){
-          angular.forEach(report.entities, function(sector, key){
-            if( _entity_ids.indexOf(sector.id) != -1){
-              result.push(report);
-            }
-          });
+        // find single entity
+        if( _entity_ids.length == 1){
+          for (var i = report.entities.length - 1; i >= 0; i--) {
+            if( _entity_ids.indexOf(report.entities[i].id) !== -1 ) 
+              result.push(report); //push report
+          }
+        } else{
+          // find multiple entities
+          var _report_entities = report.entities.map(grab_object_id);
+          if( _entity_ids.sort().join() == _report_entities.sort().join()){
+            result.push(report);
+          }   
         }
-      });      
+      });
     }
 
     return result;
@@ -91,4 +105,8 @@ angular.module('timby.filters', [])
     });
     return result;
   }
-})
+});
+
+function grab_object_id(item){
+  return item.id
+}

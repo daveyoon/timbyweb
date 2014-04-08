@@ -338,7 +338,7 @@ angular.module('timby.controllers', [])
              */
             var uploadComplete = function(){
               uploadedcounter++
-              console.log(uploadedcounter);
+              
               if( uploadedcounter == $scope.filecount){
                 $scope.working = false;
               }
