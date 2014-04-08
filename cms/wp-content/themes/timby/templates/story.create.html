@@ -14,191 +14,7 @@
     <li class="tab-item"><a href="#/addreport">Add Report</a></li>
   </nav>
 </header>
-<section class="l-normal-page l-fixed-footer l-story-creator">
-    <section class="results l-column">
-        <ul class="list" ng-class="{ loading : working }">
-              <li class="list-item list-highlight">
-                <div class="form-group">
-                  <div>
-                    <input type="search" id="search" placeholder="Search Reports" ng-model="filtercriteria.search" class="ng-pristine ng-valid">
-                  </div>
-                </div>
-              </li>
-              <h4 ng-show="working" class="ng-hide">Loading...</h4>
-              <!-- ngRepeat: report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities | verifiedStatusFilter:filtercriteria.status -->
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-              <li class="list-item list-clickable ng-scope" >
-                <a href="">
-                  <span ng-show="report.verified" class="top-right-triangle-small triangle-good ng-hide"></span>
-                  <span ng-show="!report.verified" class="top-right-triangle-small triangle-bad"></span>
-                  <h6 class="list-title ng-binding">asdf</h6>
-                  <p class="list-content text-muted ng-binding">
-                    31st March, 2014 by test test
-                  </p>
-                  <div class="horz-list text-muted ng-binding">
-                    <i class="fa fa-camera"></i>        0 &nbsp;&nbsp;
-                    <i class="fa fa-video-camera"></i>  0 &nbsp;&nbsp;
-                    <i class="fa fa-volume-up"></i>     0
-
-                    <!-- <span class="icon-camera"></span>     {{ report.media.photos.length}} &nbsp;&nbsp;
-                    <span class="icon-videocam"></span>   {{ report.media.video.length}} &nbsp;&nbsp;
-                    <span class="icon-volume-up"></span>  {{ report.media.audio.length}} &nbsp;&nbsp; -->
-                  </div>
-                </a>
-              </li>
-        </ul>
-      </section>
+<section class="l-normal-page l-fixed-footer l-story-creator l-padding-item">
   <div class="row-small story">
     <div class="l-group"><a href="#/story" class="btn"><span class="fa fa-angle-left"></span> Back to Story List</a></div>
     <div class="header-group l-group">
@@ -210,7 +26,6 @@
       <p>One of the times my daughter climbed out to jump back in, she cried out in pain after stepping on a bee. As soon as I pulled out the stinger left behind in her foot, one by one more bees began to swarm. Thinking that the dead bee was attracting others, I picked it up and went inside to throw it away.</p>
       <p>The moment I opened the trash in the kitchen I heard my wife scream outside. It wasn’t an ordinary scream. I look outside right at the moment she was diving into the water. Racing outside I was certain that she was being attacked by the aggressive bees.</p>
       <p>I made it to the edge of the water right when she was coming up. My heart sank. In her arms was our little boy, blue and lifeless.</p>
-      <button>Add Report</button>
     </div>
     <div class="l-group ">
       <div class="report-thumb">
@@ -231,11 +46,16 @@
       </div>
       <button class="btn-delete">Remove Report</button>
     </div>
+    <div class="l-group">
+      <input type="text" placeholder="Search here add a report">
+    </div>
     
     <div class="l-group">
       <p>The moment I opened the trash in the kitchen I heard my wife scream outside. It wasn’t an ordinary scream. I look outside right at the moment she was diving into the water. Racing outside I was certain that she was being attacked by the aggressive bees.</p>
       <p>I made it to the edge of the water right when she was coming up. My heart sa</p>
-      <button>Add Report</button>
+    </div>
+    <div class="l-group">
+      <input type="text" placeholder="Search here add a report">
     </div>
   </div>
   <div class="action-bar action-bar-full-page">
