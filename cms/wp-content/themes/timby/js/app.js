@@ -82,7 +82,17 @@ angular.module('timby',[
   datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
 
 }])
-.run(['$rootScope', 'wordpress', function($rootScope, wordpressProvider){
+.run(['$rootScope', '$window', 'wordpress','$location', function($rootScope, $window, wordpressProvider, $location){
+
+  // redirect all non logged in users
+  // this is when a route changes
+  $rootScope.$on('$routeChangeStart', function(event, next, current){
+    //validate an existing session
+    if( !$window.sessionStorage.user_id && !$window.sessionStorage.user_token ) {
+      $location.path( "/" );       
+    }
+
+  });
 
   // fetches necessary wordpress data
   // we require for our app to run,

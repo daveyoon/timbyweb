@@ -150,6 +150,8 @@ angular.module('timby.services', [])
 })
 // this service is called by route resolve and checks
 // whether the current user is authorised to access a route
+// this is when a user loads a route location directly
+// and the browser does a page load
 .factory('checkAuthStatus', [
   '$q', '$location', '$window','AuthService', 
   function($q, $location, $window, AuthService){

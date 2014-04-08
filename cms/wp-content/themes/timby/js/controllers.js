@@ -12,7 +12,6 @@ angular.module('timby.controllers', [])
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
-      $scope.logout = function(){}
       $scope.getAllReports = function(){
         $scope.working = true;
         ReportService
@@ -249,9 +248,8 @@ angular.module('timby.controllers', [])
               AuthService.user = {};
               AuthService.logged_in = false;
 
-              $window.sessionStorage.user_id = null;
-              $window.sessionStorage.user_token = null;
-
+              $window.sessionStorage.clear();
+              
               $location.path('/');
             });
         }
