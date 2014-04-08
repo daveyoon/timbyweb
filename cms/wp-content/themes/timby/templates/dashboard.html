@@ -193,9 +193,7 @@
         
         <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
           <div class="three media-item" ng-repeat="photo in report.media.photos">
-            <a href="#" class="thumbnail">
-              <img ng-src="{{photo.guid}}">
-            </a>
+            <img ng-src="{{photo.guid}}">
             <a href="" ng-click="detachMedia(photo.ID, $event)">remove</a>
           </div>
         </div><!-- end photos -->
