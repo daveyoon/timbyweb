@@ -24,6 +24,7 @@
       SHOW<BR/>
       FILTERS
     </div>
+
     <div class="filters-alive">
       <div class="clearfix">
         <h4 class="pull-left">Filters</h4>
@@ -191,10 +192,15 @@
         
         <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
         
-        <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
+        <div  class="row l-media-grid l-group" >
           <div class="three media-item" ng-repeat="photo in report.media.photos">
             <img ng-src="{{photo.guid}}">
-            <a href="" ng-click="detachMedia(photo.ID, $event)">remove</a>
+            <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Image</button>
+            <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
+              <h6>Remove this image?</h6>
+              <button ng-click="detachMedia(photo.ID, $event)">Yes</button>
+              <button ng-click="showChoice = ! showChoice">No</button>
+            </div>
           </div>
         </div><!-- end photos -->
         
@@ -211,7 +217,12 @@
                 </div>
               </div>
             </div>
-            <button href="" ng-click="detachMedia(audio.ID, $event)" class="btn-delete">remove</button>
+            <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Audio</button>
+            <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
+              <h6>Remove this audio?</h6>
+              <button ng-click="detachMedia(audio.ID, $event)">Yes</button>
+              <button ng-click="showChoice = ! showChoice">No</button>
+            </div>
           </div>
         </div><!-- end audio -->
 
@@ -248,7 +259,12 @@
                   Upload to Vimeo in progress...
               </div>
             </div>
-            <button href="" ng-click="detachMedia(video.ID, $event)" class="btn-delete">Remove</button>
+            <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Video</button>
+            <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
+              <h6>Remove this video?</h6>
+              <button ng-click="detachMedia(video.ID, $event)">Yes</button>
+              <button ng-click="showChoice = ! showChoice">No</button>
+            </div>
           </div>
         </div><!-- end videos -->
       </div>
