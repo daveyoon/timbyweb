@@ -462,10 +462,46 @@ angular.module('timby.controllers', [])
       $scope.reports = response.data.reports;
     })
 
-  $scope.addToStory = function(reportid, evt){
+  /**
+   * add report to story
+   * 
+   * @param integer id  report ID
+   * @param object $event
+   */
+  $scope.addToStory = function(id, evt){
+
+    // do a lookup from the object cache
+    if( $scope.reports.length > 0){
+      // find this report from our report cache
+      for (var i = $scope.reports.length - 1; i >= 0; i--) {
+        if( id == $scope.reports[i].ID ){
+          $scope.report = $scope.reports[i];
+          break;
+        }
+      }
+    }
+
+    // add the report
     var _parent_content_block = angular.element(evt.target).parents('.l-group');
-    
     _parent_content_block.before($compile('<reportcard />')($scope));
+
+    // initialize the map
+    angular.extend($scope, {
+      map : {
+        center: {
+          // map center is at Kokoyah, Liberia
+          latitude: $scope.report.lat,
+          longitude: $scope.report.lng
+        },
+        zoom: 7,
+        clickedMarker: {
+            title: 'Your current position',
+            latitude: $scope.report.lat,
+            longitude: $scope.report.lng
+        }
+      }
+    });
+
   }
 
 }]);
