@@ -26,6 +26,7 @@
     </div>
 
     <div class="l-group">
+      <button ng-click="addContentEditor($event)">Add content area</button>
       <input type="text" placeholder="Search here to add a report" ng-model="search">
       <ul class="reports" ng-show="results.length > 0">
         <li ng-repeat="report in (results = (reports | searchVerifiedReportsFilter:search))">
@@ -73,5 +74,13 @@
       </div>
       <button ng-click="removeReportFromStory(report.ID, $event)" class="btn-delete">Remove Report</button>
     </div>
+  </div>
+</script>
+
+<!-- content block tempalte -->
+<script type="text/ng-template" id="text_editor_template">
+  <div class="l-group">
+    <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
+    <a href="" ng-click="removeContentEditor($event)">remove this content block</a>
   </div>
 </script>

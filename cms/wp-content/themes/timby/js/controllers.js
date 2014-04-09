@@ -504,6 +504,32 @@ angular.module('timby.controllers', [])
 
   }
 
+
+  /**
+   * Add a content editor
+   * onto the story structure
+   * 
+   * @param object evt
+   */
+  $scope.addContentEditor = function(evt){
+    var _parent_content_block = angular.element(evt.target).parents('.l-group');
+    var editor = document.getElementById('text_editor_template').innerHTML;
+    var compiled_editor = $compile(editor)($scope);
+
+    // append before parent block
+     _parent_content_block.before(compiled_editor);
+  }
+
+
+  /**
+   * Remove content editor
+   * 
+   * @param object evt
+   */
+  $scope.removeContentEditor = function(evt){
+    angular.element(evt.target).parents('.l-group').remove();
+  }
+
   /**
    * Removes a report from the story
    * removes the element from the DOM
