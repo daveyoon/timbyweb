@@ -91,27 +91,6 @@ function cron_add_every_ten_minutes( $schedules ) {
 }
 
 
-function fetch_new_reports( $args = array()){
-  $args = array_merge(
-    array(
-      'post_type'      => 'report',
-      'posts_per_page' => -1,
-      'orderby'        => 'meta_key = _date_reported',
-      'order'          => 'DESC',
-    ),
-    $args
-  );
-
-  $reports = get_posts($args);
-
-  foreach($reports as $key => $report){
-    $report = build_report_data($report);
-    $reports[$key] = $report;
-  }
-
-  return $reports;
-}
-
 function build_report_data($report){
   // if the reporter id is not set,
   // set it to the post_author

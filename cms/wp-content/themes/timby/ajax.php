@@ -143,11 +143,45 @@ switch($_REQUEST['action']){
 
     break;
 
-  case 'get_new_reports':
+  case 'get_reports':
+    $args = array(
+      'meta_query' => array()
+    );
+
+    if( isset($_GET['verified']) && $_GET['verified'] == 'true' ){
+
+      array_push(
+        $args['meta_query'], 
+        array(
+          'key' => '_cmb_verified',
+          'value' => 'on',
+        )
+      );
+
+    }
+
+    $args = array_merge(
+      array(
+        'post_type'      => 'report',
+        'posts_per_page' => -1,
+        'orderby'        => 'meta_key = _date_reported',
+        'order'          => 'DESC',
+      ),
+      $args
+    );
+    
+    $reports = get_posts($args);
+
+    foreach($reports as $key => $report){
+      $report = build_report_data($report); // in functions.php
+      $reports[$key] = $report;
+    }
+
+
     echo json_encode(
       array(
         'status' => 'success',
-        'reports' => fetch_new_reports()
+        'reports' => $reports
       )
     );
     break;

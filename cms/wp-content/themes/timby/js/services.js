@@ -1,8 +1,10 @@
 angular.module('timby.services', [])
 .factory('ReportService', ['$http','$window', '$upload','AuthService', function($http, $window, $upload, AuthService) {
   return {
-    findAll : function(){
-      return $http.get($window.wp_data.template_url + '/ajax.php?action=get_new_reports');
+    findAll : function(criteria){
+      criteria = criteria || [];
+
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=get_reports&' + criteria.join('&'));
     },
 
     findById : function(id){

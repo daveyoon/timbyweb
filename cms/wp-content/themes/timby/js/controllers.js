@@ -452,6 +452,20 @@ angular.module('timby.controllers', [])
     }
   }
 }])
-.controller('StoryController',['$scope', function($scope){
+.controller('StoryController',['$scope', 'ReportService','$compile', function($scope, ReportService, $compile){
+  // fetch all verified reports
+  $scope.reports = [];
+
+  ReportService
+    .findAll(['verified=true'])
+    .then(function(response){
+      $scope.reports = response.data.reports;
+    })
+
+  $scope.addToStory = function(reportid, evt){
+    var _parent_content_block = angular.element(evt.target).parents('.l-group');
+    
+    _parent_content_block.before($compile('<reportcard />')($scope));
+  }
 
 }]);

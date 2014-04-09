@@ -1,14 +1,27 @@
 angular.module('timby.filters', [])
+.filter('searchVerifiedReportsFilter', function(){
+  return function(reports, search){
+    if( typeof(search) === 'undefined' ) return;
+
+    var r = new RegExp(search, 'i');
+    var result = [];
+
+    if(search.length > 0){
+      angular.forEach(reports, function(report, key){
+        if( report.verified && r.test(report.post_title)){
+          result.push(report);
+        }
+      });
+    }
+    return result;
+  }
+})
 .filter('searchFilter', function(){
   return function(reports, search){
     if( search.length === 0) return reports;
 
     var r = new RegExp(search, 'i');
     var result = [];
-
-    // filter via search
-    if( search.length === 0 ) 
-      return reports;
 
     if(search.length > 0){
       angular.forEach(reports, function(report, key){
