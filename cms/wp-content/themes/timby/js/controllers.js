@@ -249,7 +249,7 @@ angular.module('timby.controllers', [])
               AuthService.logged_in = false;
 
               $window.sessionStorage.clear();
-              
+
               $location.path('/');
             });
         }
@@ -261,7 +261,14 @@ angular.module('timby.controllers', [])
 )
 .controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
   $scope.report = {};
+  $scope.formerrors = {};
   $scope.placeholderText = "Type your description here";
+
+  // datepicker options
+  $scope.dateOptions = {
+    'year-format': "'yy'",
+    'starting-day': 1
+  };
 
   $scope.placeholder = function(){
     var editor = angular.element('#taTextElement');
@@ -277,9 +284,6 @@ angular.module('timby.controllers', [])
 
   // Enable the new Google Maps visuals until it gets enabled by default.
   google.maps.visualRefresh = true;
-
-
-
   angular.extend($scope, {
     map : {
       center: {
@@ -306,18 +310,15 @@ angular.module('timby.controllers', [])
     }
   });
 
-  $scope.dateOptions = {
-    'year-format': "'yy'",
-    'starting-day': 1
-  };
+
 
   $scope.createReport = function(evt){
 
     if( !$scope.report.lat || !$scope.report.lng ) {
-      $scope.location_error = 'Please select a location on the map';
+      $scope.formerrors.location = 'Please select a location on the map';
       return;
     } else{
-      $scope.location_error = null;
+      $scope.formerrors.location = null;
     }
 
     $scope.working = true;
@@ -358,10 +359,7 @@ angular.module('timby.controllers', [])
               ReportService.uploadMedia('audio', $scope.report.audio, response.data.report.ID, uploadComplete);
             }
 
-            // reset the form and
-            // mute the model
-            $scope.report = {};
-            evt.target.reset();
+            $scope.reset(evt); // reset the form
           }
         },
         function error(response, status, headers, config) {
@@ -370,15 +368,33 @@ angular.module('timby.controllers', [])
       );
   }
 
+  $scope.reset = function(e){
+    // peform some form cleanup
+    
+    // mute the model
+    $scope.report = {};
+
+    // clear the marker off the map
+    $scope.map.clickedMarker.latitude = null;
+    $scope.map.clickedMarker.longitude = null;
+
+    // clear the error messages as well
+    $scope.formerrors = null
+
+    //set the form to pristine, i.e user hasn't interacted with it
+    $scope.addreportform.$setPristine();
+  }
 
   $scope.onFileSelect = function($type, $files){
-    $scope.invalid = {};
 
     if( $type == 'photo' ){
       if( ! files_are_valid($files, ['image/jpeg', 'image/png']) ){
-        $scope.invalid.photo = 'Select only valid image files.';
+        $scope.formerrors.photo = 'Select only valid image files.';
+        $scope.addreportform.$setValidity('photo', false);
         return;
       }
+      $scope.formerrors.photo = null;
+      $scope.addreportform.$setValidity('photo', true);
       $scope.report.photos = $files;
     }
 
@@ -398,17 +414,23 @@ angular.module('timby.controllers', [])
               'video/x-matroska'
             ])
         ){
-        $scope.invalid.video = 'Sorry we can only accept .mov, .mp4, .avi and .mkv video files.';
+        $scope.formerrors.video = 'Sorry we can only accept .mov, .mp4, .avi and .mkv video files.';
+        $scope.addreportform.$setValidity('video', false);
         return;
       }
+      $scope.formerrors.video = null;
+      $scope.addreportform.$setValidity('video', true);
       $scope.report.video = $files;
     }
 
     if( $type == 'audio'){
       if( ! files_are_valid($files, ['audio/mpeg', 'video/mp4', 'audio/mp4a-latm', 'audio/ogg']) ){
-        $scope.invalid.audio = 'Sorry we can only accept mp3, mp4, m4a, m4b, m4p and ogg audio files.';
+        $scope.formerrors.audio = 'Sorry we can only accept mp3, mp4, m4a, m4b, m4p and ogg audio files.';
+        $scope.addreportform.$setValidity('audio', false);
         return;
       }
+      $scope.formerrors.audio = null;
+      $scope.addreportform.$setValidity('audio', true);
       $scope.report.audio = $files;
     }
 

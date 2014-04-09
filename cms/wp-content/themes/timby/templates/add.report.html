@@ -13,7 +13,7 @@
       <a href="#/dashboard">Moderation</a>
     </li>
     <li class="tab-item">
-      <a href="#/story/create">Create a Story</a>
+      <a href="#/stories">Stories</a>
     </li>
     <li class="tab-item active">
       <a href="#/addreport">Add Report</a>
@@ -51,13 +51,7 @@
               draggable="true"
               events="map.events"
               >
-              <marker coords="map.clickedMarker">
-                <!--<marker-label content="map.clickedMarker.title" anchor="24 40" class="marker-labels"/>-->
-                <window isIconVisibleOnClick="true">
-                  This is my clicked marker!
-                  <p class="muted">My marker will reappear when you close me.</p>
-                </window>
-              </marker>
+              <marker coords="map.clickedMarker"></marker>
             </google-map>
           </div>
         </div>
@@ -119,24 +113,24 @@
               <h6 class="form-title">Select Image</h6>
               <p>You can upload .png, .jpg and .gif files</p>
             </div>
-            <input type="file" ng-file-select="onFileSelect('photo', $files)" multiple>
-            <span ng-show="invalid.photo">{{invalid.photo}}</span>
+            <input name="photo" type="file" ng-file-select="onFileSelect('photo', $files)" multiple>
+            <span ng-show="formerrors.photo">{{formerrors.photo}}</span>
           </div>
           <div class="l-group">
             <div class="header-group">
               <h6 class="form-title">Select a Video</h6>
               <p>You can upload .avi, .mkv, .mov, .ogg and .mp4 files</p>
             </div>
-            <input type="file" ng-file-select="onFileSelect('video',$files)" multiple>
-            <span ng-show="invalid.video">{{invalid.video}}</span>
+            <input name="video" type="file" ng-file-select="onFileSelect('video',$files)" multiple>
+            <span ng-show="formerrors.video">{{formerrors.video}}</span>
           </div>
           <div class="l-group">
             <div class="header-group">
               <h6 class="form-title">Select Audio</h6>
               <p>You can upload .mp4, .mp3 and .m4a files</p>
             </div>
-            <input type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
-            <span ng-show="invalid.audio">{{invalid.audio}}</span>
+            <input name="audio" type="file" ng-file-select="onFileSelect('audio', $files)" multiple>
+            <span ng-show="formerrors.audio">{{formerrors.audio}}</span>
           </div>
         </div>
       </div>
@@ -147,7 +141,8 @@
     <div class="action-bar action-bar-full-page">
       <div class="row">
         <input type="submit" value="Add Report" class="btn btn-edit" ng-disabled="addreportform.$invalid">
-        <span class="error" ng-show="location_error">{{location_error}}</span>
+        <input type="reset" ng-click="reset()" value="Reset Form" class="btn btn-edit">
+        <span class="error" ng-show="formerrors.location">{{formerrors.location}}</span>
       </div>
     </div>
 

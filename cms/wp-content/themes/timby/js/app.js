@@ -61,16 +61,16 @@ angular.module('timby',[
     .when('/story/create',
       {
         templateUrl : BASE_URL + '/templates/story.create.html',
-        controller : 'ReportController',
+        controller : 'StoryController',
         resolve : {
           'status' : 'checkAuthStatus'
         }
       }
     )
-    .when('/story',
+    .when('/stories',
       {
         templateUrl : BASE_URL + '/templates/story.list.html',
-        controller : 'ReportController',
+        controller : 'StoryController',
         resolve : {
           'status' : 'checkAuthStatus'
         }
