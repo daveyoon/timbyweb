@@ -451,7 +451,7 @@ angular.module('timby.controllers', [])
       return valid;
     }
   }
-
-
+}])
+.controller('StoryController',['$scope', function($scope){
 
 }]);
