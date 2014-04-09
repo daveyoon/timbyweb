@@ -453,6 +453,12 @@ angular.module('timby.controllers', [])
   }
 }])
 .controller('StoryController',['$scope', 'ReportService','$compile', function($scope, ReportService, $compile){
+  var code = 'c' + Math.floor(Math.random() * 99999);
+
+  $scope.story = {
+    content : []
+  }
+
   // fetch all verified reports
   $scope.reports = [];
 
@@ -480,6 +486,10 @@ angular.module('timby.controllers', [])
         }
       }
     }
+
+    var code = 'r' + Math.floor(Math.random() * 99999);
+
+    $scope.story.content[code] = $scope.report;
 
     // add the report
     var _parent_content_block = angular.element(evt.target).parents('.l-group');
@@ -512,10 +522,13 @@ angular.module('timby.controllers', [])
    * @param object evt
    */
   $scope.addContentEditor = function(evt){
+    var code = 'c' + Math.floor(Math.random() * 99999);
+
     var _parent_content_block = angular.element(evt.target).parents('.l-group');
     var editor = document.getElementById('text_editor_template').innerHTML;
     var compiled_editor = $compile(editor)($scope);
 
+    
     // append before parent block
      _parent_content_block.before(compiled_editor);
   }
@@ -543,4 +556,8 @@ angular.module('timby.controllers', [])
     angular.element(evt.target).parent().remove();
   }
 
+
+  $scope.save = function(){
+    console.log($scope.story.content);
+  }
 }]);

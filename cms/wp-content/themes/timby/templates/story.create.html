@@ -16,13 +16,18 @@
 </header>
 <section class="l-normal-page l-fixed-footer l-story-creator l-padding-item">
   <div class="row-small story">
-    <div class="l-group"><a href="#/stories" class="btn btn-small"><span class="fa fa-angle-left"></span> Back to Story List</a></div>
-    <div class="header-group l-group">
-      <input type="text" ng-model="report.post_title" class="h3-input" placeholder="Story title goes here">
-      <input type="text" class="subhead h4-input" ng-model="report.post_subtitle" placeholder="Story subtitle goes here"/>
-    </div>
     <div class="l-group">
-      <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
+      <a href="#/stories" class="btn btn-small">
+        <span class="fa fa-angle-left"></span> Back to Story List
+      </a>
+    </div>
+    <div class="header-group l-group">
+      <input type="text" ng-model="story.title" class="h3-input" placeholder="Story title goes here">
+      <input type="text" class="subhead h4-input" ng-model="story.subtitle" placeholder="Story subtitle goes here"/>
+    </div>
+
+    <div class="l-group">
+      <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="story.content[code]" ></div><!-- end description -->
     </div>
 
     <div class="l-group">
@@ -42,7 +47,7 @@
   </div>
   <div class="action-bar action-bar-full-page">
     <div class="row">
-      <input type="submit" value="Save Story" class="btn btn-edit pull-right">
+      <input type="submit" ng-click="save()" value="Save Story" class="btn btn-edit pull-right">
       <input type="submit" value="Publish Story" class="btn btn-edit pull-right">
     </div>
   </div>
@@ -74,13 +79,14 @@
       </div>
       <button ng-click="removeReportFromStory(report.ID, $event)" class="btn-delete">Remove Report</button>
     </div>
+    <input type="text" ng-model="story.content[$code]" />
   </div>
 </script>
 
 <!-- content block tempalte -->
 <script type="text/ng-template" id="text_editor_template">
   <div class="l-group">
-    <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
+    <div class="text-editor text-editor-lined text-editor-height" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="story.content[$code]"></div><!-- end description -->
     <a href="" ng-click="removeContentEditor($event)">remove this content block</a>
   </div>
 </script>
