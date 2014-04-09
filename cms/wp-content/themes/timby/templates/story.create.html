@@ -33,7 +33,7 @@
           <p class="list-content text-muted">
             {{report.date_reported}} by {{report.reporter.name}}
           </p>
-          <a href="" ng-click="addToStory(report.ID, $event)">Add to report</a>
+          <a href="" ng-click="addReportToStory(report.ID, $event)">Add to report</a>
         </li>
       </ul>
     </div>
@@ -71,7 +71,7 @@
           <marker coords="map.clickedMarker"></marker>
         </google-map>
       </div>
+      <button ng-click="removeReportFromStory(report.ID, $event)" class="btn-delete">Remove Report</button>
     </div>
-    <button class="btn-delete">Remove Report</button>
   </div>
 </script>

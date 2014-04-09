@@ -468,7 +468,7 @@ angular.module('timby.controllers', [])
    * @param integer id  report ID
    * @param object $event
    */
-  $scope.addToStory = function(id, evt){
+  $scope.addReportToStory = function(id, evt){
 
     // do a lookup from the object cache
     if( $scope.reports.length > 0){
@@ -502,6 +502,19 @@ angular.module('timby.controllers', [])
       }
     });
 
+  }
+
+  /**
+   * Removes a report from the story
+   * removes the element from the DOM
+   * and updates the story manifest
+   * 
+   * @param integer id  report ID
+   * @param object $event
+   * @todo: update the story json manifest
+   */
+  $scope.removeReportFromStory = function( reportid, evt){
+    angular.element(evt.target).parent().remove();
   }
 
 }]);
