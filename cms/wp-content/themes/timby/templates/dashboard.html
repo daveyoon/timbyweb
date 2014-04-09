@@ -24,6 +24,7 @@
       SHOW<BR/>
       FILTERS
     </div>
+
     <div class="filters-alive">
       <div class="clearfix">
         <h4 class="pull-left">Filters</h4>
@@ -165,12 +166,6 @@
               <!-- <div>
                 <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
               </div> -->
-              <div class="entity-list l-group">
-                <span class="tag tag-remove tag-rounded" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
-                  {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i>&nbsp; </a>
-                </span>
-              </div>
-        
               <div class="l-group">
                 <div class="six">
                   <select chosen
@@ -183,22 +178,34 @@
                 </div>
                 <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
               </div>
+              <div class="entity-list l-group">
+                <span class="tag tag-remove tag-rounded" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
+                  {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i>&nbsp; </a>
+                </span>
+              </div>
             </div>
             <div class="three">
               <div id="report-location"></div>
             </div>
         </div>
         
-        <div class="row l-group" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content"></div><!-- end description -->
+        <div class="row l-group dashboard-content" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content" placeholder="Type your description here"></div><!-- end description -->
         
-        <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0">
+        <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0" >
+          <h5 class="header-underline">IMAGES</h5>
           <div class="three media-item" ng-repeat="photo in report.media.photos">
             <img ng-src="{{photo.guid}}">
-            <a href="" ng-click="detachMedia(photo.ID, $event)">remove</a>
+            <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Image</button>
+            <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
+              <h6>Remove this image?</h6>
+              <button ng-click="detachMedia(photo.ID, $event)">Yes</button>
+              <button ng-click="showChoice = ! showChoice">No</button>
+            </div>
           </div>
         </div><!-- end photos -->
         
         <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
+          <h5 class="header-underline">AUDIO</h5>
           <div class="three media-item" ng-repeat="audio in report.media.audio">
             <div ng-if="audio.uploaded">
               <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
@@ -211,7 +218,12 @@
                 </div>
               </div>
             </div>
-            <button href="" ng-click="detachMedia(audio.ID, $event)" class="btn-delete">remove</button>
+            <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Audio</button>
+            <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
+              <h6>Remove this audio?</h6>
+              <button ng-click="detachMedia(audio.ID, $event)">Yes</button>
+              <button ng-click="showChoice = ! showChoice">No</button>
+            </div>
           </div>
         </div><!-- end audio -->
 
@@ -233,6 +245,7 @@
         </div> -->
 
         <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
+          <h5 class="header-underline">VIDEO</h5>
           <div class="six media-item" ng-repeat="video in report.media.video">
             <div ng-if="video.uploaded">
               <iframe
@@ -248,7 +261,12 @@
                   Upload to Vimeo in progress...
               </div>
             </div>
-            <button href="" ng-click="detachMedia(video.ID, $event)" class="btn-delete">Remove</button>
+            <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Video</button>
+            <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
+              <h6>Remove this video?</h6>
+              <button ng-click="detachMedia(video.ID, $event)">Yes</button>
+              <button ng-click="showChoice = ! showChoice">No</button>
+            </div>
           </div>
         </div><!-- end videos -->
       </div>
