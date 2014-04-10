@@ -524,6 +524,8 @@ angular.module('timby.controllers', [])
         }
       }
     });
+
+    $scope.search = '';
   }
 
 
