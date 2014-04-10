@@ -104,7 +104,12 @@
           </div>
         </div>
       </li>
-      <h4 ng-show="working">Loading...</h4>
+      <div class="page-loader page-loader-list" ng-show="working">
+        <div class="page-loader-message">
+        <div class="loader"></div>
+        <h4>Loading</h4></div>
+        <!-- <h4 class="page-loader-message">Loading</h4> -->
+      </div>
       <li class="list-item list-clickable" ng-repeat="report in reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities | verifiedStatusFilter:filtercriteria.status" ng-click="viewReport(report.ID)" ng-class="isActive(report.ID) ? 'list-item-active' : '' ">
         <a href="">
           <span ng-show="report.verified" class="top-right-triangle-small triangle-good"></span>
@@ -135,7 +140,12 @@
     </div>
 
     <div ng-if="report" ng-class="{ loading : working }">
-      <h2 ng-show="working">Loading...</h2>
+      <div class="page-loader" ng-show="working">
+        <div class="page-loader-message">
+        <div class="loader"></div>
+        <h4>Loading</h4></div>
+        <!-- <h4 class="page-loader-message">Loading</h4> -->
+      </div>
       <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
       <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
 
