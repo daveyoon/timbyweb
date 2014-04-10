@@ -98,6 +98,10 @@ angular.module('timby.services', [])
 }])
 .factory('StoryService', ['$http','$window', function($http, $window){
   return {
+    findAll : function(criteria){
+      criteria = criteria || [];
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=stories.all&' + criteria.join('&'));
+    },
     findById : function(id){
       return $http.get($window.wp_data.template_url + '/ajax.php?action=story.get&id='+id)
     },

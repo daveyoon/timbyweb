@@ -186,7 +186,6 @@ switch($_REQUEST['action']){
     );
     break;
 
-
   case 'story.save':
     $data = file_get_contents("php://input");
     $data = json_decode($data);
@@ -202,7 +201,6 @@ switch($_REQUEST['action']){
 
       if( isset($data->story->id) ) {
         // perfom an update
-        // 
         $where = array( 'id' => (int) $data->story->id );
         if( $wpdb->update( $table, $d, $where ) !== false ) {
           echo json_encode(
@@ -222,8 +220,10 @@ switch($_REQUEST['action']){
 
 
       } else {
-        $d['author_id'] = $data->user_id;
         // create a new record
+        $d['author_id'] = $data->user_id;
+        $d['created']   = date('c', time() );
+
         if( $wpdb->insert( $table, $d ) ) {
           echo json_encode(
             array(
@@ -257,6 +257,27 @@ switch($_REQUEST['action']){
         )
       );
     }
+    break;
+
+  case 'stories.all':
+    global $wpdb;
+
+    $tablename = $wpdb->prefix . 'stories';
+
+    $stories = $wpdb->get_results("SELECT id, title, sub_title, created FROM $tablename");
+
+    foreach($stories as $key => $story){
+      $story = build_story_data($story); // in functions.php
+      $stories[$key] = $story;
+    }
+
+    echo json_encode(
+      array(
+        'status' => 'success',
+        'stories' => $stories
+      )
+    );
+
     break;
 
   case 'login':

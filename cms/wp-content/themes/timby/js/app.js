@@ -63,7 +63,19 @@ angular.module('timby',[
         templateUrl : BASE_URL + '/templates/story.create.html',
         controller : 'StoryController',
         resolve : {
-          'status' : 'checkAuthStatus'
+          status : 'checkAuthStatus',
+          resolvedata : function(){
+            // initialize a blank story object
+            var story = {
+              content : [
+                {
+                  type : 'editor',
+                  text : ''
+                }
+              ]
+            }
+            return story
+          }
         }
       }
     )
@@ -72,7 +84,14 @@ angular.module('timby',[
         templateUrl : BASE_URL + '/templates/story.edit.html',
         controller : 'StoryController',
         resolve : {
-          'status' : 'checkAuthStatus'
+          status : 'checkAuthStatus',
+          resolvedata : function(StoryService,$route){
+            return StoryService
+                      .findById($route.current.params.id)
+                      .then(function(response){
+                        return { story : response.data.story }
+                      });
+          }
         }
       }
     )
@@ -81,7 +100,14 @@ angular.module('timby',[
         templateUrl : BASE_URL + '/templates/story.list.html',
         controller : 'StoryController',
         resolve : {
-          'status' : 'checkAuthStatus'
+          status : 'checkAuthStatus',
+          resolvedata : function(StoryService,$route){
+            return StoryService
+                    .findAll()
+                    .then(function(response){
+                      return { stories : response.data.stories };
+                    })
+          }
         }
       }
     )

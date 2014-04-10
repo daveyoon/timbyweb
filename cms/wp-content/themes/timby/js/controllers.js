@@ -452,48 +452,25 @@ angular.module('timby.controllers', [])
     }
   }
 }])
-.controller('StoryController',['$scope', 'ReportService','StoryService','toaster', '$routeParams','$location', function($scope, ReportService, StoryService, toaster, $routeParams, $location){
+.controller('StoryController',['$scope', 'ReportService','StoryService','toaster', '$routeParams','$location', 'resolvedata', function($scope, ReportService, StoryService, toaster, $routeParams, $location, resolvedata){
   $scope.working = false;
+
   // fetch all verified reports
   $scope.reports = [];
-
-  $scope.mapcoords = {
-    latitude: -4.3456345,
-    longitude: 1.2345
-  }
-
   ReportService
     .findAll(['verified=true'])
     .then(function(response){
       $scope.reports = response.data.reports;
     })
 
+
   // fetch the report by id if we are editing
-  if( $routeParams.id ) {
-    // find this story
-    StoryService
-      .findById($routeParams.id)
-      .then(function(response){
-        $scope.story = response.data.story
-      })
-  } else {
-    $scope.story = {
-      content : [
-        {
-          type : 'editor',
-          text : ''
-        }
-      ]
-    }
-  }
+  if( resolvedata.story )
+    $scope.story = resolvedata.story
 
 
-  $scope.getPosition = function(report){
-    return { 
-      latitude : report.lat,
-      longitude : report.lng,
-    }
-  }
+  if( resolvedata.stories )
+    $scope.stories = resolvedata.stories
 
 
   /**

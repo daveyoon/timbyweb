@@ -307,6 +307,15 @@ function timby_create_custom_tables(){
 
 }
 add_action('admin_init', 'timby_create_custom_tables');
+
+function build_story_data($story){
+
+  // report date
+  $story->created = date('jS F, Y', strtotime($story->created) );
+
+  return $story;
+}
+
 /**
  * A cron job running every 10 mins checking
  * if there are any new posts, new posts are essentially
