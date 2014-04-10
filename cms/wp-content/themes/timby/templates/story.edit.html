@@ -53,11 +53,11 @@
             </div>
             <div class="five report-thumb-map">
               <google-map 
-                center="map.center" 
-                zoom="map.zoom"
+                center="{latitude: content.report.lat,longitude: content.report.lng}" 
+                zoom="8"
                 draggable="true"
                 >
-                <marker coords="map.clickedMarker"></marker>
+                <marker coords="{latitude: content.report.lat,longitude: content.report.lng}"></marker>
               </google-map>
             </div>
             <button ng-click="removeContentBlock($index, $event)" class="btn-delete">Remove Report</button>

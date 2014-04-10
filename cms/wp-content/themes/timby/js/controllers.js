@@ -457,6 +457,11 @@ angular.module('timby.controllers', [])
   // fetch all verified reports
   $scope.reports = [];
 
+  $scope.mapcoords = {
+    latitude: -4.3456345,
+    longitude: 1.2345
+  }
+
   ReportService
     .findAll(['verified=true'])
     .then(function(response){
@@ -483,6 +488,12 @@ angular.module('timby.controllers', [])
   }
 
 
+  $scope.getPosition = function(report){
+    return { 
+      latitude : report.lat,
+      longitude : report.lng,
+    }
+  }
 
 
   /**
@@ -507,22 +518,6 @@ angular.module('timby.controllers', [])
     $scope.story.content.push({
       type : 'report',
       report : $scope.report
-    });
-
-    angular.extend($scope, {
-      map : {
-        center: {
-          // map center is at Kokoyah, Liberia
-          latitude: $scope.report.lat,
-          longitude: $scope.report.lng
-        },
-        zoom: 7,
-        clickedMarker: {
-            title: 'Your current position',
-            latitude: $scope.report.lat,
-            longitude: $scope.report.lng
-        }
-      }
     });
 
     $scope.search = '';
