@@ -65,16 +65,18 @@ angular.module('timby',[
         resolve : {
           status : 'checkAuthStatus',
           resolvedata : function(){
-            // initialize a blank story object
-            var story = {
-              content : [
-                {
-                  type : 'editor',
-                  text : ''
-                }
-              ]
+            // initialize a empty story object
+            return {
+              story : {
+                content : [
+                  {
+                    type : 'editor',
+                    text : ''
+                  }
+                ]
+              }
             }
-            return story
+            
           }
         }
       }

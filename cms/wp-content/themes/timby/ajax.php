@@ -190,48 +190,52 @@ switch($_REQUEST['action']){
     $data = file_get_contents("php://input");
     $data = json_decode($data);
     if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
+
+      if( $story_id = save_story($data) ) {
+        echo json_encode(
+          array(
+            'status' => 'success',
+            'id'     => $story_id
+          )
+        );        
+      } else{
+        echo json_encode(
+          array(
+            'status'  => 'error',
+            'message' => 'Saving failed'
+          )
+        ); 
+      }
+    }
+
+    break;
+
+  case 'story.saveandpublish':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
       global $wpdb;
       $table = $wpdb->prefix . 'stories';
 
-      $d = array(
-        'title'     => $data->story->title,
-        'sub_title' => $data->story->sub_title,
-        'content'   => json_encode($data->story->content),
-      );
-
-      if( isset($data->story->id) ) {
-        // perfom an update
-        $where = array( 'id' => (int) $data->story->id );
-        if( $wpdb->update( $table, $d, $where ) !== false ) {
+       // the save
+      if( $story_id = save_story($data) ) {
+        // publish and return both the story id and published story id
+        if( $published_story_id = publish_story($story_id, $data) ) {
           echo json_encode(
             array(
-              'status' => 'success',
-              'message' => 'Update was succeful'
+              'status'             => 'success',
+              'story_id'           => $story_id,
+              'published_story_id' => $published_story_id
             )
-          );
-        } else{
-          echo json_encode(
-            array(
-              'status' => 'error',
-              'message' => 'Update failed'
-            )
-          );
+          );        
         }
-
-
-      } else {
-        // create a new record
-        $d['author_id'] = $data->user_id;
-        $d['created']   = date('c', time() );
-
-        if( $wpdb->insert( $table, $d ) ) {
-          echo json_encode(
-            array(
-              'status' => 'success',
-              'id' => $wpdb->insert_id
-            )
-          );
-        }
+      } else{
+        echo json_encode(
+          array(
+            'status'  => 'error',
+            'message' => 'Publishing failed'
+          )
+        ); 
       }
 
     }
@@ -264,7 +268,14 @@ switch($_REQUEST['action']){
 
     $tablename = $wpdb->prefix . 'stories';
 
-    $stories = $wpdb->get_results("SELECT id, title, sub_title, created FROM $tablename");
+    $stories = $wpdb->get_results("
+      SELECT id, title, sub_title, 
+      (
+        SELECT COUNT(id)  FROM wp_published_stories 
+        WHERE master_story_id = wp_stories.id LIMIT 0, 1 
+      ) as published
+      FROM wp_stories
+    ");
 
     foreach($stories as $key => $story){
       $story = build_story_data($story); // in functions.php
@@ -447,6 +458,78 @@ switch($_REQUEST['action']){
     break;
   default:
     break;
+}
+
+
+function save_story($data){
+  global $wpdb;
+  $table = $wpdb->prefix . 'stories';
+
+  $d = array(
+    'title'     => $data->story->title,
+    'sub_title' => $data->story->sub_title,
+    'content'   => json_encode($data->story->content),
+  );
+
+  if( isset($data->story->id) ) {
+    // perfom an update
+    $where = array( 'id' => (int) $data->story->id );
+    if( $wpdb->update( $table, $d, $where ) !== false ) {
+      return $data->story->id;
+    }
+  } else {
+    // create a new record
+    $d['author_id'] = $data->user_id;
+    $d['created']   = date('c', time() );
+
+    if( $wpdb->insert( $table, $d ) ) {
+      return $wpdb->insert_id;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Publish a story
+ *
+ * checks whether the story has been published before
+ * if yes, it does an update if not, it will create a 
+ * new record 
+ *     
+ * @param  int $story_id the master story id
+ * @param  array $data story data
+ * @return mixed  an published story id or false if the publish fails
+ */
+function publish_story($story_id, $data){
+  global $wpdb;
+  $table = $wpdb->prefix . 'published_stories';
+
+  $d = array(
+    'title'     => $data->story->title,
+    'sub_title' => $data->story->sub_title,
+    'content'   => json_encode($data->story->content),
+  );
+  
+  // if story had earlier been published, perfom an update
+  $published_story = $wpdb->get_row("SELECT id FROM $tablename WHERE master_story_id = $story_id");
+  if( !is_null($published_story) ) {
+    $where = array( 'id' => $published_story->id );
+    if( $wpdb->update( $table, $d, $where ) !== false ) {
+      return $published_story->id;
+    }      
+  }
+
+  // create a new record, and reference the master story
+  $d['master_story_id']   = $story_id;
+  $d['created']   = date('c', time() );
+
+  if( $wpdb->insert( $table, $d ) ) {
+    return $wpdb->insert_id;
+  }
+
+
+  return false;
 }
 
 // utility functions to fetch various info from the cms

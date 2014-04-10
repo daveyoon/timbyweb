@@ -545,6 +545,12 @@ angular.module('timby.controllers', [])
     angular.element(evt.target).parent().remove();
   }
 
+
+  // this is called by both save() and publish
+  function save_story(){
+
+  }
+
   $scope.save = function(){
     // check if we are updating an 
     // existing story
@@ -566,4 +572,23 @@ angular.module('timby.controllers', [])
           
       });
   }
+
+  $scope.publish = function(){
+    $scope.working = false;
+
+    StoryService
+      .saveAndPublish($scope.story)
+      .then(function(response){
+        $scope.working = false;
+        if( response.data.published_story_id ) {
+          // remain at current state if we are editing the story
+          // navigate to /story/edit/{id} if this is a new story
+          if( $scope.story.id )
+            $location.path('/story/edit/'+response.data.id)
+
+          toaster.pop('success', 'Success', 'Story published successfuly!');
+        }
+      }); 
+  }
+
 }]);

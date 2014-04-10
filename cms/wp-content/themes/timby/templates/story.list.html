@@ -29,7 +29,7 @@
     <div class="row">
       <a ng-href="#/story/edit/{{story.id}}" class="four grid-item grid-item-simple" ng-repeat="story in stories">
         <div class="grid-item-top">
-          <!-- <span class="tag tag-small tag-edit">Published</span> -->
+          <span ng-show="story.published" class="tag tag-small tag-edit">Published</span>
           <h4>{{story.title}}</h4>
           <h6 class="subhead">{{story.created}}</h6>
           <p>{{story.sub_title}}</p>

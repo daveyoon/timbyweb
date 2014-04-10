@@ -292,6 +292,7 @@ add_action( 'save_post', 'save_custom_report_data' );
 function timby_create_custom_tables(){
   global $wpdb; 
 
+  // stories table
   $tablename = $wpdb->prefix . 'stories';
   $wpdb->query(
     "CREATE TABLE IF NOT EXISTS `$tablename` ( 
@@ -305,6 +306,20 @@ function timby_create_custom_tables(){
     );"
   );
 
+  // published stories table
+  $tablename = $wpdb->prefix . 'published_stories';
+  $wpdb->query(
+    "CREATE TABLE IF NOT EXISTS `$tablename` ( 
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT, 
+      `title` varchar(255) NOT NULL, 
+      `sub_title` varchar(255) NOT NULL, 
+      `content` TEXT NOT NULL,
+      `master_story_id` int(11) unsigned NOT NULL,
+      `created` DATETIME NOT NULL, 
+      PRIMARY KEY (`id`) 
+    );"
+  );
+
 }
 add_action('admin_init', 'timby_create_custom_tables');
 
@@ -312,6 +327,8 @@ function build_story_data($story){
 
   // report date
   $story->created = date('jS F, Y', strtotime($story->created) );
+
+  $story->published = ($story->published == '1');
 
   return $story;
 }

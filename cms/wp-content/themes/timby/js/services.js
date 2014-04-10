@@ -115,6 +115,17 @@ angular.module('timby.services', [])
                   'nonce'           : $window.wp_data.nonce,
                 }
               )
+    },
+    saveAndPublish : function(story){
+      // clear the token
+      return $http.post(
+                $window.wp_data.template_url + '/ajax.php?action=story.saveandpublish', 
+                {
+                  'story'           : story,
+                  'user_id'         : $window.sessionStorage.user_id,
+                  'nonce'           : $window.wp_data.nonce,
+                }
+              )
     }
   }
 }])
