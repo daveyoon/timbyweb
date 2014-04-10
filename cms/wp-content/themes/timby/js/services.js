@@ -4,15 +4,15 @@ angular.module('timby.services', [])
     findAll : function(criteria){
       criteria = criteria || [];
 
-      return $http.get($window.wp_data.template_url + '/ajax.php?action=get_reports&' + criteria.join('&'));
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=reports.all&' + criteria.join('&'));
     },
 
     findById : function(id){
-      return $http.get($window.wp_data.template_url + '/ajax.php?action=get_report&id='+id)
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=report.get&id='+id)
     },
     update : function(report){
       return $http.post(
-        $window.wp_data.template_url + '/ajax.php?action=update_report',
+        $window.wp_data.template_url + '/ajax.php?action=report.update',
         {
           'ID' : report.ID,
           'post_title' : report.post_title,
@@ -40,7 +40,7 @@ angular.module('timby.services', [])
           reporter_id = AuthService.user.ID
 
       return $http.post(
-        $window.wp_data.template_url + '/ajax.php?action=create_report',
+        $window.wp_data.template_url + '/ajax.php?action=report.create',
         {
           'post_title' : report.title,
           'post_content' : report.description,
@@ -93,6 +93,24 @@ angular.module('timby.services', [])
         }
       );
 
+    }
+  }
+}])
+.factory('StoryService', ['$http','$window', function($http, $window){
+  return {
+    findById : function(id){
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=story.get&id='+id)
+    },
+    save : function(story){
+      // clear the token
+      return $http.post(
+                $window.wp_data.template_url + '/ajax.php?action=story.save', 
+                {
+                  'story'           : story,
+                  'user_id'         : $window.sessionStorage.user_id,
+                  'nonce'           : $window.wp_data.nonce,
+                }
+              )
     }
   }
 }])

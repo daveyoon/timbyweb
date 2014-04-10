@@ -452,13 +452,8 @@ angular.module('timby.controllers', [])
     }
   }
 }])
-.controller('StoryController',['$scope', 'ReportService','$compile', function($scope, ReportService, $compile){
-  var code = 'c' + Math.floor(Math.random() * 99999);
-
-  $scope.story = {
-    content : []
-  }
-
+.controller('StoryController',['$scope', 'ReportService','StoryService','toaster', '$routeParams','$location', function($scope, ReportService, StoryService, toaster, $routeParams, $location){
+  $scope.working = false;
   // fetch all verified reports
   $scope.reports = [];
 
@@ -467,6 +462,28 @@ angular.module('timby.controllers', [])
     .then(function(response){
       $scope.reports = response.data.reports;
     })
+
+  // fetch the report by id if we are editing
+  if( $routeParams.id ) {
+    // find this story
+    StoryService
+      .findById($routeParams.id)
+      .then(function(response){
+        $scope.story = response.data.story
+      })
+  } else {
+    $scope.story = {
+      content : [
+        {
+          type : 'editor',
+          text : ''
+        }
+      ]
+    }
+  }
+
+
+
 
   /**
    * add report to story
@@ -487,15 +504,11 @@ angular.module('timby.controllers', [])
       }
     }
 
-    var code = 'r' + Math.floor(Math.random() * 99999);
+    $scope.story.content.push({
+      type : 'report',
+      report : $scope.report
+    });
 
-    $scope.story.content[code] = $scope.report;
-
-    // add the report
-    var _parent_content_block = angular.element(evt.target).parents('.l-group');
-    _parent_content_block.before($compile('<reportcard />')($scope));
-
-    // initialize the map
     angular.extend($scope, {
       map : {
         center: {
@@ -511,7 +524,6 @@ angular.module('timby.controllers', [])
         }
       }
     });
-
   }
 
 
@@ -522,15 +534,10 @@ angular.module('timby.controllers', [])
    * @param object evt
    */
   $scope.addContentEditor = function(evt){
-    var code = 'c' + Math.floor(Math.random() * 99999);
-
-    var _parent_content_block = angular.element(evt.target).parents('.l-group');
-    var editor = document.getElementById('text_editor_template').innerHTML;
-    var compiled_editor = $compile(editor)($scope);
-
-    
-    // append before parent block
-     _parent_content_block.before(compiled_editor);
+    $scope.story.content.push({
+      type : 'editor',
+      text : ''
+    });
   }
 
 
@@ -539,8 +546,16 @@ angular.module('timby.controllers', [])
    * 
    * @param object evt
    */
-  $scope.removeContentEditor = function(evt){
-    angular.element(evt.target).parents('.l-group').remove();
+  $scope.removeContentBlock = function($index, evt){
+    angular.forEach($scope.story.content, function(content, index){
+      if( $index == index ) 
+        $scope.story.content.splice(index, 1);
+    });
+    angular
+      .element(evt.target).parents('.l-group')
+      .fadeOut(500, function(){
+        this.remove()
+      });
   }
 
   /**
@@ -556,8 +571,25 @@ angular.module('timby.controllers', [])
     angular.element(evt.target).parent().remove();
   }
 
-
   $scope.save = function(){
-    console.log($scope.story.content);
+    // check if we are updating an 
+    // existing story
+    var updating_story = false;
+    if( $scope.story.id )
+      updating_story = true;
+
+    $scope.working = true;
+    StoryService
+      .save($scope.story)
+      .then(function(response){
+        $scope.working = false;
+        toaster.pop('success', 'Success', 'Story saved successfuly');
+
+        if( ! updating_story ) {
+          // redirect to the edit story view
+          $location.path('/story/edit/'+response.data.id)
+        }
+          
+      });
   }
 }]);

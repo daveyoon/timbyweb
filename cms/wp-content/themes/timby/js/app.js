@@ -67,6 +67,15 @@ angular.module('timby',[
         }
       }
     )
+    .when('/story/edit/:id/',
+      {
+        templateUrl : BASE_URL + '/templates/story.edit.html',
+        controller : 'StoryController',
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
+      }
+    )
     .when('/stories',
       {
         templateUrl : BASE_URL + '/templates/story.list.html',

@@ -41,14 +41,14 @@
         <div class="l-group ">
           <div class="report-thumb">
             <div class="seven report-thumb-info">
-              <h6 class="list-title">{{report.post_title}}</h6>
+              <h6 class="list-title">{{content.report.post_title}}</h6>
               <p class="list-content text-muted">
-                {{report.date_reported}} by {{report.reporter.name}}
+                {{content.report.date_reported}} by {{content.report.reporter.name}}
               </p>
               <div class="horz-list text-muted">
-                <i class="fa fa-camera"></i>        {{report.media.photos.length}}
-                <i class="fa fa-video-camera"></i>  {{report.media.video.length}}
-                <i class="fa fa-volume-up"></i>     {{report.media.audio.length}}
+                <i class="fa fa-camera"></i>        {{content.report.media.photos.length}}
+                <i class="fa fa-video-camera"></i>  {{content.report.media.video.length}}
+                <i class="fa fa-volume-up"></i>     {{content.report.media.audio.length}}
               </div>
             </div>
             <div class="five report-thumb-map">

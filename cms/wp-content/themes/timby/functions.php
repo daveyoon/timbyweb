@@ -285,8 +285,28 @@ function save_custom_report_data( $post_id ) {
 }
 add_action( 'save_post', 'save_custom_report_data' );
 
+/**
+ * Creates custom database tables
+ * @return null
+ */
+function timby_create_custom_tables(){
+  global $wpdb; 
 
+  $tablename = $wpdb->prefix . 'stories';
+  $wpdb->query(
+    "CREATE TABLE IF NOT EXISTS `$tablename` ( 
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT, 
+      `title` varchar(255) NOT NULL, 
+      `sub_title` varchar(255) NOT NULL, 
+      `content` TEXT NOT NULL,
+      `author_id` int(11) unsigned NOT NULL, 
+      `created` DATETIME NOT NULL, 
+      PRIMARY KEY (`id`) 
+    );"
+  );
 
+}
+add_action('admin_init', 'timby_create_custom_tables');
 /**
  * A cron job running every 10 mins checking
  * if there are any new posts, new posts are essentially

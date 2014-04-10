@@ -17,7 +17,7 @@ switch($_REQUEST['action']){
     );
     break;
 
-  case 'get_report':
+  case 'report.get':
     $ID = (int) $_REQUEST['id'];
 
     $report = get_post($ID);
@@ -34,7 +34,7 @@ switch($_REQUEST['action']){
     }
     break;
 
-  case 'update_report':
+  case 'report.update':
     $data = file_get_contents("php://input");
     $data = json_decode($data);
     if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
@@ -85,7 +85,7 @@ switch($_REQUEST['action']){
 
     break;
 
-  case 'create_report':
+  case 'report.create':
     $data = file_get_contents("php://input");
     $data = json_decode($data);
     if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
@@ -143,7 +143,7 @@ switch($_REQUEST['action']){
 
     break;
 
-  case 'get_reports':
+  case 'reports.all':
     $args = array(
       'meta_query' => array()
     );
@@ -184,6 +184,79 @@ switch($_REQUEST['action']){
         'reports' => $reports
       )
     );
+    break;
+
+
+  case 'story.save':
+    $data = file_get_contents("php://input");
+    $data = json_decode($data);
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
+      global $wpdb;
+      $table = $wpdb->prefix . 'stories';
+
+      $d = array(
+        'title'     => $data->story->title,
+        'sub_title' => $data->story->sub_title,
+        'content'   => json_encode($data->story->content),
+      );
+
+      if( isset($data->story->id) ) {
+        // perfom an update
+        // 
+        $where = array( 'id' => (int) $data->story->id );
+        if( $wpdb->update( $table, $d, $where ) !== false ) {
+          echo json_encode(
+            array(
+              'status' => 'success',
+              'message' => 'Update was succeful'
+            )
+          );
+        } else{
+          echo json_encode(
+            array(
+              'status' => 'error',
+              'message' => 'Update failed'
+            )
+          );
+        }
+
+
+      } else {
+        $d['author_id'] = $data->user_id;
+        // create a new record
+        if( $wpdb->insert( $table, $d ) ) {
+          echo json_encode(
+            array(
+              'status' => 'success',
+              'id' => $wpdb->insert_id
+            )
+          );
+        }
+      }
+
+    }
+
+    break;
+
+  case 'story.get':
+    $ID = (int) $_REQUEST['id'];
+
+    global $wpdb;
+    $tablename = $wpdb->prefix . 'stories';
+
+    $story = $wpdb->get_row("SELECT id, title,  sub_title, content FROM $tablename WHERE id = $ID");
+
+    // parse the json story content string
+    $story->content = json_decode($story->content);
+
+    if( !is_null($story) ) {
+      echo json_encode(
+        array(
+          'status' => 'success',
+          'story' => $story,
+        )
+      );
+    }
     break;
 
   case 'login':
