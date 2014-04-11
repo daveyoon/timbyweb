@@ -3,6 +3,9 @@
     width: 100%;
     height: 100%;
   }
+  .cartodb-infowindow{
+    background-color: #fff; padding: 20px;
+  }
 </style>
 <!-- @todo: move this header to its own directive -->
 <header class="clearfix main-header">
@@ -111,14 +114,10 @@
 
 
 <script type="text/ng-template" id="infowindow_template">
-  <div class="cartodb-popup">
+  <div class="cartodb-popup" style="">
     <a href="#close" class="cartodb-popup-close-button close">x</a>
      <div class="cartodb-popup-content-wrapper">
-       <div class="cartodb-popup-header">
-         <img style="width: 100%" src="http://cartodb.com/assets/logos/logos_full_cartodb_light-5ef5e4ff558f4f8d178ab2c8faa231c1.png"></src>
-       </div>
        <div class="cartodb-popup-content">
-
         <p>{{report.post_title}}</p>
         <p>
           {{report.date_reported}} by {{report.reporter.name}}

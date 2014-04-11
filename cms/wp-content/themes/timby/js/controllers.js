@@ -45,15 +45,19 @@ angular.module('timby.controllers', [])
                 if( $scope.reports.length > 0){
                   // find this report from our report cache
                   for (var i = $scope.reports.length - 1; i >= 0; i--) {
-                    if( data.post_id == $scope.reports[i].ID ){
+                    if( _post_id == $scope.reports[i].ID ){
                       $scope.report = $scope.reports[i];
                       break;
                     }
                   }
                 }
-                var _compile = $compile($('#infowindow_template').html())($scope);
 
-                return $compile($('#infowindow_template').html())($scope);
+                var card = document.getElementById('infowindow_template').innerHTML;
+                var _result = $compile(card)($scope);
+                $scope.$apply();
+
+                return _result.html();
+
               });
 
               // // find a report with this id
