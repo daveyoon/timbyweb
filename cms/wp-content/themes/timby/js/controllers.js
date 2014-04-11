@@ -1,7 +1,7 @@
 angular.module('timby.controllers', [])
 .controller('MainController',
-  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster',
-    function($scope, $rootScope,ReportService, $sce, toaster){
+  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile',
+    function($scope, $rootScope,ReportService, $sce, toaster, $compile){
       $scope.authenticated = false;
       $scope.filtercriteria = {
         sectors   : [],
@@ -24,65 +24,64 @@ angular.module('timby.controllers', [])
           attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms & Feedback</a>'
         }).addTo(map);
 
-        var subLayerOptions = {
-          sql: "SELECT * FROM reports",
-           cartocss :"#example_cartodbjs_1{"+
-                       "marker-fill: #109DCD;"+ 
-                       "marker-width: 20;"+ 
-                       "marker-line-color: white; "+
-                       "marker-line-width: 0;"+
-                      "}"
-        }
-        
         // populated places layer
         cartodb
          .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
           .addTo(map)
           .on('done', function(layer) {
-            console.log('woohoo!');
+
+            var sublayer = layer.getSubLayer(0);
+            sublayer.setInteraction(true);
+            sublayer.setInteractivity(['post_id']);
+
+            var _reports = $scope.reports;
+
+
+            sublayer.on('featureClick', function(e, pos, latlng, data) {
+              var _post_id = data.post_id;
+              sublayer.infowindow.set('template', function(data){
+
+                // find a report with this id
+                if( $scope.reports.length > 0){
+                  // find this report from our report cache
+                  for (var i = $scope.reports.length - 1; i >= 0; i--) {
+                    if( data.post_id == $scope.reports[i].ID ){
+                      $scope.report = $scope.reports[i];
+                      break;
+                    }
+                  }
+                }
+                var _compile = $compile($('#infowindow_template').html())($scope);
+
+                return $compile($('#infowindow_template').html())($scope);
+              });
+
+              // // find a report with this id
+              // if( _reports.length > 0){
+              //   // find this report from our report cache
+              //   for (var i = _reports.length - 1; i >= 0; i--) {
+              //     if( data.post_id == _reports[i].ID ){
+              //       $scope.report = _reports[i];
+              //       break;
+              //     }
+              //   }
+              // }
+
+              // sublayer.infowindow.set('template', function(data){
+              //   // console.log(data.content.post_id);
+              //   return $('#infowindow_template').html();
+              // });
+            });
+
             // get sublayer 0 and set options
             //  the infowindow template
             // var sublayer = layer.getSubLayer(0);
             // sublayer.set(subLayerOptions);
-            // sublayer.infowindow.set('template', $('#infowindow_template').html());
           
           });
 
       });
 
-  
-  
-      // var subLayerOptions = {
-      //   sql: "SELECT * FROM reports",
-      //    cartocss :"#example_cartodbjs_1{"+
-      //                "marker-fill: #109DCD;"+ 
-      //                "marker-width: 20;"+ 
-      //                "marker-line-color: white; "+
-      //                "marker-line-width: 0;"+
-      //               "}"
-      // }
-      
-      // // populated places layer
-      // cartodb
-      //  .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/8cd9c328-ab4f-11e3-9c85-0edbca4b5057/viz.json')
-      //   .addTo(map)
-      //   .on('done', function(layer) {
-      //     // get sublayer 0 and set options
-      //     //  the infowindow template
-      //     var sublayer = layer.getSubLayer(0);
-      //     sublayer.set(subLayerOptions);
-      //     sublayer.infowindow.set('template', $('#infowindow_template').html());
-        
-      //   });
-        
-      // // urban areas layer
-      // cartodb
-      //  .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/05a42f76-ab6b-11e3-85db-0e10bcd91c2b/viz.json')
-      //   .addTo(map)
-      //   .on('done', function(layer) {
-      //     //
-      //   });
-      
 
 
       $scope.getAllReports = function(){
@@ -400,6 +399,9 @@ angular.module('timby.controllers', [])
       .then(
         function success(response, status, headers, config) {
           if (response.data.status == 'success') {
+            // nothing to upload
+            if( !$scope.report.photos && !$scope.report.video && !$scope.report.audio )
+              $scope.working = false;
 
             $scope.filecount = 0;
 
@@ -411,7 +413,7 @@ angular.module('timby.controllers', [])
              */
             var uploadComplete = function(){
               uploadedcounter++
-              
+
               if( uploadedcounter == $scope.filecount){
                 $scope.working = false;
               }
@@ -466,7 +468,9 @@ angular.module('timby.controllers', [])
         $scope.addreportform.$setValidity('photo', false);
         return;
       }
-      $scope.formerrors.photo = null;
+      if( $scope.formerrors.photo)  
+        $scope.formerrors.photo = null;
+
       $scope.addreportform.$setValidity('photo', true);
       $scope.report.photos = $files;
     }
@@ -491,7 +495,8 @@ angular.module('timby.controllers', [])
         $scope.addreportform.$setValidity('video', false);
         return;
       }
-      $scope.formerrors.video = null;
+      if( $scope.formerrors.video)  
+        $scope.formerrors.video = null;
       $scope.addreportform.$setValidity('video', true);
       $scope.report.video = $files;
     }
@@ -502,7 +507,8 @@ angular.module('timby.controllers', [])
         $scope.addreportform.$setValidity('audio', false);
         return;
       }
-      $scope.formerrors.audio = null;
+      if( $scope.formerrors.audio)  
+        $scope.formerrors.audio = null;
       $scope.addreportform.$setValidity('audio', true);
       $scope.report.audio = $files;
     }

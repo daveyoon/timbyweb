@@ -277,12 +277,12 @@ switch($_REQUEST['action']){
     $tablename = $wpdb->prefix . 'stories';
 
     $stories = $wpdb->get_results("
-      SELECT id, title, sub_title, 
+      SELECT id, title, sub_title, created,  
       (
         SELECT COUNT(id)  FROM wp_published_stories 
         WHERE master_story_id = wp_stories.id LIMIT 0, 1 
       ) as published
-      FROM wp_stories
+      FROM wp_stories ORDER BY created DESC
     ");
 
     foreach($stories as $key => $story){
@@ -488,7 +488,7 @@ function save_story($data){
   } else {
     // create a new record
     $d['author_id'] = $data->user_id;
-    $d['created']   = date('c', time() );
+    $d['created']   = date('c', time());
 
     if( $wpdb->insert( $table, $d ) ) {
       return $wpdb->insert_id;
