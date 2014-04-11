@@ -36,7 +36,7 @@ function sync_reports_to_carto(){
     'post_status' => 'publish',
     'meta_query' => array(
       array(
-        'key'     => '_cartodb_id',
+        'key'     => '_synced_to_carto',
         'compare' => 'NOT EXISTS'
       )
     )
@@ -54,6 +54,7 @@ function sync_reports_to_carto(){
 
       // try inserting data into table
       $data[] = "( '$post->ID', ST_SetSRID(ST_Point(".$lnglat['lng'].", ".$lnglat['lat']."),4326) )";
+      update_post_meta( $post->ID, '_synced_to_carto', 'true' ); // mark this report as synced
     }
   }
 
