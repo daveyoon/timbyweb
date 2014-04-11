@@ -229,8 +229,9 @@ function timby_scripts() {
   wp_enqueue_script( 'services', get_template_directory_uri() .'/js/services.js',false, false, true );
   wp_enqueue_script( 'filters', get_template_directory_uri() .'/js/filters.js',false, false, true );
 
-  // local css
-
+  // cartodb from CDN
+  wp_enqueue_style( 'cartodb-styles', '//libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css',false, false, false );
+  wp_enqueue_script( 'cartodb-script', '//libs.cartocdn.com/cartodb.js/v3/cartodb.js',false, false, false );
 
   //localize ajaxurl and nonce to the app script
   wp_localize_script(

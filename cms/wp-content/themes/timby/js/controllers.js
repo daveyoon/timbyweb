@@ -12,6 +12,79 @@ angular.module('timby.controllers', [])
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
+
+      $scope.$on('$viewContentLoaded', function(){
+        var map = L.map('map', {
+          center: new L.LatLng(6.4336999,-9.4217516),
+          zoom: 6
+        });
+        
+        // base layer
+        L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+          attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms & Feedback</a>'
+        }).addTo(map);
+
+        var subLayerOptions = {
+          sql: "SELECT * FROM reports",
+           cartocss :"#example_cartodbjs_1{"+
+                       "marker-fill: #109DCD;"+ 
+                       "marker-width: 20;"+ 
+                       "marker-line-color: white; "+
+                       "marker-line-width: 0;"+
+                      "}"
+        }
+        
+        // populated places layer
+        cartodb
+         .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
+          .addTo(map)
+          .on('done', function(layer) {
+            console.log('woohoo!');
+            // get sublayer 0 and set options
+            //  the infowindow template
+            // var sublayer = layer.getSubLayer(0);
+            // sublayer.set(subLayerOptions);
+            // sublayer.infowindow.set('template', $('#infowindow_template').html());
+          
+          });
+
+      });
+
+  
+  
+      // var subLayerOptions = {
+      //   sql: "SELECT * FROM reports",
+      //    cartocss :"#example_cartodbjs_1{"+
+      //                "marker-fill: #109DCD;"+ 
+      //                "marker-width: 20;"+ 
+      //                "marker-line-color: white; "+
+      //                "marker-line-width: 0;"+
+      //               "}"
+      // }
+      
+      // // populated places layer
+      // cartodb
+      //  .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/8cd9c328-ab4f-11e3-9c85-0edbca4b5057/viz.json')
+      //   .addTo(map)
+      //   .on('done', function(layer) {
+      //     // get sublayer 0 and set options
+      //     //  the infowindow template
+      //     var sublayer = layer.getSubLayer(0);
+      //     sublayer.set(subLayerOptions);
+      //     sublayer.infowindow.set('template', $('#infowindow_template').html());
+        
+      //   });
+        
+      // // urban areas layer
+      // cartodb
+      //  .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/05a42f76-ab6b-11e3-85db-0e10bcd91c2b/viz.json')
+      //   .addTo(map)
+      //   .on('done', function(layer) {
+      //     //
+      //   });
+      
+
+
       $scope.getAllReports = function(){
         $scope.working = true;
         ReportService
