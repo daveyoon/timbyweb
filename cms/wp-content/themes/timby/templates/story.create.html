@@ -9,7 +9,8 @@
     </div>
   </div>
   <nav class="tabs">
-    <li class="tab-item"><a href="#/dashboard">Moderation</a></li>
+    <li class="tab-item"><a href="#/dashboard">List</a></li>
+    <li class="tab-item"><a href="#/dashboard/map">Map</a></li>
     <li class="tab-item active"><a href="#/stories">Stories</a></li>
     <li class="tab-item"><a href="#/addreport">Add Report</a></li>
   </nav>
@@ -17,7 +18,11 @@
 <section class="l-normal-page l-fixed-footer l-story-creator l-padding-item">
   <div class="row-small story">
     <div class="l-group">
-      <h2 ng-show="working">Loading...</h2>
+      <div class="page-loader page-loader-list" ng-show="working">
+        <div class="page-loader-message">
+        <div class="loader"></div>
+        <h4>Working</h4></div>
+      </div>
       <a href="#/stories" class="btn btn-small">
         <span class="fa fa-angle-left"></span> Back to Story List
       </a>
