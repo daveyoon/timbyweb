@@ -107,6 +107,12 @@ function build_report_data($report){
   // report date
   $report->date_reported = date('jS F, Y', strtotime(get_post_meta($report->ID, '_date_reported', true)) );
 
+  // report status, defaults to private
+  $report->status = 'private';
+  if( get_post_meta($report->ID, '_report_status', true) == 'public' ){
+    $report->status = 'public';
+  }
+
   // media count
   $report->media = new StdClass;
 

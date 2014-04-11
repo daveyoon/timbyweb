@@ -583,7 +583,7 @@ angular.module('timby.controllers', [])
         if( response.data.published_story_id ) {
           // remain at current state if we are editing the story
           // navigate to /story/edit/{id} if this is a new story
-          if( $scope.story.id )
+          if( ! $scope.story.id )
             $location.path('/story/edit/'+response.data.id)
 
           toaster.pop('success', 'Success', 'Story published successfuly!');

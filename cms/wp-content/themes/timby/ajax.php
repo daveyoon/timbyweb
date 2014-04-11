@@ -221,6 +221,14 @@ switch($_REQUEST['action']){
       if( $story_id = save_story($data) ) {
         // publish and return both the story id and published story id
         if( $published_story_id = publish_story($story_id, $data) ) {
+
+          // make reports contained in the story public
+          foreach( $data->story->content as $thecontent) {
+            if( $thecontent->type == 'report' ){
+              update_post_meta($thecontent->report->ID, '_report_status', 'public'); //set the report as public
+            }
+          }
+
           echo json_encode(
             array(
               'status'             => 'success',
@@ -561,3 +569,4 @@ function _get_all_api_users(){
   }
   return $nice_users;
 }
+
