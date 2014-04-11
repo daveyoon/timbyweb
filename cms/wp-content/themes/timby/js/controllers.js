@@ -574,7 +574,7 @@ angular.module('timby.controllers', [])
   }
 
   $scope.publish = function(){
-    $scope.working = false;
+    $scope.working = true;
 
     StoryService
       .saveAndPublish($scope.story)
