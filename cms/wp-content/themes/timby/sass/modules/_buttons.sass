@@ -33,7 +33,7 @@ button, .btn
   &:hover
     background: darken($edit-color,10%)
 
-.btn-delete
+.btn-delete, a.btn-delete
   background: $delete-color
   color: white
   border: none
@@ -51,6 +51,18 @@ button, .btn
 
 .btn-simple
   border: none
+
+.btn-full-width
+  width: 100%
+
+.btn-outline
+  &.btn-delete
+    background: none
+    border: 1px solid $delete-color
+    color: $delete-color
+    &:hover
+      background: $delete-color
+      color: white
 
 input[type="submit"].btn
   @include appearance(none)

@@ -9,7 +9,8 @@
     </div>
   </div>
   <nav class="tabs">
-    <li class="tab-item"><a href="#/dashboard">Moderation</a></li>
+    <li class="tab-item"><a href="#/dashboard">List</a></li>
+    <li class="tab-item"><a href="#/dashboard/map">Map</a></li>
     <li class="tab-item active"><a href="#/stories">Stories</a></li>
     <li class="tab-item"><a href="#/addreport">Add Report</a></li>
   </nav>
@@ -17,7 +18,11 @@
 <section class="l-normal-page l-fixed-footer l-story-creator l-padding-item">
   <div class="row-small story">
     <div class="l-group">
-      <h2 ng-show="working">Loading...</h2>
+      <div class="page-loader page-loader-list" ng-show="working">
+        <div class="page-loader-message">
+        <div class="loader"></div>
+        <h4>Working</h4></div>
+      </div>
       <a href="#/stories" class="btn btn-small">
         <span class="fa fa-angle-left"></span> Back to Story List
       </a>
@@ -29,12 +34,10 @@
 
 
     
-    <div class="content-blocks" ng-repeat="content in story.content">
-      <div ng-if="content.type == 'editor'">
-        <div class="l-group">
+    <div class="content-blocks l-group clearfix" ng-repeat="content in story.content">
+      <div class="l-group clearfix" ng-if="content.type == 'editor'">
           <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="content.text" ></div><!-- end description -->
-          <a href="" ng-click="removeContentBlock($index, $event)">remove this content block</a>
-        </div>          
+          <button class="btn btn-delete btn-full-width btn-outline" href="" ng-click="removeContentBlock($index, $event)">Remove Block</button>
       </div>
 
       <div ng-if="content.type == 'report'">
@@ -60,27 +63,30 @@
                 <marker coords="{latitude: content.report.lat,longitude: content.report.lng}"></marker>
               </google-map>
             </div>
-            <button ng-click="removeContentBlock($index, $event)" class="btn-delete">Remove Report</button>
           </div>
+          <button ng-click="removeContentBlock($index, $event)" class="btn-delete btn-full-width btn-outline">Remove Report</button>
         </div>
       </div>
 
     </div>
 
     <div class="l-group">
-      <button ng-click="addContentEditor($event)">Add content area</button>
-      <input type="text" placeholder="Search here to add a report" ng-model="search">
-      <ul class="reports" ng-show="results.length > 0">
-        <li ng-repeat="report in (results = (reports | searchVerifiedReportsFilter:search))">
-          <h4>{{report.post_title}}</h4>
+      <div class="three">
+        <button ng-click="addContentEditor($event)">Add content area</button>  
+      </div>
+      <div class="nine">
+        <input type="text" placeholder="Search here to add a report" ng-model="search">
+        <ul class="reports dropdown-menu" ng-show="results.length > 0">
+          <li ng-repeat="report in (results = (reports | searchVerifiedReportsFilter:search))" class="list-item" ng-click="addReportToStory(report.ID, $event)">
+            <h6 class="list-title">{{report.post_title}}</h6>
 
-          <p class="list-content text-muted">
-            {{report.date_reported}} by {{report.reporter.name}}
-          </p>
-          <a href="" ng-click="addReportToStory(report.ID, $event)">Add to report</a>
-        </li>
-      </ul>
-    </div> 
+            <p class="list-content text-muted">
+              {{report.date_reported}} by {{report.reporter.name}}
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
     
   </div>
   <div class="action-bar action-bar-full-page">
