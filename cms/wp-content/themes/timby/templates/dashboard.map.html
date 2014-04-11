@@ -1,0 +1,106 @@
+<!-- @todo: move this header to its own directive -->
+<header class="clearfix main-header">
+  <div class="clearfix">
+    <div class="pull-left">
+      <h3>Timby</h3>
+    </div>
+    <div class="pull-right" ng-controller="LoginController">
+      <button ng-click="logout()">Logout</button>
+    </div>
+  </div>
+  <nav class="tabs">
+    <li class="tab-item active"><a href="#/dashboard">Moderation</a></li>
+    <li class="tab-item"><a href="#/stories">Stories</a></li>
+    <li class="tab-item"><a href="#/addreport">Add Report</a></li>
+  </nav>
+</header>
+<section class="l-main-unit clearfix" ng-class="{ 'filters-hidden': showFilters }">
+  <section class="filters l-column">
+
+    <div class="filters-hide">
+      <div class="filters-button" ng-click="showFilters = ! showFilters">
+        <span class="fa fa-tasks"></span>
+      </div>
+      SHOW<BR/>
+      FILTERS
+    </div>
+
+    <div class="filters-alive">
+      <div class="clearfix">
+        <h4 class="pull-left">Filters</h4>
+        <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button pull-right btn-small"></button>
+      </div>
+      <form role="form">
+        <div class="form-group">
+            <h6 class="form-title">Sector</h6>
+            <div class="checkbox checkbox-lined" ng-repeat="term in wordpress.terms.sector">
+              <input id="term_{{term.id}}" type="checkbox" checklist-model="filtercriteria.sectors" checklist-value="term">
+              <label for="term_{{term.id}}">{{term.name}}</label>
+            </div>
+            <!-- <div class="checkbox">
+              <div class="dummy-check">.</div>
+              <label for="blah2">Checkbox No. 2</label>
+            </div>
+            <div class="checkbox">
+              <div class="dummy-check active">x</div>
+              <label for="blah2">Checkbox No. 3</label>
+            </div> -->
+        </div><!--end Sector-->
+
+        <!-- Tags -->
+        <div class="form-group">
+          <h6 class="form-title">Tags</h6>
+          <div>
+            <select chosen
+                    ng-model="filter_entity_selected"
+                    data-placeholder="Choose a tag"
+                    ng-options="term.name for term in wordpress.terms.entity"
+                    width="'100%'">
+                    <option value=""></option>
+            </select>
+          </div>
+
+          <div class="tag-cloud">
+            <span class="tag tag-rounded tag-remove tag-positive" ng-click="removeEntityFilter(term)" ng-repeat="term in filtercriteria.entities">
+              {{term.name}} <i class="fa fa-times" ></i>
+            </span>
+          </div>
+        </div><!--end Tags-->
+
+        <!-- Tags -->
+        <div class="form-group">
+          <h6 class="form-title">Verification Status</h6>
+          <div class="checkbox checkbox-lined">
+            <input type="checkbox" name="" id="verified" checklist-model="filtercriteria.status" checklist-value="'verified'" >
+            <label for="verified">Verified</label>
+          </div>
+          <div class="checkbox checkbox-lined">
+            <input type="checkbox" name="" id="unverified" checklist-model="filtercriteria.status" checklist-value="'unverified'">
+            <label for="unverified">Unverified</label>
+          </div>
+        </div><!--end Tags-->
+
+        <!-- <div class="form-group">
+          <h6 class="form-title">Date</h6>
+          <div>
+            <div class="six">
+              <input type="date" placeholder="Start Date">
+            </div>
+            <div class="six">
+              <input type="date" placeholder="End Date">
+            </div>
+          </div>
+        </div> --><!--end Dates-->
+      </form>
+    </div>
+  </section>
+
+  <section class="map l-column">
+    <div class="placeholder">
+      <div class="centered-box">Map goes here</div>
+    </div>
+  </section>
+
+  
+</section>
+
