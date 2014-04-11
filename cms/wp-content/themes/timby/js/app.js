@@ -49,6 +49,15 @@ angular.module('timby',[
         }
       }
     )
+    .when('/dashboard/map',
+      {
+        templateUrl : BASE_URL + '/templates/dashboard.map.html',
+        controller : 'MainController',
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
+      }
+    )
     .when('/addreport',
       {
         templateUrl : BASE_URL + '/templates/add.report.html',
