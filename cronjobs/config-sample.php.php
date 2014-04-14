@@ -20,3 +20,9 @@ $cartodbconfig = array(
   'password'        => '', //password
   'subdomain'       => ''
 );
+
+// s3 account, the user must have write access to the bucket
+$amazon_s3config = array(
+  'access_key' => '', //aws key
+  'access_secret' => '' //aws secret
+);

@@ -65,29 +65,26 @@ if( count($new_unoploaded_media) > 0){
     $soundcloud->setAccessToken($credentials['access_token']);
 
     foreach($new_unoploaded_media as $media){
-      $media_type = get_post_meta($media->ID, '_media_type', true);
+      
+      // grab the file path
+      $uploads = wp_upload_dir();
+      $file_path = str_replace( $uploads['baseurl'], $uploads['basedir'], $media->guid );
 
-      if( $media_type == 'audio') {
+      // try and do an upload
+      $upload = $soundcloud->post('tracks', 
+        array(
+          'track[title]'      => get_the_title($media->post_parent),
+          'track[sharing]'    => 'private',
+          'track[asset_data]' => '@' . $file_path
+        )
+      );
 
-        // grab the file path
-        $uploads = wp_upload_dir();
-        $file_path = str_replace( $uploads['baseurl'], $uploads['basedir'], $media->guid );
-
-        // try and do an upload
-        $upload = $soundcloud->post('tracks', 
-          array(
-            'track[title]'      => get_the_title($media->post_parent),
-            'track[sharing]'    => 'private',
-            'track[asset_data]' => '@' . $file_path
-          )
-        );
-
-        if( property_exists(json_decode($upload), 'permalink') ) {
-          update_post_meta($media->ID, '_uploaded', 'true');
-          update_post_meta($media->ID, '_soundcloud_track_data', $upload );
-        }
-
+      if( property_exists(json_decode($upload), 'permalink') ) {
+        update_post_meta($media->ID, '_uploaded', 'true');
+        update_post_meta($media->ID, '_soundcloud_track_data', $upload );
       }
+
+
     }
 
   } catch (Services_Soundcloud_Invalid_Http_Response_Code_Exception $e) {
