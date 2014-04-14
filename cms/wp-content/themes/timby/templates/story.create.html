@@ -32,12 +32,10 @@
       <input type="text" class="subhead h4-input" ng-model="story.sub_title" placeholder="Story subtitle goes here"/>
     </div>
 
-
-    
     <div class="content-blocks l-group clearfix" ng-repeat="content in story.content">
       <div class="l-group clearfix" ng-if="content.type == 'editor'">
-          <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="content.text" ></div><!-- end description -->
-          <button class="btn btn-delete btn-full-width btn-outline" href="" ng-click="removeContentBlock($index, $event)">Remove Block</button>
+        <text-angular ta-default-wrap="p" name="htmlcontent_{{$index}}" ng-model="content.text" placeholder="Type your description here"> 
+        <button class="btn btn-delete btn-full-width btn-outline" href="" ng-click="removeContentBlock($index, $event)">Remove Block</button>
       </div>
 
       <div ng-if="content.type == 'report'">

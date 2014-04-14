@@ -19,7 +19,7 @@
     "neat": "~1.5.0",
     "angular-route": "~1.2.15",
     "angular-sanitize": "~1.2.15",
-    "textAngular": "~1.2.0",
+    "textAngular": "623b7f7db85c5f2dee8b83fca13dba2178f8d71b",
     "font-awesome": "~4.0.3",
     "checklist-model": "~0.1.3",
     "angular-chosen-localytics": "~1.0.6",

@@ -36,7 +36,7 @@
         <input type="text" ng-model="report.title" placeholder="Type the report's title here" class="h3-input" required>
       </div>
       <div class="l-group">
-        <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="report.description" ></div><!-- end description -->
+        <text-angular ta-default-wrap="p" name="htmlcontent" ng-model="report.description" placeholder="Type your description here"> 
       </div>
       <div class="row l-group">
         <div class="six">

@@ -324,26 +324,15 @@ angular.module('timby.controllers', [])
   ]
 )
 .controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
-  $scope.report = {};
+  $scope.report = {
+    description : '' //must make description blank or textangular's wrap-p's won't function
+  };
   $scope.formerrors = {};
-  $scope.placeholderText = "Type your description here";
 
   // datepicker options
   $scope.dateOptions = {
     'year-format': "'yy'",
     'starting-day': 1
-  };
-
-  $scope.placeholder = function(){
-    var editor = angular.element('#taTextElement');
-    var toolbar = angular.element('.ta-toolbar');
-    if (editor.text() == $scope.placeholderText){
-      editor.text('');
-    }
-    // console.log(angular.element('.ta-toolbar').hasClass('hide'));
-    if (toolbar.hasClass('hide') == 'true'){
-      toolbar.removeClass('hide');
-    }
   };
 
   // Enable the new Google Maps visuals until it gets enabled by default.

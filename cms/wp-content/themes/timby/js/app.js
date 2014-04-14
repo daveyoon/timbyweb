@@ -16,7 +16,7 @@ angular.module('timby',[
   ]
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
-.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig){
+.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', '$provide', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig, $provide){
 
   $sceDelegateProvider.resourceUrlWhitelist([
    'self',
@@ -126,6 +126,28 @@ angular.module('timby',[
   $routeProvider.otherwise({ redirectTo : '/'});
 
   datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
+
+  // configure default textAngular options, see https://github.com/fraywing/textAngular/wiki/Setting-Defaults
+  $provide.decorator('taOptions', ['$delegate', function(taOptions){
+      // $delegate is the taOptions we are decorating
+      // here we override the default toolbars and classes specified in taOptions.
+      taOptions.toolbar = [
+        ['bold', 'italics','underline', 'p'],
+        ['ul', 'ol', 'quote', 'insertLink'],
+        ['redo', 'undo']
+      ];
+      taOptions.classes = {
+        focussed: 'focussed',
+        toolbar: 'btn-toolbar',
+        toolbarGroup: 'btn-group',
+        toolbarButton: 'btn btn-default',
+        toolbarButtonActive: 'active',
+        disabled: 'disabled',
+        textEditor: 'form-control',
+        htmlEditor: 'form-control'
+      };
+      return taOptions; // whatever you return will be the taOptions
+  }]);
 
 }])
 .run(['$rootScope', '$window', 'wordpress','$location', function($rootScope, $window, wordpressProvider, $location){
