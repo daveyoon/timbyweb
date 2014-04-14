@@ -73,17 +73,21 @@
     </div>
 
     <div class="l-group">
-      <button ng-click="addContentEditor($event)">Add content area</button>
-      <input type="text" placeholder="Search here to add a report" ng-model="search">
-      <ul class="reports dropdown-menu" ng-show="results.length > 0">
-        <li class="list-item" ng-repeat="report in (results = (reports | searchVerifiedReportsFilter:search))" ng-click="addReportToStory(report.ID, $event)">
-          <h6 class="list-title">{{report.post_title}}</h6>
+      <div class="three">
+        <button ng-click="addContentEditor($event)">Add content area</button>
+      </div>
+      <div class="nine">
+        <input type="text" placeholder="Search here to add a report" ng-model="search">
+        <ul class="reports dropdown-menu" ng-show="results.length > 0">
+          <li class="list-item" ng-repeat="report in (results = (reports | searchVerifiedReportsFilter:search))" ng-click="addReportToStory(report.ID, $event)">
+            <h6 class="list-title">{{report.post_title}}</h6>
 
-          <p class="list-content text-muted">
-            {{report.date_reported}} by {{report.reporter.name}}
-          </p>
-        </li>
-      </ul>
+            <p class="list-content text-muted">
+              {{report.date_reported}} by {{report.reporter.name}}
+            </p>
+          </li>
+        </ul>
+      </div>
     </div> 
     
   </div>

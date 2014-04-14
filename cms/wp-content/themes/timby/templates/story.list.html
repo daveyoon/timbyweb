@@ -15,7 +15,7 @@
     <li class="tab-item"><a href="#/addreport">Add Report</a></li>
   </nav>
 </header>
-<section class="l-main-unit clearfix ">
+<section class="l-main-unit l-normal-page clearfix ">
   <div class="row l-padding-item">
     <div class="header-group l-group ">
       <div class="ten">
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="row">
-      <a ng-href="#/story/edit/{{story.id}}" class="four grid-item grid-item-simple" ng-repeat="story in stories">
+      <a ng-href="#/story/edit/{{story.id}}" class="four grid-item grid-item-simple grid-item-fixed" ng-repeat="story in stories">
         <div class="grid-item-top">
           <span ng-show="story.published" class="tag tag-small tag-edit">Published</span>
           <h4>{{story.title}}</h4>
