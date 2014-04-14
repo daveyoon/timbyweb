@@ -29,17 +29,21 @@ angular.module('timby.controllers', [])
          .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
           .addTo(map)
           .on('done', function(layer) {
-
             var sublayer = layer.getSubLayer(0);
-            sublayer.setInteraction(true);
-            sublayer.setInteractivity(['post_id']);
+            sublayer.setInteraction(true);     
 
-            var _reports = $scope.reports;
+            sublayer.set({
+                          sql : 'SELECT * FROM reports',
+                          cartocss : '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 5; marker-line-color: white; marker-line-width: 0;}',
+                          // interactivity : 'post_id'
+                        });
 
-
-            sublayer.on('featureClick', function(e, pos, latlng, data) {
-              var _post_id = data.post_id;
-              sublayer.infowindow.set('template', function(data){
+            sublayer.infowindow.set('template', function(){
+              var fields = this.model.get('content').fields;
+              if (fields && fields[0].type !== 'loading') {
+                var _post_id = _.find(fields, function(obj) {
+                  return obj.title == 'post_id'
+                }).value;
 
                 // find a report with this id
                 if( $scope.reports.length > 0){
@@ -51,31 +55,15 @@ angular.module('timby.controllers', [])
                     }
                   }
                 }
-
-                var card = document.getElementById('infowindow_template').innerHTML;
-                var _result = $compile(card)($scope);
+                var _compiled = $compile(angular.element('#infowindow_template').html())($scope);
                 $scope.$apply();
+                return _compiled.html();
+              }
 
-                return _result.html();
-
-              });
-
-              // // find a report with this id
-              // if( _reports.length > 0){
-              //   // find this report from our report cache
-              //   for (var i = _reports.length - 1; i >= 0; i--) {
-              //     if( data.post_id == _reports[i].ID ){
-              //       $scope.report = _reports[i];
-              //       break;
-              //     }
-              //   }
-              // }
-
-              // sublayer.infowindow.set('template', function(data){
-              //   // console.log(data.content.post_id);
-              //   return $('#infowindow_template').html();
-              // });
+              return '';
             });
+            // var _reports = $scope.reports;
+            // sublayer.infowindow.set('template', angular.element('infowindow_template').html()); 
 
             // get sublayer 0 and set options
             //  the infowindow template
