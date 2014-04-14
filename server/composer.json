@@ -3,6 +3,7 @@
     "slim/slim": "2.*",
     "rmccue/requests": "dev-master",
     "illuminate/database": "*",
-    "fzaninotto/faker": "1.4.*@dev"
+    "fzaninotto/faker": "1.4.*@dev",
+    "aws/aws-sdk-php": "2.6.0"
   }
 }

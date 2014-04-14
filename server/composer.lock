@@ -3,24 +3,96 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "28d3223f04454c61259a4373d6b57cd1",
+    "hash": "2fbf5e6540a5b32cca958b560ce95b6f",
     "packages": [
+        {
+            "name": "aws/aws-sdk-php",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aws/aws-sdk-php.git",
+                "reference": "324e18c75d507f08931ce7eb414889a549914e14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/324e18c75d507f08931ce7eb414889a549914e14",
+                "reference": "324e18c75d507f08931ce7eb414889a549914e14",
+                "shasum": ""
+            },
+            "require": {
+                "guzzle/guzzle": ">=3.7.0,<3.9.0",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "doctrine/cache": "~1.0",
+                "ext-openssl": "*",
+                "monolog/monolog": "1.4.*",
+                "phpunit/phpunit": "3.7.*",
+                "symfony/class-loader": "2.*",
+                "symfony/yaml": "2.*"
+            },
+            "suggest": {
+                "doctrine/cache": "Adds support for caching of credentials and responses",
+                "ext-apc": "Allows service description opcode caching, request and response caching, and credentials caching",
+                "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages",
+                "monolog/monolog": "Adds support for logging HTTP requests and responses",
+                "symfony/yaml": "Eases the ability to write manifests for creating jobs in AWS Import/Export"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Aws": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Amazon Web Services",
+                    "homepage": "http://aws.amazon.com"
+                }
+            ],
+            "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
+            "homepage": "http://aws.amazon.com/sdkforphp",
+            "keywords": [
+                "amazon",
+                "aws",
+                "cloud",
+                "dynamodb",
+                "ec2",
+                "glacier",
+                "s3",
+                "sdk"
+            ],
+            "time": "2014-03-25 20:59:15"
+        },
         {
             "name": "fzaninotto/faker",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "4ca3829d9dde19cbe188da004d7b6d4e92d6cb86"
+                "reference": "89345a3ccc366bc14e0a984a086cc66028bd6411"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/4ca3829d9dde19cbe188da004d7b6d4e92d6cb86",
-                "reference": "4ca3829d9dde19cbe188da004d7b6d4e92d6cb86",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/89345a3ccc366bc14e0a984a086cc66028bd6411",
+                "reference": "89345a3ccc366bc14e0a984a086cc66028bd6411",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
             },
             "type": "library",
             "extra": {
@@ -49,28 +121,120 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2014-03-13 18:33:34"
+            "time": "2014-04-14 12:22:41"
+        },
+        {
+            "name": "guzzle/guzzle",
+            "version": "v3.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": ">=2.1"
+            },
+            "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
+                "guzzle/common": "self.version",
+                "guzzle/http": "self.version",
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-error-response": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
+            },
+            "require-dev": {
+                "doctrine/cache": "*",
+                "monolog/monolog": "1.*",
+                "phpunit/phpunit": "3.7.*",
+                "psr/log": "1.0.*",
+                "symfony/class-loader": "*",
+                "zendframework/zend-cache": "<2.3",
+                "zendframework/zend-log": "<2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Guzzle": "src/",
+                    "Guzzle\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Guzzle Community",
+                    "homepage": "https://github.com/guzzle/guzzle/contributors"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2014-01-28 22:29:15"
         },
         {
             "name": "illuminate/container",
-            "version": "v4.1.23",
+            "version": "v4.1.25",
             "target-dir": "Illuminate/Container",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "80383d49aa1c31f36c95abe582eb8fc779a996fc"
+                "reference": "51d590fd7e301f56c567459a26343a8288330f69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/80383d49aa1c31f36c95abe582eb8fc779a996fc",
-                "reference": "80383d49aa1c31f36c95abe582eb8fc779a996fc",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/51d590fd7e301f56c567459a26343a8288330f69",
+                "reference": "51d590fd7e301f56c567459a26343a8288330f69",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.0.*"
             },
             "type": "library",
             "extra": {
@@ -95,21 +259,21 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2014-02-26 18:55:58"
+            "time": "2014-03-22 20:29:54"
         },
         {
             "name": "illuminate/database",
-            "version": "v4.1.23",
+            "version": "v4.1.25",
             "target-dir": "Illuminate/Database",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "d695cb6fa8d05501ba402e16d63fce77b5f29f69"
+                "reference": "8b9d96942ebdd0c468f72d13612436d60ad941e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/d695cb6fa8d05501ba402e16d63fce77b5f29f69",
-                "reference": "d695cb6fa8d05501ba402e16d63fce77b5f29f69",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/8b9d96942ebdd0c468f72d13612436d60ad941e9",
+                "reference": "8b9d96942ebdd0c468f72d13612436d60ad941e9",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +290,7 @@
                 "illuminate/pagination": "4.1.*",
                 "illuminate/support": "4.1.*",
                 "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.0.*"
             },
             "type": "library",
             "extra": {
@@ -157,21 +321,21 @@
                 "orm",
                 "sql"
             ],
-            "time": "2014-02-28 20:28:45"
+            "time": "2014-04-08 20:43:47"
         },
         {
             "name": "illuminate/events",
-            "version": "v4.1.23",
+            "version": "v4.1.25",
             "target-dir": "Illuminate/Events",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
-                "reference": "357150eeb29fb9248e0c5fd464098955a61dcbcc"
+                "reference": "ef6ae5962134a35667f24349bc2c9b8ad1e20c8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/events/zipball/357150eeb29fb9248e0c5fd464098955a61dcbcc",
-                "reference": "357150eeb29fb9248e0c5fd464098955a61dcbcc",
+                "url": "https://api.github.com/repos/illuminate/events/zipball/ef6ae5962134a35667f24349bc2c9b8ad1e20c8b",
+                "reference": "ef6ae5962134a35667f24349bc2c9b8ad1e20c8b",
                 "shasum": ""
             },
             "require": {
@@ -181,7 +345,7 @@
             },
             "require-dev": {
                 "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.0.*"
             },
             "type": "library",
             "extra": {
@@ -206,21 +370,21 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2014-02-15 09:27:21"
+            "time": "2014-03-22 20:12:48"
         },
         {
             "name": "illuminate/support",
-            "version": "v4.1.23",
+            "version": "v4.1.25",
             "target-dir": "Illuminate/Support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "3134bebb9997be4963b320da8b7db2752d7cb937"
+                "reference": "69b248f240719e8d764ee6ec0384819fa57d60bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/3134bebb9997be4963b320da8b7db2752d7cb937",
-                "reference": "3134bebb9997be4963b320da8b7db2752d7cb937",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/69b248f240719e8d764ee6ec0384819fa57d60bb",
+                "reference": "69b248f240719e8d764ee6ec0384819fa57d60bb",
                 "shasum": ""
             },
             "require": {
@@ -230,7 +394,7 @@
                 "jeremeamia/superclosure": "1.0.*",
                 "mockery/mockery": "0.9.*",
                 "patchwork/utf8": "1.1.*",
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.0.*"
             },
             "type": "library",
             "extra": {
@@ -258,7 +422,7 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2014-02-27 21:11:13"
+            "time": "2014-03-22 20:29:54"
         },
         {
             "name": "nesbot/carbon",
@@ -312,18 +476,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rmccue/Requests.git",
-                "reference": "5c54aaa2369128cb9562bb94f85571bc0e9848c1"
+                "reference": "81a917f6425a2194c89d74b12102614c3ed16b2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rmccue/Requests/zipball/5c54aaa2369128cb9562bb94f85571bc0e9848c1",
-                "reference": "5c54aaa2369128cb9562bb94f85571bc0e9848c1",
+                "url": "https://api.github.com/repos/rmccue/Requests/zipball/81a917f6425a2194c89d74b12102614c3ed16b2e",
+                "reference": "81a917f6425a2194c89d74b12102614c3ed16b2e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2"
             },
             "require-dev": {
+                "requests/test-server": "dev-master",
                 "satooshi/php-coveralls": "dev-master"
             },
             "type": "library",
@@ -353,20 +518,20 @@
                 "iri",
                 "sockets"
             ],
-            "time": "2014-02-11 07:19:07"
+            "time": "2014-03-27 13:33:59"
         },
         {
             "name": "slim/slim",
-            "version": "2.4.2",
+            "version": "2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeguy/Slim.git",
-                "reference": "3a2ac723f17b5d81607287ff28575d38b9fbc70e"
+                "reference": "4906b77a07c7bd6ff1a99aea903e940a2d4fa106"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeguy/Slim/zipball/3a2ac723f17b5d81607287ff28575d38b9fbc70e",
-                "reference": "3a2ac723f17b5d81607287ff28575d38b9fbc70e",
+                "url": "https://api.github.com/repos/codeguy/Slim/zipball/4906b77a07c7bd6ff1a99aea903e940a2d4fa106",
+                "reference": "4906b77a07c7bd6ff1a99aea903e940a2d4fa106",
                 "shasum": ""
             },
             "require": {
@@ -399,7 +564,63 @@
                 "rest",
                 "router"
             ],
-            "time": "2014-02-16 18:18:25"
+            "time": "2014-04-05 18:33:59"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v2.4.3",
+            "target-dir": "Symfony/Component/EventDispatcher",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/EventDispatcher.git",
+                "reference": "4708b8cd41984a5ba29fe7dd40716f7f761ac501"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/4708b8cd41984a5ba29fe7dd40716f7f761ac501",
+                "reference": "4708b8cd41984a5ba29fe7dd40716f7f761ac501",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/dependency-injection": "~2.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-02-11 13:52:09"
         }
     ],
     "packages-dev": [
