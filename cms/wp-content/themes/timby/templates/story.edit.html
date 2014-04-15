@@ -75,36 +75,13 @@
               </div>
             </div>
             <footer>
-              <button>Embed</button>
-              <button>Download</button>
-              <textarea name="" id="" cols="30" rows="10">{{content.report.embed_code}}</textarea>
-            </footer>
-          </div>
-          <button ng-click="removeContentBlock($index, $event)" class="btn-delete btn-full-width btn-outline">Remove Report</button>
-        </div>
-
-        <div class="l-group ">
-          <div class="report-thumb">
-            <div class="seven report-thumb-info">
-              <h6 class="list-title">{{content.report.post_title}}</h6>
-              <p class="list-content text-muted">
-                {{content.report.date_reported}} by {{content.report.reporter.name}}
-              </p>
-              <div class="horz-list text-muted">
-                <i class="fa fa-camera"></i>        {{content.report.media.photos.length}}
-                <i class="fa fa-video-camera"></i>  {{content.report.media.video.length}}
-                <i class="fa fa-volume-up"></i>     {{content.report.media.audio.length}}
+              <button class="btn-small" ng-click="showEmbed=!showEmbed">Embed</button>
+              <button class="btn-small">Download</button>
+              <div class="embed" ng-show="showEmbed">
+                <h5>Embed this report</h5>
+                <textarea name="" id="" style="width:100%; height:100px;" >{{content.report.post_content}}</textarea>
               </div>
-            </div>
-            <div class="five report-thumb-map">
-              <google-map 
-                center="{latitude: content.report.lat,longitude: content.report.lng}" 
-                zoom="8"
-                draggable="true"
-                >
-                <marker coords="{latitude: content.report.lat,longitude: content.report.lng}"></marker>
-              </google-map>
-            </div>
+            </footer>
           </div>
           <button ng-click="removeContentBlock($index, $event)" class="btn-delete btn-full-width btn-outline">Remove Report</button>
         </div>
