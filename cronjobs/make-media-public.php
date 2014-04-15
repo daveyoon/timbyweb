@@ -89,7 +89,7 @@ try {
         $trackdata = json_decode(get_post_meta($media->ID, '_soundcloud_track_data', true ));
 
         // fetch a track by it's ID
-        $track = json_decode($client->get('tracks/'.$trackdata->id));
+        $track = json_decode($soundcloud->get('tracks/'.$trackdata->id));
 
         // update the track's metadata
         $soundcloud->put('tracks/' . $track->id, array(
