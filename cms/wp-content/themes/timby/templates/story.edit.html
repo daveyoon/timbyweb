@@ -70,11 +70,11 @@
                 <div class="three" ng-repeat="photo in content.report.media.photos">
                   <img ng-src="{{photo.guid}}">
                 </div>
-                <div class="three" ng-repeat="photo in content.report.media.audio">
-                  audio here
+                <div class="three" ng-repeat="audio in content.report.media.audio">
+                  <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="120" scrolling="no" frameborder="no"></iframe>
                 </div>
-                <div class="three" ng-repeat="photo in content.report.media.video">
-                  <div class="item-overlay item-overlay-video"><span class="fa fa-play"></span></div>
+                <div class="three" ng-repeat="video in content.report.media.video">
+                  <div class="item-overlay-center item-overlay-video"><span class="fa fa-play-circle"></span></div>
                 </div>
               </div>
             </div>
