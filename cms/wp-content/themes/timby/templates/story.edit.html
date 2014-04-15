@@ -50,7 +50,9 @@
                 <h6 class="list-title">{{content.report.post_title}}</h6>
                 <div class="list-content">
                   <span class="list-details text-muted">{{content.report.date_reported}} by {{content.report.reporter.name}}</span>
-                  <div ng-bind-html='report.post_content'></div>
+                  <div class="list-content-description" ng-bind-html='report.post_content' ng-class="{ 'is-full': showMore }"></div>
+                  <button ng-click="showMore=!showMore" ng-show="!showMore" class="btn-small">Read More</button>
+                  <button ng-click="showMore=!showMore" ng-show="showMore" class="btn-small">Read Less</button>
                 </div>
               </div>
               <div class="report-thumb-media">
@@ -70,7 +72,7 @@
                   audio here
                 </div>
                 <div class="three" ng-repeat="photo in content.report.media.video">
-                  video here
+                  <div class="item-overlay item-overlay-video"><span class="fa fa-play"></span></div>
                 </div>
               </div>
             </div>
@@ -79,7 +81,7 @@
               <button class="btn-small">Download</button>
               <div class="embed" ng-show="showEmbed">
                 <h5>Embed this report</h5>
-                <textarea name="" id="" style="width:100%; height:100px;" >{{content.report.post_content}}</textarea>
+                <textarea name="" id="" style="width:100%; height:100px;" >{{content.report.embed_code}}</textarea>
               </div>
             </footer>
           </div>
