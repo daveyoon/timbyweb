@@ -520,7 +520,8 @@ function publish_story($story_id, $data){
   );
   
   // if story had earlier been published, perfom an update
-  $published_story = $wpdb->get_row("SELECT id FROM $tablename WHERE master_story_id = $story_id");
+  $published_story = $wpdb->get_row("SELECT id FROM $table WHERE master_story_id = $story_id");
+  
   if( !is_null($published_story) ) {
     $where = array( 'id' => $published_story->id );
     if( $wpdb->update( $table, $d, $where ) !== false ) {

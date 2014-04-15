@@ -71,7 +71,7 @@ foreach($new_unoploaded_media as $media){
       $vimeo->call(
         'vimeo.videos.setPrivacy', 
         array(
-          'privacy' => 'password', 
+          'privacy'  => 'password', 
           'video_id' => $video_id,
           'password' => 'timby'
         )
