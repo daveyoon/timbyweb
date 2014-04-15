@@ -50,7 +50,7 @@
                 <h6 class="list-title">{{content.report.post_title}}</h6>
                 <div class="list-content">
                   <span class="list-details text-muted">{{content.report.date_reported}} by {{content.report.reporter.name}}</span>
-                  <div class="list-content-description" ng-bind-html='report.post_content' ng-class="{ 'is-full': showMore }"></div>
+                  <div class="list-content-description" ng-bind-html='report.post_content' ng-class="{ 'is-full': showMore }" ng-if="report.post_content.length > 0"></div>
                   <button ng-click="showMore=!showMore" ng-show="!showMore" class="btn-small">Read More</button>
                   <button ng-click="showMore=!showMore" ng-show="showMore" class="btn-small">Read Less</button>
                 </div>
