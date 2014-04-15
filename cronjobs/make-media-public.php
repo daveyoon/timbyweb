@@ -85,6 +85,14 @@ try {
           $soundcloudconfig['client_key'],
           $soundcloudconfig['client_secret']
         );
+        // retreive the access token through credentials flow
+        $credentials = $soundcloud->credentialsFlow(
+          $soundcloudconfig['username'], 
+          $soundcloudconfig['password']
+        );  
+        // set the access token
+        $soundcloud->setAccessToken($credentials['access_token']);
+
         // publisize soundcloud audio
         $trackdata = json_decode(get_post_meta($media->ID, '_soundcloud_track_data', true ));
 
