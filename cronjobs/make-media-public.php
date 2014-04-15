@@ -74,7 +74,7 @@ try {
           'vimeo.videos.setPrivacy', 
           array(
             'video_id' => $video_id,
-            'privacy'  => 'nobody'
+            'privacy'  => 'anybody'
           )
         );
 
@@ -87,8 +87,12 @@ try {
         );
         // publisize soundcloud audio
         $trackdata = json_decode(get_post_meta($media->ID, '_soundcloud_track_data', true ));
+
+        // fetch a track by it's ID
+        $track = json_decode($client->get('tracks/'.$trackdata->id));
+
         // update the track's metadata
-        $soundcloud->put('tracks/' . $trackdata->id, array(
+        $soundcloud->put('tracks/' . $track->id, array(
           'track[sharing]'    => 'public'
         ));
         
