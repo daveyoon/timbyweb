@@ -2,9 +2,13 @@
   border: 1px solid $med-gray
   @include clearfix
 
-.report-thumb-info
+.report-thumb-info, .report-thumb-media
   padding: 1em
 .report-thumb-map
-  padding: 4px
   .angular-google-map-container
     height: 120px
+.report-thumb-media
+  @include clearfix
+  .three
+    min-height: 120px
+    margin-bottom: 1em
