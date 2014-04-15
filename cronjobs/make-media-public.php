@@ -53,10 +53,11 @@ foreach($public_reports as $post){
 
 }
 
+
+
 try {
   foreach ($media_to_publisize as $media ) {
     if( get_post_meta($media->ID, '_uploaded', true ) == 'true' ){
-      
       if( get_post_meta($media->ID, '_media_type', true ) == 'video'){
         // publisize vimeo video
         $video_id = get_post_meta($media->ID, '_vimeo_video_id', true );
@@ -80,16 +81,21 @@ try {
       }
 
       if( get_post_meta($media->ID, '_media_type', true ) == 'audio'){
+        $soundcloud = new Services_Soundcloud(
+          $soundcloudconfig['client_key'],
+          $soundcloudconfig['client_secret']
+        );
         // publisize soundcloud audio
         $trackdata = json_decode(get_post_meta($media->ID, '_soundcloud_track_data', true ));
         // update the track's metadata
-        $client->put('tracks/' . $trackdata->id, array(
+        $soundcloud->put('tracks/' . $trackdata->id, array(
           'track[sharing]'    => 'public'
         ));
+        
       }
 
     }
   }
 } catch(Error $e){
-  
+  echo "There was an making one of the media objects public.";
 }
