@@ -27,6 +27,7 @@ $report = build_report_data($report)
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
+
     <style>
       .report-thumb {
           border: 1px solid #ccc;
@@ -55,6 +56,7 @@ $report = build_report_data($report)
           height: 150px
       }
     </style>
+    
     <script>
       // google analytics event tracking
       if( _gaq )

@@ -62,13 +62,11 @@ foreach($public_reports as $post){
   }
 }
 
-
-
 try {
   // Instantiate the S3 client
   $s3 = S3Client::factory(array(
     'key'    => $amazon_s3config['access_key'],
-    'secret'    => $amazon_s3config['access_secret']
+    'secret' => $amazon_s3config['access_secret']
   ));
 
   foreach($images_toupload as $media){
@@ -87,7 +85,6 @@ try {
     if( !file_exists( $stripped_file_path) ){
       exec("exiftool  -all= -out {$stripped_file_path} {$raw_file_path}" );
     }
-    exit;
 
     $newfilename = generate_file_key() .'.'. $pathinfo['extension']; // this is just a random generated code that we use to alias the file on s3
     
