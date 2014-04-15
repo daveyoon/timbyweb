@@ -45,6 +45,39 @@
       <div ng-if="content.type == 'report'">
         <div class="l-group ">
           <div class="report-thumb">
+            <div class="twelve report-thumb-info">
+              <h6 class="list-title">{{content.report.post_title}}</h6>
+              <div class="list-content">
+                <span class="list-details text-muted">{{content.report.date_reported}} by {{content.report.reporter.name}}</span>
+                <div ng-bind-html='report.post_content'></div>
+              </div>
+            </div>
+            <div class="report-thumb-media">
+              <div class="three report-thumb-map">
+                <google-map 
+                  center="{latitude: content.report.lat,longitude: content.report.lng}" 
+                  zoom="8"
+                  draggable="true"
+                  >
+                  <marker coords="{latitude: content.report.lat,longitude: content.report.lng}"></marker>
+                </google-map>
+              </div>
+              <div class="three" ng-repeat="photo in report.media.photos">
+                <img ng-src="{{photo.guid}}">
+              </div>
+              <div class="three" ng-repeat="photo in report.media.audio">
+                audio here
+              </div>
+              <div class="three" ng-repeat="photo in report.media.video">
+                video here
+              </div>
+            </div>
+          </div>
+          <button ng-click="removeContentBlock($index, $event)" class="btn-delete btn-full-width btn-outline">Remove Report</button>
+        </div>
+        
+        <div class="l-group ">
+          <div class="report-thumb">
             <div class="seven report-thumb-info">
               <h6 class="list-title">{{content.report.post_title}}</h6>
               <p class="list-content text-muted">
