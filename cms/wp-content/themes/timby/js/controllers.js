@@ -518,7 +518,7 @@ angular.module('timby.controllers', [])
   // fetch all verified reports
   $scope.reports = [];
   ReportService
-    .findAll(['verified=true'])
+    .findAll(['verified=on', 'status=public'])
     .then(function(response){
       $scope.reports = response.data.reports;
     })

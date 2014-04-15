@@ -74,7 +74,7 @@ try {
           'vimeo.videos.setPrivacy', 
           array(
             'video_id' => $video_id,
-            'privacy'  => 'nobody'
+            'privacy'  => 'anybody'
           )
         );
 
@@ -85,10 +85,22 @@ try {
           $soundcloudconfig['client_key'],
           $soundcloudconfig['client_secret']
         );
+        // retreive the access token through credentials flow
+        $credentials = $soundcloud->credentialsFlow(
+          $soundcloudconfig['username'], 
+          $soundcloudconfig['password']
+        );  
+        // set the access token
+        $soundcloud->setAccessToken($credentials['access_token']);
+
         // publisize soundcloud audio
         $trackdata = json_decode(get_post_meta($media->ID, '_soundcloud_track_data', true ));
+
+        // fetch a track by it's ID
+        $track = json_decode($soundcloud->get('tracks/'.$trackdata->id));
+
         // update the track's metadata
-        $soundcloud->put('tracks/' . $trackdata->id, array(
+        $soundcloud->put('tracks/'.$track->id, array(
           'track[sharing]'    => 'public'
         ));
         

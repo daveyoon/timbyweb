@@ -148,16 +148,24 @@ switch($_REQUEST['action']){
       'meta_query' => array()
     );
 
-    if( isset($_GET['verified']) && $_GET['verified'] == 'true' ){
-
+    if( isset($_GET['verified'])){
       array_push(
         $args['meta_query'], 
         array(
           'key' => '_cmb_verified',
-          'value' => 'on',
+          'value' => sanitize_text_field($_GET['verified']),
         )
       );
+    }
 
+    if( isset($_GET['status']) ){
+      array_push(
+        $args['meta_query'], 
+        array(
+          'key' => '_report_status',
+          'value' => sanitize_text_field($_GET['status']),
+        )
+      );
     }
 
     $args = array_merge(
@@ -170,6 +178,7 @@ switch($_REQUEST['action']){
       $args
     );
     
+
     $reports = get_posts($args);
 
     foreach($reports as $key => $report){
@@ -521,7 +530,7 @@ function publish_story($story_id, $data){
   
   // if story had earlier been published, perfom an update
   $published_story = $wpdb->get_row("SELECT id FROM $table WHERE master_story_id = $story_id");
-  
+
   if( !is_null($published_story) ) {
     $where = array( 'id' => $published_story->id );
     if( $wpdb->update( $table, $d, $where ) !== false ) {
