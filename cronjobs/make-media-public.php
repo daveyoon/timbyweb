@@ -92,7 +92,7 @@ try {
         $track = json_decode($soundcloud->get('tracks/'.$trackdata->id));
 
         // update the track's metadata
-        $soundcloud->put('tracks/' . $track->id, array(
+        $soundcloud->put('tracks/'.$track->id, array(
           'track[sharing]'    => 'public'
         ));
         
