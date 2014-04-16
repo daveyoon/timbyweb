@@ -1,0 +1,40 @@
+Report Title: {{title}}
+Date: {{date_reported}}
+
+Location
+-------------
+Longitude: {{lng}}
+Latitude: {{lat}}
+
+Tagged Under
+--------------
+Sectors: {{sectors}}
+Tags: {{tags}}
+
+Report Description
+-------------------
+{{description}}
+
+Report Meta
+--------------
+Linked Story URL: {{storyurl}}
+
+Embed this report on your site
+--------------------------------
+{{embed_code}}
+
+
+Media Assets
+-------------
+Images ( contained in the images folder )
+
+Videos
+{{vimeo_file_urls}}
+
+Audio Files
+
+{{audio_file_urls}}
+
+
+
+

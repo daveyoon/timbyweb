@@ -80,7 +80,7 @@
             </div>
             <footer>
               <button class="btn-small" ng-click="showEmbed=!showEmbed">Embed</button>
-              <button class="btn-small">Download</button>
+              <a class="btn-small" ng-show="content.report.status == 'public'" href="{{content.report.download_link}}">Download</a>
               <div class="embed" ng-show="showEmbed">
                 <h5>Embed this report</h5>
                 <textarea name="" id="" style="width:100%; height:100px;" >{{content.report.embed_code}}</textarea>

@@ -223,21 +223,19 @@ switch($_REQUEST['action']){
     $data = file_get_contents("php://input");
     $data = json_decode($data);
     if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
-      global $wpdb;
-      $table = $wpdb->prefix . 'stories';
 
-       // the save
+      // make reports contained in the story public
+      foreach( $data->story->content as $key => $thecontent) {
+        if( $thecontent->type == 'report' && $thecontent->report->status !== 'public' ){
+          update_post_meta($thecontent->report->ID, '_report_status', 'public'); //set the report as public
+          $data->story->content[$key]->report->status = 'public';
+        }
+      }
+      
+      // the save
       if( $story_id = save_story($data) ) {
         // publish and return both the story id and published story id
         if( $published_story_id = publish_story($story_id, $data) ) {
-
-          // make reports contained in the story public
-          foreach( $data->story->content as $thecontent) {
-            if( $thecontent->type == 'report' ){
-              update_post_meta($thecontent->report->ID, '_report_status', 'public'); //set the report as public
-            }
-          }
-
           echo json_encode(
             array(
               'status'             => 'success',
