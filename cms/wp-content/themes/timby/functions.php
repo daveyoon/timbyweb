@@ -231,6 +231,10 @@ function timby_scripts() {
   wp_enqueue_style( 'cartodb-styles', 'http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css',false, false, false );
   wp_enqueue_script( 'cartodb-script', 'http://libs.cartocdn.com/cartodb.js/v3/cartodb.js',false, false, false );
 
+  //Main styles last to override all the bullcrap
+  wp_enqueue_style( 'stylesmain', get_template_directory_uri() .'/css/global.css', false, false, false );
+  
+
   //localize ajaxurl and nonce to the app script
   wp_localize_script(
     'app',

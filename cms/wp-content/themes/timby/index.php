@@ -8,7 +8,7 @@
 
     <!-- Bootstrap -->
     <!-- <link href="<?php echo get_template_directory_uri() ?>/css/bootstrap.css" rel="stylesheet"> -->
-    <link href="<?php echo get_template_directory_uri() ?>/css/global.css" rel="stylesheet">
+    <!-- <link href="<?php echo get_template_directory_uri() ?>/css/global.css" rel="stylesheet"> -->
 
     <?php wp_head() ?>
   </head>
