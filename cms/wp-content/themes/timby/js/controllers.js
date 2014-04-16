@@ -8,30 +8,54 @@ angular.module('timby.controllers', [])
         sectors   : [],
         entities  : [],
         status : ['verified', 'unverified'],
-        search  : ''
+        search  : '',
+        layers: []
       };
+      $scope.map = null;
+
+      $scope.selectedLayers = [];
+
+      $scope.$watch('filtercriteria.layers', function(newValue, oldValue){
+        var layers = {
+          'allconcessions': {
+              url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
+              options: {
+                  query: "SELECT * FROM allconcessions"
+              }
+          }
+        };
+
+        $scope.filtercriteria.layers.forEach(function(element, index, array){
+          cartodb.createLayer($scope.map, layers[element].url, layers[element].options).addTo($scope.map)
+           .on('done', function(layer) {
+             $scope.map.addLayer(layer);
+
+          }).on('error', function() {
+            //log the error
+          });
+        });
 
       $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
 
       $scope.$on('$viewContentLoaded', function(){
-        var map = L.map('map', {
+        $scope.map = L.map('map', {
           center: new L.LatLng(6.4336999,-9.4217516),
           zoom: 6
         });
-        
+
         // base layer
         L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
           attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms & Feedback</a>'
-        }).addTo(map);
+        }).addTo($scope.map);
 
         // populated places layer
         cartodb
-         .createLayer(map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
-          .addTo(map)
+         .createLayer($scope.map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
+          .addTo($scope.map)
           .on('done', function(layer) {
             var sublayer = layer.getSubLayer(0);
-            sublayer.setInteraction(true);     
+            sublayer.setInteraction(true);
 
             sublayer.set({
                           sql : 'SELECT * FROM reports',
@@ -64,13 +88,13 @@ angular.module('timby.controllers', [])
               return '';
             });
             // var _reports = $scope.reports;
-            // sublayer.infowindow.set('template', angular.element('infowindow_template').html()); 
+            // sublayer.infowindow.set('template', angular.element('infowindow_template').html());
 
             // get sublayer 0 and set options
             //  the infowindow template
             // var sublayer = layer.getSubLayer(0);
             // sublayer.set(subLayerOptions);
-          
+
           });
 
       });
@@ -124,7 +148,7 @@ angular.module('timby.controllers', [])
               function error(response, status, headers, config) {
                 //notify alert, could not connect to remote server
               }
-            )          
+            )
         }
 
         // initialize the map
@@ -428,7 +452,7 @@ angular.module('timby.controllers', [])
 
   $scope.reset = function(e){
     // peform some form cleanup
-    
+
     // mute the model
     $scope.report = {};
 
@@ -451,7 +475,7 @@ angular.module('timby.controllers', [])
         $scope.addreportform.$setValidity('photo', false);
         return;
       }
-      if( $scope.formerrors.photo)  
+      if( $scope.formerrors.photo)
         $scope.formerrors.photo = null;
 
       $scope.addreportform.$setValidity('photo', true);
@@ -478,7 +502,7 @@ angular.module('timby.controllers', [])
         $scope.addreportform.$setValidity('video', false);
         return;
       }
-      if( $scope.formerrors.video)  
+      if( $scope.formerrors.video)
         $scope.formerrors.video = null;
       $scope.addreportform.$setValidity('video', true);
       $scope.report.video = $files;
@@ -490,7 +514,7 @@ angular.module('timby.controllers', [])
         $scope.addreportform.$setValidity('audio', false);
         return;
       }
-      if( $scope.formerrors.audio)  
+      if( $scope.formerrors.audio)
         $scope.formerrors.audio = null;
       $scope.addreportform.$setValidity('audio', true);
       $scope.report.audio = $files;
@@ -537,7 +561,7 @@ angular.module('timby.controllers', [])
 
   /**
    * add report to story
-   * 
+   *
    * @param integer id  report ID
    * @param object $event
    */
@@ -566,7 +590,7 @@ angular.module('timby.controllers', [])
   /**
    * Add a content editor
    * onto the story structure
-   * 
+   *
    * @param object evt
    */
   $scope.addContentEditor = function(evt){
@@ -579,12 +603,12 @@ angular.module('timby.controllers', [])
 
   /**
    * Remove content editor
-   * 
+   *
    * @param object evt
    */
   $scope.removeContentBlock = function($index, evt){
     angular.forEach($scope.story.content, function(content, index){
-      if( $index == index ) 
+      if( $index == index )
         $scope.story.content.splice(index, 1);
     });
     angular
@@ -598,7 +622,7 @@ angular.module('timby.controllers', [])
    * Removes a report from the story
    * removes the element from the DOM
    * and updates the story manifest
-   * 
+   *
    * @param integer id  report ID
    * @param object $event
    * @todo: update the story json manifest
@@ -614,7 +638,7 @@ angular.module('timby.controllers', [])
   }
 
   $scope.save = function(){
-    // check if we are updating an 
+    // check if we are updating an
     // existing story
     var updating_story = false;
     if( $scope.story.id )
@@ -631,7 +655,7 @@ angular.module('timby.controllers', [])
           // redirect to the edit story view
           $location.path('/story/edit/'+response.data.id)
         }
-          
+
       });
   }
 
@@ -650,7 +674,7 @@ angular.module('timby.controllers', [])
 
           toaster.pop('success', 'Success', 'Story published successfuly!');
         }
-      }); 
+      });
   }
 
 }]);
