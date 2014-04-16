@@ -283,10 +283,18 @@
           </div>
         </div><!-- end videos -->
       </div>
-    <div class="embed" ng-show="report.status == 'public'">
+      <div ng-controller="ModalDemoCtrl">
+          <script type="text/ng-template" id="myModalContent.html">
+              hello
+          </script>
+
+          <button class="btn btn-default" ng-click="open()">Open me!</button>
+          <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+      </div>
+    <!-- <div class="embed" ng-show="report.status == 'public'">
       <h5>Embed this report</h5>
       <textarea name="" id="" cols="30" rows="10">{{report.embed_code}}</textarea>
-    </div>
+    </div> -->
     <div class="action-bar">
         <div>
           <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left" style="margin-right:2em;">

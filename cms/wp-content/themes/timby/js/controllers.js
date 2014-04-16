@@ -1,4 +1,5 @@
 angular.module('timby.controllers', [])
+
 .controller('MainController',
   ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile',
     function($scope, $rootScope,ReportService, $sce, toaster, $compile){
