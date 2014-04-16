@@ -62,9 +62,14 @@ foreach ($data as $key => $value) {
 
 
 $temp_report_file_name = dirname( __FILE__ ) . '/'. generateRandomString() . '.txt';
-$temp_report_file_handle= fopen( $temp_report_file_name, 'w' );
-fwrite($temp_report_file_handle, $template);
-$archivedata['report.txt'] = $temp_report_file_name ;
+
+// write to file
+if (($temp_report_file_handle = fopen( $temp_report_file_name, 'w' )) !== false) { 
+  fwrite($temp_report_file_handle, $template);
+  fclose($temp_report_file_handle); 
+  $archivedata['report.txt'] = $temp_report_file_name;
+}
+
 
 
 foreach ($report->media->photos as $photo) {
