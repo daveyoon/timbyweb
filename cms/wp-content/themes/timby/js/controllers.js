@@ -176,6 +176,7 @@ angular.module('timby.controllers', [])
         $scope.updateReport();
       }
 
+      // mark a given location as trusted
       $scope.trustSrc = function(src){
         return $sce.trustAsResourceUrl(src);
       }
@@ -518,7 +519,7 @@ angular.module('timby.controllers', [])
   // fetch all verified reports
   $scope.reports = [];
   ReportService
-    .findAll(['verified=on', 'status=public'])
+    .findAll(['verified=on'])
     .then(function(response){
       $scope.reports = response.data.reports;
     })

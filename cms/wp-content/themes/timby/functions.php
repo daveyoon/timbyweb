@@ -134,8 +134,9 @@ function build_report_data($report){
   $report->categories = array_map('_better_post_terms', wp_get_post_terms( $report->ID, 'category'));
   $report->sectors = array_map('_better_post_terms', wp_get_post_terms( $report->ID, 'sector'));
   $report->entities = array_map('_better_post_terms', wp_get_post_terms( $report->ID, 'entity'));
-
-  // build the embed code
+  
+  $report->download_link = get_template_directory_uri() . '/download.php?id='. $report->ID;
+  // build the embed code, and 
   if( $report->status == 'public'){
     $report->embed_code = '<iframe src="'.get_template_directory_uri() .'/embed.php?id='.$report->ID.'" width="400px; height: 400px;"></iframe>';
   }
