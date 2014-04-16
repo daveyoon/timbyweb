@@ -41,33 +41,48 @@
       <div ng-if="content.type == 'report'">
         <div class="l-group ">
           <div class="report-thumb">
-            <div class="twelve report-thumb-info">
-              <h6 class="list-title">{{report.post_title}}</h6>
-              <div class="list-content">
-                <span class="list-details text-muted">{{report.date_reported}} by {{report.reporter.name}}</span>
-                <div ng-bind-html='report.post_content'></div>
+            <header>
+              TIMBY REPORT
+            </header>
+            <div class="report-thumb-content">
+              <div class="twelve report-thumb-info">
+                <h6 class="list-title">{{content.report.post_title}}</h6>
+                <div class="list-content">
+                  <span class="list-details text-muted">{{content.report.date_reported}} by {{content.report.reporter.name}}</span>
+                  <div class="list-content-description" ng-bind-html='report.post_content' ng-class="{ 'is-full': showMore }" ng-if="report.post_content.length > 0"></div>
+                  <button ng-click="showMore=!showMore" ng-show="!showMore" class="btn-small">Read More!</button>
+                  <button ng-click="showMore=!showMore" ng-show="showMore" class="btn-small">Read Less</button>
+                </div>
+              </div>
+              <div class="report-thumb-media">
+                <div class="three report-thumb-map">
+                  <google-map 
+                    center="{latitude: content.report.lat,longitude: content.report.lng}" 
+                    zoom="8"
+                    draggable="true"
+                    >
+                    <marker coords="{latitude: content.report.lat,longitude: content.report.lng}"></marker>
+                  </google-map>
+                </div>
+                <div class="three" ng-repeat="photo in content.report.media.photos">
+                  <img ng-src="{{photo.guid}}">
+                </div>
+                <div class="three" ng-repeat="audio in report.media.audio">
+                  <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="120" scrolling="no" frameborder="no"></iframe>
+                </div>
+                <div class="three" ng-repeat="video in report.media.video">
+                  <div class="item-overlay-center item-overlay-video"><span class="fa fa-play-circle"></span></div>
+                </div>
               </div>
             </div>
-            <div class="report-thumb-media">
-              <div class="three report-thumb-map">
-                <google-map 
-                  center="{latitude: content.report.lat,longitude: content.report.lng}" 
-                  zoom="8"
-                  draggable="true"
-                  >
-                  <marker coords="{latitude: content.report.lat,longitude: content.report.lng}"></marker>
-                </google-map>
+            <footer>
+              <button class="btn-small" ng-click="showEmbed=!showEmbed">Embed</button>
+              <button class="btn-small">Download</button>
+              <div class="embed" ng-show="showEmbed">
+                <h5>Embed this report</h5>
+                <textarea name="" id="" style="width:100%; height:100px;" >{{content.report.embed_code}}</textarea>
               </div>
-              <div class="three" ng-repeat="photo in report.media.photos">
-                <img ng-src="{{photo.guid}}">
-              </div>
-              <div class="three" ng-repeat="photo in report.media.audio">
-                audio here
-              </div>
-              <div class="three" ng-repeat="photo in report.media.video">
-                video here
-              </div>
-            </div>
+            </footer>
           </div>
           <button ng-click="removeContentBlock($index, $event)" class="btn-delete btn-full-width btn-outline">Remove Report</button>
         </div>
