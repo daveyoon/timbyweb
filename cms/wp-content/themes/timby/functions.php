@@ -46,19 +46,6 @@ if ( ! function_exists( 'timbyweb_setup' ) ) :
      */
     add_theme_support( 'automatic-feed-links', 'post-thumbnails' );
 
-
-    /**
-     * Create starter pages
-     * if they don't already exist
-     *
-     * @todo: move this to its own function call, check if this page already exists, remove it once theme is switched
-     */
-    wp_insert_post(
-      array(
-        'post_name' => 'signin'
-      )
-    );
-
   }
 endif; // timbyweb_setup
 add_action( 'after_setup_theme', 'timbyweb_setup' );
@@ -350,3 +337,30 @@ function build_story_data($story){
 }
 
 
+function get_page_by_name($page_title, $output = OBJECT) {
+  global $wpdb;
+  $post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type='page'", $page_title ));
+  if ( $post )
+    return get_post($post, $output);
+
+  return null;
+}
+
+/**
+ * Create default pages required for the theme
+ *
+ */
+function timby_create_default_pages(){
+  if( is_null(get_page_by_name('dashboard'))) {
+    wp_insert_post(
+      array(
+        'post_type' => 'page',
+        'post_title' => 'Dashboard',
+        'post_name' => 'dashboard',
+        'post_status' => 'publish',
+        'post_content' => 'This page is required to load the angularjs dashboard app',
+      )
+    );      
+  }      
+}
+add_action('admin_init', 'timby_create_default_pages');
