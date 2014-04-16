@@ -32,7 +32,7 @@ angular.module('timby.controllers', [])
                     }).on('error', function () {
                     });
             })
-        });
+        }, true);
 
         $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
