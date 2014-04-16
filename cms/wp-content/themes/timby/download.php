@@ -39,15 +39,15 @@ $data = array(
   'description'     => $report->post_content,
   'storyurl'        => '',
   'embed_code'      => $report->embed_code,
-  'vimeo_file_urls' => implode(',', 
+  'vimeo_file_urls' => implode('\\r\\n', 
                         array_map(
                           function($video){
-                            return 'http://vimeo.com/' . $video->vimeo->video_id;
+                            return 'http://vimeo.com/' . $video->vimeo['video_id'];
                           }, 
                           $report->media->video
                         )
                       ),
-  'audio_file_urls' => implode(',', 
+  'audio_file_urls' => implode('\\r\\n', 
                         array_map(
                           function($audio){
                             return $audio->soundcloud->permalink_url;
