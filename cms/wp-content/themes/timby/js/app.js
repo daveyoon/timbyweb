@@ -150,7 +150,7 @@ angular.module('timby',[
   }]);
 
 }])
-.run(['$rootScope', '$window', 'wordpress','$location', function($rootScope, $window, wordpressProvider, $location){
+.run(['$rootScope', '$window', 'wordpress','$location','$sce', function($rootScope, $window, wordpressProvider, $location, $sce){
 
   // redirect all non logged in users
   // this is when a route changes
@@ -172,6 +172,14 @@ angular.module('timby',[
       $rootScope.wordpress = response.data.data
     }
   });
+
+  // App title
+  $rootScope.title = "Timby.org | Reporting and Visualization tool";
+
+  // mark a given location as trusted
+  $rootScope.trustSrc = function (src) {
+    return $sce.trustAsResourceUrl(src);
+  }
 
 }]);
 

@@ -1,8 +1,10 @@
 angular.module('timby.controllers', [])
 
 .controller('MainController',
-  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile',
-    function($scope, $rootScope,ReportService, $sce, toaster, $compile) {
+  ['$scope', '$rootScope', 'ReportService', 'toaster', '$compile',
+    function($scope, $rootScope,ReportService, toaster, $compile) {
+        $scope.message_from_main = "hello";
+
         $scope.authenticated = false;
         $scope.filtercriteria = {
             sectors: [],
@@ -55,9 +57,6 @@ angular.module('timby.controllers', [])
                 }
             }
         }, true);
-
-
-        $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
 
         $scope.$on('$viewContentLoaded', function () {
@@ -223,10 +222,6 @@ angular.module('timby.controllers', [])
             $scope.updateReport();
         }
 
-        // mark a given location as trusted
-        $scope.trustSrc = function (src) {
-            return $sce.trustAsResourceUrl(src);
-        }
 
         /**
          * Remove an entity tag from a report
