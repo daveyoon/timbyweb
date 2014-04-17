@@ -44,7 +44,7 @@
       <form role="form">
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
-            <div class="checkbox " ng-repeat="term in wordpress.terms.sector">
+            <div class="checkbox checkbox-lined" ng-repeat="term in wordpress.terms.sector">
               <input id="term_{{term.id}}" type="checkbox" checklist-model="filtercriteria.sectors" checklist-value="term">
               <label for="term_{{term.id}}">{{term.name}}</label>
             </div>
@@ -81,11 +81,11 @@
         <!-- Tags -->
         <div class="form-group">
           <h6 class="form-title">Verification Status</h6>
-          <div class="checkbox ">
+          <div class="checkbox checkbox-lined">
             <input type="checkbox" name="" id="verified" checklist-model="filtercriteria.status" checklist-value="'verified'" >
             <label for="verified">Verified</label>
           </div>
-          <div class="checkbox ">
+          <div class="checkbox checkbox-lined">
             <input type="checkbox" name="" id="unverified" checklist-model="filtercriteria.status" checklist-value="'unverified'">
             <label for="unverified">Unverified</label>
           </div>
@@ -110,7 +110,7 @@
   </section>
 
   <section class="results l-column">
-    <ul class="list list-unlined"  ng-class="{ loading : working }">
+    <ul class="list"  ng-class="{ loading : working }">
       <li class="list-item">
         <div class="form-group">
           <div>
