@@ -1,8 +1,8 @@
 angular.module('timby.controllers', [])
 
 .controller('MainController',
-  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile',
-    function($scope, $rootScope,ReportService, $sce, toaster, $compile) {
+  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile', '$modal',
+    function($scope, $rootScope,ReportService, $sce, toaster, $compile, $modal) {
         $scope.authenticated = false;
         $scope.filtercriteria = {
             sectors: [],
@@ -107,6 +107,16 @@ angular.module('timby.controllers', [])
                 });
 
         });
+
+
+        /**
+         * View fullsize photo in the bootstrap modal in a lightbox
+         */
+        $scope.viewPhoto = function(photo){
+          var modalInstance = $modal.open({
+            template: '<img src="'+photo.large+'" />'
+          });
+        }
 
 
         $scope.getAllReports = function () {
@@ -297,6 +307,8 @@ angular.module('timby.controllers', [])
                 }
             }
         };
+
+
     }
   ]
 )
@@ -683,5 +695,6 @@ angular.module('timby.controllers', [])
         }
       });
   }
+
 
 }]);

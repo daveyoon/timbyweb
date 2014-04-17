@@ -71,7 +71,7 @@
                   </google-map>
                 </div>
                 <div class="three" ng-repeat="photo in content.report.media.photos">
-                  <img ng-src="{{photo.guid}}">
+                  <a href="" ng-click="viewPhoto(photo)"><img ng-src="{{photo.small}}"></a>
                 </div>
                 <div class="three" ng-repeat="audio in content.report.media.audio">
                   <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="120" scrolling="no" frameborder="no"></iframe>

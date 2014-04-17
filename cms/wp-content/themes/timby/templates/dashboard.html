@@ -207,7 +207,7 @@
         <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0" >
           <h5 class="header-underline">IMAGES</h5>
           <div class="three media-item" ng-repeat="photo in report.media.photos">
-            <img ng-src="{{photo.small}}">
+            <a href="" ng-click="viewPhoto(photo)"><img ng-src="{{photo.small}}"></a>
             <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Image</button>
             <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
               <h6>Remove this image?</h6>
@@ -282,14 +282,6 @@
             </div>
           </div>
         </div><!-- end videos -->
-      </div>
-      <div ng-controller="ModalDemoCtrl">
-          <script type="text/ng-template" id="myModalContent.html">
-              hello
-          </script>
-
-          <button class="btn btn-default" ng-click="open()">Open me!</button>
-          <div ng-show="selected">Selection from a modal: {{ selected }}</div>
       </div>
     <!-- <div class="embed" ng-show="report.status == 'public'">
       <h5>Embed this report</h5>

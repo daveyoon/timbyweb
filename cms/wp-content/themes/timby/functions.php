@@ -158,6 +158,7 @@ function fetch_attachments($type = '', $post_parent = '')
     $attachment->uploaded = get_post_meta($attachment->ID, '_uploaded', true ) == 'true';
 
     if( $type == 'image' ){
+      // get multiple images iszes
       if( $small = wp_get_attachment_image_src($attachment->ID, 'thumbnail', true) )
         $attachment->small = $small[0];
 
@@ -169,10 +170,12 @@ function fetch_attachments($type = '', $post_parent = '')
     }
 
     if( $type == 'audio' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
+      // build soundcloud track data
       $trackdata = json_decode(get_post_meta($attachment->ID, '_soundcloud_track_data', true ));
       $trackdata->embed_url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/".$trackdata->id."%3Fsecret_token%3D".$trackdata->secret_token."&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true";
       $attachment->soundcloud = $trackdata;
     }
+    
     if( $type == 'video' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
       // get data about this video
       $vimeo_data = get_post_meta($attachment->ID, '_vimeo', true);

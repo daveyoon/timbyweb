@@ -37,6 +37,7 @@ function sync_reports_to_carto(){
     'meta_query' => array(
       array(
         'key'     => '_synced_to_carto',
+        'value'   => '',
         'compare' => 'NOT EXISTS'
       )
     )
