@@ -9,7 +9,7 @@ require_once __DIR__ . '/../cms/wp-load.php';
 # include the cartodb library
 require_once __DIR__ . '/../server/app/vendor/cartodb/cartodb.class.php';
 
-require 'config.php';
+require_once __DIR__ .'/config.php';
 
 function sync_reports_to_carto(){
   global $cartodbconfig;
