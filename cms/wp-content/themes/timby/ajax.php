@@ -265,6 +265,7 @@ switch($_REQUEST['action']){
     $tablename = $wpdb->prefix . 'stories';
 
     $story = $wpdb->get_row("SELECT id, title,  sub_title, content FROM $tablename WHERE id = $ID");
+    $story = build_story_data($story);
 
     // parse the json story content string
     $story->content = json_decode($story->content);
