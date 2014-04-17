@@ -15,7 +15,18 @@
       <li class="menu-item active"><a href="#/dashboard/map">Map</a></li>
       <li class="menu-item"><a href="#/stories">Stories</a></li>
       <li class="menu-item"><a href="#/addreport">Add Report</a></li>
-      <li class="menu-item"><a href="#/addreport"><span class="fa fa-user"></span>&nbsp;&nbsp;Ryan&nbsp;&nbsp;<span class="fa fa-caret-down"></span></a></li>
+      <li class="menu-item">
+        <div ng-click="showOptions=!showOptions" class="menu-item-container">
+          <span class="fa fa-user"></span>
+          &nbsp;&nbsp;Name&nbsp;&nbsp;
+          <span class="fa fa-caret-down"></span>
+        </div>
+        <div class="dropdown-menu clearfix" ng-show="showOptions" ng-controller="LoginController">
+          <button class="btn btn-simple" ng-controller="LoginController" ng-click="logout()">
+            Logout
+          </button>
+        </div>
+      </li>
     </nav>
     <!-- <div class="pull-right" ng-controller="LoginController">
       <button ng-controller="LoginController" ng-click="logout()">Logout</button>

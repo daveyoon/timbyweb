@@ -9,7 +9,18 @@
       <li class="menu-item"><a href="#/dashboard/map">Map</a></li>
       <li class="menu-item"><a href="#/stories">Stories</a></li>
       <li class="menu-item"><a href="#/addreport">Add Report</a></li>
-      <li class="menu-item"><a href="#/addreport"><span class="fa fa-user"></span>&nbsp;&nbsp;Ryan&nbsp;&nbsp;<span class="fa fa-caret-down"></span></a></li>
+      <li class="menu-item">
+        <div ng-click="showOptions=!showOptions" class="menu-item-container">
+          <span class="fa fa-user"></span>
+          &nbsp;&nbsp;Name&nbsp;&nbsp;
+          <span class="fa fa-caret-down"></span>
+        </div>
+        <div class="dropdown-menu clearfix" ng-show="showOptions" ng-controller="LoginController">
+          <button class="btn btn-simple" ng-controller="LoginController" ng-click="logout()">
+            Logout
+          </button>
+        </div>
+      </li>
     </nav>
     <!-- <div class="pull-right" ng-controller="LoginController">
       <button ng-controller="LoginController" ng-click="logout()">Logout</button>
@@ -36,7 +47,7 @@
       <form role="form">
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
-            <div class="checkbox checkbox-round" ng-repeat="term in wordpress.terms.sector">
+            <div class="checkbox checkbox-lined" ng-repeat="term in wordpress.terms.sector">
               <input id="term_{{term.id}}" type="checkbox" checklist-model="filtercriteria.sectors" checklist-value="term">
               <label for="term_{{term.id}}">{{term.name}}</label>
             </div>
@@ -73,11 +84,11 @@
         <!-- Tags -->
         <div class="form-group">
           <h6 class="form-title">Verification Status</h6>
-          <div class="checkbox checkbox-round">
+          <div class="checkbox checkbox-lined">
             <input type="checkbox" name="" id="verified" checklist-model="filtercriteria.status" checklist-value="'verified'" >
             <label for="verified">Verified</label>
           </div>
-          <div class="checkbox checkbox-round">
+          <div class="checkbox checkbox-lined">
             <input type="checkbox" name="" id="unverified" checklist-model="filtercriteria.status" checklist-value="'unverified'">
             <label for="unverified">Unverified</label>
           </div>
@@ -139,7 +150,7 @@
 
   <section class="report l-column">
     <div class="placeholder" ng-if="!report">
-      <div class="centered-box">
+      <div class="centered-box text-muted">
         Click a report on the left to load it here
       </div>
     </div>
