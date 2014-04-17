@@ -532,7 +532,7 @@ angular.module('timby.controllers', [])
     }
 
     if( $type == 'audio'){
-      if( ! files_are_valid($files, ['audio/mpeg', 'video/mp4', 'audio/mp4a-latm', 'audio/ogg']) ){
+      if( ! files_are_valid($files, ['audio/mp3', 'audio/mpeg', 'video/mp4', 'audio/mp4a-latm', 'audio/ogg']) ){
         $scope.formerrors.audio = 'Sorry we can only accept mp3, mp4, m4a, m4b, m4p and ogg audio files.';
         $scope.addreportform.$setValidity('audio', false);
         return;
