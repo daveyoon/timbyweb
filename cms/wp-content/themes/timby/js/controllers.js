@@ -13,6 +13,7 @@ angular.module('timby.controllers', [])
         };
         $scope.map = null;
 
+        $scope.markerLayer = null;
         $scope.activeLayers = [];
 
         var layers = {
@@ -43,6 +44,18 @@ angular.module('timby.controllers', [])
             });
         }, true);
 
+        $scope.$watch('filteredReports', function(newValue, oldValue){
+            if ($scope.filteredReports) {
+                var reportsIds = $scope.filteredReports.map(function(report){
+                    return report.ID;
+                });
+                var query = "SELECT * FROM reports WHERE post_id IN (" + reportsIds.join(",") + ")";
+                if ($scope.markerLayer) {
+                    $scope.markerLayer.getSubLayer(0).setSQL(query);
+                }
+            }
+        }, true);
+
 
         $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
@@ -50,7 +63,7 @@ angular.module('timby.controllers', [])
         $scope.$on('$viewContentLoaded', function () {
             $scope.map = L.map('map', {
                 center: new L.LatLng(6.4336999, -9.4217516),
-                zoom: 6
+                zoom: 8
             });
 
             // base layer
@@ -63,12 +76,13 @@ angular.module('timby.controllers', [])
                 .createLayer($scope.map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
                 .addTo($scope.map)
                 .on('done', function (layer) {
-                    var sublayer = layer.getSubLayer(0);
+                    $scope.markerLayer = layer;
+                    var sublayer = $scope.markerLayer.getSubLayer(0);
                     sublayer.setInteraction(true);
 
                     sublayer.set({
                         sql: 'SELECT * FROM reports',
-                        cartocss: '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 5; marker-line-color: white; marker-line-width: 0;}',
+                        cartocss: '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 10; marker-line-color: white; marker-line-width: 0;}'
                         // interactivity : 'post_id'
                     });
 
