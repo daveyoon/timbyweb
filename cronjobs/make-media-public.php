@@ -42,6 +42,11 @@ foreach($public_reports as $post){
         'key'   => '_media_type',
         'value' => array('audio', 'video'),
         'compare' => 'IN',
+      ),
+      array(
+        'key'   => '_made_public',
+        'value' => '',
+        'compare' => 'NOT EXISTS'
       )
     )
   );
@@ -53,14 +58,12 @@ foreach($public_reports as $post){
 
 }
 
-
-
 try {
   foreach ($media_to_publisize as $media ) {
     if( get_post_meta($media->ID, '_uploaded', true ) == 'true' ){
       if( get_post_meta($media->ID, '_media_type', true ) == 'video'){
         // publisize vimeo video
-        $video_id = get_post_meta($media->ID, '_vimeo_video_id', true );
+        $vimeodata = get_post_meta($media->ID, '_vimeo', true );
 
         // intialize vimeo
         $vimeo = new Vimeo(
@@ -70,14 +73,34 @@ try {
           $vimeoconfig['access_token_secret']
         );
 
+        // set video privacy to public
         $vimeo->call(
           'vimeo.videos.setPrivacy', 
           array(
-            'video_id' => $video_id,
+            'video_id' => $vimeodata['id'],
             'privacy'  => 'anybody'
           )
         );
 
+        // get the video thumbnails
+        $response = $vimeo->call(
+          'vimeo.videos.getThumbnailUrls',
+          array(
+            'video_id' => $vimeodata['id'],
+          )
+        );
+        // record the id and thumbnails
+        $thumbnails = $response->thumbnails->thumbnail; //vimeo returns 3 thumbnail sizes
+
+        update_post_meta($media->ID, '_vimeo', array(
+            'id'         => $vimeodata['id'],             
+            'thumbnails' => array(
+              'small'  => $thumbnails[0]->_content,
+              'medium' => $thumbnails[1]->_content,
+              'large'  => $thumbnails[2]->_content,
+            )
+          )
+        );
       }
 
       if( get_post_meta($media->ID, '_media_type', true ) == 'audio'){
@@ -103,8 +126,9 @@ try {
         $soundcloud->put('tracks/'.$track->id, array(
           'track[sharing]'    => 'public'
         ));
-        
       }
+
+      update_post_meta($media->ID, '_made_public', 'true' );
 
     }
   }

@@ -88,7 +88,9 @@ switch($_REQUEST['action']){
   case 'report.create':
     $data = file_get_contents("php://input");
     $data = json_decode($data);
-    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){ 
+
+
+    if( !empty($data) && wp_verify_nonce( $data->nonce, 'timbyweb_front_nonce') == true ){
       if(! isset($data->ID) ) unset($data->ID);
       $post = array();
 
@@ -185,7 +187,6 @@ switch($_REQUEST['action']){
       $report = build_report_data($report); // in functions.php
       $reports[$key] = $report;
     }
-
 
     echo json_encode(
       array(

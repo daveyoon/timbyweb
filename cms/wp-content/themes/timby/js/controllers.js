@@ -458,7 +458,7 @@ angular.module('timby.controllers', [])
     $scope.map.clickedMarker.longitude = null;
 
     // clear the error messages as well
-    $scope.formerrors = null
+    $scope.formerrors = {}
 
     //set the form to pristine, i.e user hasn't interacted with it
     $scope.addreportform.$setPristine();

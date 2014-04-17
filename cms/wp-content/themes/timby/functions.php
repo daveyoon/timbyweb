@@ -163,11 +163,11 @@ function fetch_attachments($type = '', $post_parent = '')
       $attachment->soundcloud = $trackdata;
     }
     if( $type == 'video' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
-      $video_id = get_post_meta($attachment->ID, '_vimeo_video_id', true);
-      $attachment->vimeo = array(
-        'video_id' => get_post_meta($attachment->ID, '_vimeo_video_id', true),
-        'embed_url' => "//player.vimeo.com/video/".$video_id
-      );
+      // get data about this video
+      $vimeo_data = get_post_meta($attachment->ID, '_vimeo', true);
+
+      $vimeo_data['embed_url'] = "//player.vimeo.com/video/".$vimeo_data['id'];
+      $attachment->vimeo = $vimeo_data;
     }
     $attachments[$key] = $attachment;
   }

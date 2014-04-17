@@ -66,8 +66,14 @@ foreach($new_unoploaded_media as $media){
 
     if( $video_id = $vimeo->upload( $file_path ) ) {
       update_post_meta($media->ID, '_uploaded', 'true');
-      update_post_meta($media->ID, '_vimeo_video_id', $video_id );
 
+      // store vimeo id, later we will store thumbnails
+      $vimeodata = array(
+        'id'  => $video_id
+      );
+      update_post_meta($media->ID, '_vimeo', $vimeodata );
+
+      // set privacy to password
       $vimeo->call(
         'vimeo.videos.setPrivacy', 
         array(
@@ -77,6 +83,7 @@ foreach($new_unoploaded_media as $media){
         )
       );
 
+      // set the title to the report title
       $vimeo->call(
         'vimeo.videos.setTitle', 
         array(
@@ -90,3 +97,4 @@ foreach($new_unoploaded_media as $media){
 
   }
 }
+

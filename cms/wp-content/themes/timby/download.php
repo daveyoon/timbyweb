@@ -42,7 +42,7 @@ $data = array(
   'vimeo_file_urls' => implode('\\r\\n', 
                         array_map(
                           function($video){
-                            return 'http://vimeo.com/' . $video->vimeo['video_id'];
+                            return 'http://vimeo.com/' . $video->vimeo['id'];
                           }, 
                           $report->media->video
                         )
