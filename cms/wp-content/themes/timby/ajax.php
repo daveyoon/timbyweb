@@ -281,27 +281,11 @@ switch($_REQUEST['action']){
 
   case 'stories.all':
     global $wpdb;
-
-    $tablename = $wpdb->prefix . 'stories';
-
-    $stories = $wpdb->get_results("
-      SELECT id, title, sub_title, created,  
-      (
-        SELECT COUNT(id)  FROM wp_published_stories 
-        WHERE master_story_id = wp_stories.id LIMIT 0, 1 
-      ) as published
-      FROM wp_stories ORDER BY created DESC
-    ");
-
-    foreach($stories as $key => $story){
-      $story = build_story_data($story); // in functions.php
-      $stories[$key] = $story;
-    }
-
+    
     echo json_encode(
       array(
         'status' => 'success',
-        'stories' => $stories
+        'stories' => fetch_all_stories()
       )
     );
 
