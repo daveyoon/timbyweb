@@ -112,7 +112,7 @@ angular.module('timby.controllers', [])
         /**
          * View fullsize photo in the bootstrap modal in a lightbox
          */
-        $scope.viewPhoto = function(photo){
+        $rootScope.viewPhoto = function(photo){
           var modalInstance = $modal.open({
             template: '<img src="'+photo.large+'" />'
           });
