@@ -10,6 +10,8 @@
     background: $light-gray
   > .form-group
     margin-bottom: 0
+  &.list-item-indicator
+    padding-left: 0
 .list-clickable
   cursor: pointer
 .list-title
@@ -17,6 +19,10 @@
 
 .list-content
   margin-bottom: 0px
+  &.list-secondary
+    font-size: 1em
+    line-height: 1.5em
+    font-weight: 100
   .list-content-description
     max-height: 1.8em
     overflow: hidden
@@ -27,6 +33,16 @@
   .list-details
     text-transform: uppercase
     font-size: $tiny + px
+
+.list-item-left-indicator
+  display: block
+  margin-left: 0
+  border-left: 9px solid $green
+  padding-left: 1em
+  &.list-item-verified
+    border-color: $green
+  &.list-item-unverified
+    border-color: $orange
 
 .list-item.is-verified
   border-left: 6px solid $black

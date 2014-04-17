@@ -43,7 +43,8 @@ input[type="checkbox"], input[type="radio"]
     display: inline-block
     cursor: pointer
     position: relative
-    font-size: 100%
+    font-size: 110%
+    
     width: 100%
 
     margin-bottom: .5em
@@ -60,16 +61,19 @@ input[type="checkbox"], input[type="radio"]
     content: "."
     display: inline-block
     color: white
-
     width: 1.6em
     height: 1.6em
-
     margin-right: .5em
     position: relative
     left: 0
     background-color: white
     border: 1px solid $gray
     border-radius: 2px
+    @include box-sizing(border-box)
+  &.checkbox-round
+    label:before
+      border-radius: 50%
+
 
 
 input[type=checkbox]:checked + label:before, input[type=radio]:checked + label:before
@@ -81,4 +85,5 @@ input[type=checkbox]:checked + label:before, input[type=radio]:checked + label:b
 
 input[type=checkbox]:checked + label, input[type=radio]:checked + label
   font-weight: 700
-  background: $light-green
+  color: $green
+  // background: $light-green
