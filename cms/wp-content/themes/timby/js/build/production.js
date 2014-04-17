@@ -179,7 +179,7 @@ angular.module('timby',[
   ]
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
-.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig){
+.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', '$provide', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig, $provide){
 
   $sceDelegateProvider.resourceUrlWhitelist([
    'self',
@@ -190,40 +190,99 @@ angular.module('timby',[
     .when('/',
       {
         templateUrl : BASE_URL + '/templates/login.html',
-        controller : ['$location', 'AuthService',
-        function($location, AuthService){
-          if( AuthService.isAuthenticated() )
-            $location.path( "/dashboard" )
-        }],
-        authenticate : false
+        authenticate : false,
+        resolve: ['$q', '$location', '$window', 
+          function($q, $location, $window) {
+            var deferred = $q.defer(); 
+            if ($window.sessionStorage.user_id && $window.sessionStorage.user_token) {
+               $location.path('/dashboard');
+            }
+            deferred.resolve();
+            return deferred.promise;
+          }
+        ]
       }
     )
     .when('/dashboard',
       {
         templateUrl : BASE_URL + '/templates/dashboard.html',
         controller : 'MainController',
-        authenticate : true
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
+      }
+    )
+    .when('/dashboard/map',
+      {
+        templateUrl : BASE_URL + '/templates/dashboard.map.html',
+        controller : 'MainController',
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
       }
     )
     .when('/addreport',
       {
         templateUrl : BASE_URL + '/templates/add.report.html',
         controller : 'ReportController',
-        authenticate : true
+        resolve : {
+          'status' : 'checkAuthStatus'
+        }
       }
     )
     .when('/story/create',
       {
         templateUrl : BASE_URL + '/templates/story.create.html',
-        controller : 'ReportController',
-        authenticate : true
+        controller : 'StoryController',
+        resolve : {
+          status : 'checkAuthStatus',
+          resolvedata : function(){
+            // initialize a empty story object
+            return {
+              story : {
+                content : [
+                  {
+                    type : 'editor',
+                    text : ''
+                  }
+                ]
+              }
+            }
+            
+          }
+        }
       }
     )
-    .when('/story',
+    .when('/story/edit/:id/',
+      {
+        templateUrl : BASE_URL + '/templates/story.edit.html',
+        controller : 'StoryController',
+        resolve : {
+          status : 'checkAuthStatus',
+          resolvedata : function(StoryService,$route){
+            return StoryService
+                      .findById($route.current.params.id)
+                      .then(function(response){
+                        return { story : response.data.story }
+                      });
+          }
+        }
+      }
+    )
+    .when('/stories',
       {
         templateUrl : BASE_URL + '/templates/story.list.html',
-        controller : 'ReportController',
-        authenticate : true
+        controller : 'StoryController',
+        resolve : {
+          status : 'checkAuthStatus',
+          resolvedata : function(StoryService,$route){
+            return StoryService
+                    .findAll()
+                    .then(function(response){
+                      return { stories : response.data.stories };
+                    })
+          }
+        }
       }
     )
 
@@ -231,27 +290,39 @@ angular.module('timby',[
 
   datepickerConfig.templateUrl = BASE_URL + '/js/libs/angularui-bootstrap/templates/';
 
+  // configure default textAngular options, see https://github.com/fraywing/textAngular/wiki/Setting-Defaults
+  $provide.decorator('taOptions', ['$delegate', function(taOptions){
+      // $delegate is the taOptions we are decorating
+      // here we override the default toolbars and classes specified in taOptions.
+      taOptions.toolbar = [
+        ['bold', 'italics','underline', 'p'],
+        ['ul', 'ol', 'quote', 'insertLink'],
+        ['redo', 'undo']
+      ];
+      taOptions.classes = {
+        focussed: 'focussed',
+        toolbar: 'btn-toolbar',
+        toolbarGroup: 'btn-group',
+        toolbarButton: 'btn btn-default',
+        toolbarButtonActive: 'active',
+        disabled: 'disabled',
+        textEditor: 'form-control',
+        htmlEditor: 'form-control'
+      };
+      return taOptions; // whatever you return will be the taOptions
+  }]);
+
 }])
-.run(['$rootScope', '$window', 'wordpress','$location','AuthService', function($rootScope, $window, wordpressProvider, $location, AuthService){
+.run(['$rootScope', '$window', 'wordpress','$location', function($rootScope, $window, wordpressProvider, $location){
 
   // redirect all non logged in users
+  // this is when a route changes
   $rootScope.$on('$routeChangeStart', function(event, next, current){
-    if( next.$$route.authenticate){
-      
-      //validate an existing session
-      if( $window.sessionStorage.user_id && $window.sessionStorage.user_token ) {
-        AuthService
-          .tokenCheck()
-          .then(function(response){
-            if( response.data.status == 'error'){
-              $location.path( "/" );
-            }
-          });        
-      } else{
-        $location.path( "/" );
-      }
+    //validate an existing session
+    if( !$window.sessionStorage.user_id && !$window.sessionStorage.user_token ) {
+      $location.path( "/" );       
     }
-    
+
   });
 
   // fetches necessary wordpress data
@@ -267,209 +338,296 @@ angular.module('timby',[
 
 }]);
 
+
 angular.module('timby.controllers', [])
+
 .controller('MainController',
-  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster',
-    function($scope, $rootScope,ReportService, $sce, toaster){
-      $scope.authenticated = false;
-      $scope.filtercriteria = {
-        sectors   : [],
-        entities  : [],
-        status : ['verified', 'unverified'],
-        search  : ''
-      };
+  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile',
+    function($scope, $rootScope,ReportService, $sce, toaster, $compile) {
+        $scope.authenticated = false;
+        $scope.filtercriteria = {
+            sectors: [],
+            entities: [],
+            status: ['verified', 'unverified'],
+            search: '',
+            layers: []
+        };
+        $scope.map = null;
 
+        $scope.selectedLayers = [];
 
-      $rootScope.title = "Timby.org | Reporting and Visualization tool";
-
-      $scope.getAllReports = function(){
-        $scope.working = true;
-        ReportService
-          .findAll()
-          .then(
-            function success(response, status, headers, config) {
-              if (response.data.status == 'success') {
-                $scope.working = false;
-                $scope.reports = response.data.reports;
-              }
-            },
-            function error(response, status, headers, config) {
-              //notify alert, could not connect to remote server
-            }
-          )
-      };
-      $scope.getAllReports();
-
-      $scope.viewReport = function(id){
-
-        // do a lookup from the object cache
-        if( $scope.reports.length > 0){
-          // find this report from our report cache
-          for (var i = $scope.reports.length - 1; i >= 0; i--) {
-            if( id == $scope.reports[i].ID ){
-              $scope.report = $scope.reports[i];
-              break;
-            }
-          }
-        }
-
-        // if report still not found
-        // load it from the server
-        if ( ! $scope.report ) {
-          ReportService
-            .findById(id)
-            .then(
-              function success(response, status, headers, config) {
-                $scope.working = false;
-
-                if (response.data.status == 'success') {
-                  $scope.report = response.data.report;
+        $scope.$watch('filtercriteria.layers', function (newValue, oldValue) {
+            var layers = {
+                'allconcessions': {
+                    url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
+                    options: {
+                        query: "SELECT * FROM allconcessions"
+                    }
                 }
-              },
-              function error(response, status, headers, config) {
-                //notify alert, could not connect to remote server
-              }
-            )          
-        }
+            };
 
-        // initialize the map
-        var map = new google.maps.Map(
-          document.getElementById('report-location'),
-          {
-            zoom: 7,
-            center: new google.maps.LatLng($scope.report.lat,$scope.report.lng)
-          }
-        );
+            $scope.filtercriteria.layers.forEach(function (element, index, array) {
+                cartodb.createLayer($scope.map, layers[element].url, layers[element].options).addTo($scope.map)
+                    .on('done', function (layer) {
+                        $scope.map.addLayer(layer);
+                    }).on('error', function () {
+                    });
+            })
+        }, true);
 
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(
-            $scope.report.lat,
-            $scope.report.lng
-          ),
-          map: map
+        $rootScope.title = "Timby.org | Reporting and Visualization tool";
+
+
+        $scope.$on('$viewContentLoaded', function () {
+            $scope.map = L.map('map', {
+                center: new L.LatLng(6.4336999, -9.4217516),
+                zoom: 6
+            });
+
+            // base layer
+            L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+                attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms & Feedback</a>'
+            }).addTo($scope.map);
+
+            // populated places layer
+            cartodb
+                .createLayer($scope.map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
+                .addTo($scope.map)
+                .on('done', function (layer) {
+                    var sublayer = layer.getSubLayer(0);
+                    sublayer.setInteraction(true);
+
+                    sublayer.set({
+                        sql: 'SELECT * FROM reports',
+                        cartocss: '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 5; marker-line-color: white; marker-line-width: 0;}',
+                        // interactivity : 'post_id'
+                    });
+
+                    sublayer.infowindow.set('template', function () {
+                        var fields = this.model.get('content').fields;
+                        if (fields && fields[0].type !== 'loading') {
+                            var _post_id = _.find(fields, function (obj) {
+                                return obj.title == 'post_id'
+                            }).value;
+
+                            // find a report with this id
+                            if ($scope.reports.length > 0) {
+                                // find this report from our report cache
+                                for (var i = $scope.reports.length - 1; i >= 0; i--) {
+                                    if (_post_id == $scope.reports[i].ID) {
+                                        $scope.report = $scope.reports[i];
+                                        break;
+                                    }
+                                }
+                            }
+                            var _compiled = $compile(angular.element('#infowindow_template').html())($scope);
+                            $scope.$apply();
+                            return _compiled.html();
+                        }
+
+                        return '';
+                    });
+                    // var _reports = $scope.reports;
+                    // sublayer.infowindow.set('template', angular.element('infowindow_template').html());
+
+                    // get sublayer 0 and set options
+                    //  the infowindow template
+                    // var sublayer = layer.getSubLayer(0);
+                    // sublayer.set(subLayerOptions);
+
+                });
+
         });
 
-      }
 
-      /**
-       * Checks whether the current item in the repeat is active
-       */
-      $scope.isActive = function(id){
-        if($scope.report)
-          return $scope.report.ID == id;
+        $scope.getAllReports = function () {
+            $scope.working = true;
+            ReportService
+                .findAll()
+                .then(
+                function success(response, status, headers, config) {
+                    if (response.data.status == 'success') {
+                        $scope.working = false;
+                        $scope.reports = response.data.reports;
+                    }
+                },
+                function error(response, status, headers, config) {
+                    //notify alert, could not connect to remote server
+                }
+            )
+        };
+        $scope.getAllReports();
 
-        return false;
-      }
+        $scope.viewReport = function (id) {
 
-      $scope.updateReport = function(){
-        $scope.working = true;
-        ReportService
-          .update($scope.report)
-          .then(
-            function success(response, status, headers, config) {
-              $scope.working = false;
-              toaster.pop('success', 'Success', 'Report saved successfuly');
-            },
-            function error(response, status, headers, config) {
-              $scope.working = false;
-              //notify alert, could not connect to remote server
+            // do a lookup from the object cache
+            if ($scope.reports.length > 0) {
+                // find this report from our report cache
+                for (var i = $scope.reports.length - 1; i >= 0; i--) {
+                    if (id == $scope.reports[i].ID) {
+                        $scope.report = $scope.reports[i];
+                        break;
+                    }
+                }
             }
-          )
-      }
 
-      $scope.verifyReport = function(){
-        $scope.report.verified = !$scope.report.verified;
-        $scope.updateReport();
-      }
+            // if report still not found
+            // load it from the server
+            if (!$scope.report) {
+                ReportService
+                    .findById(id)
+                    .then(
+                    function success(response, status, headers, config) {
+                        $scope.working = false;
 
-      $scope.trustSrc = function(src){
-        return $sce.trustAsResourceUrl(src);
-      }
-
-      /**
-       * Remove an entity tag from a report
-       * @param  object term
-       * @return void
-       */
-      $scope.removeEntity = function(term){
-        if (angular.isArray($scope.report.entities)) {
-          for (var i = 0; i < $scope.report.entities.length; i++) {
-            if (angular.equals($scope.report.entities[i], term)) {
-              $scope.report.entities.splice(i, 1);
-              break;
+                        if (response.data.status == 'success') {
+                            $scope.report = response.data.report;
+                        }
+                    },
+                    function error(response, status, headers, config) {
+                        //notify alert, could not connect to remote server
+                    }
+                )
             }
-          }
+
+            // initialize the map
+            var map = new google.maps.Map(
+                document.getElementById('report-location'),
+                {
+                    zoom: 7,
+                    center: new google.maps.LatLng($scope.report.lat, $scope.report.lng)
+                }
+            );
+
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(
+                    $scope.report.lat,
+                    $scope.report.lng
+                ),
+                map: map
+            });
+
         }
-      }
 
-      /**
-       * Detach the media object from a report
-       * @param  integer id object ID
-       * @return void
-       */
-      $scope.detachMedia = function(id, $event){
-        var elem = angular.element($event.target);
-        elem.parents('.media-item').fadeOut(500, function(){
-          this.remove()
+        /**
+         * Checks whether the current item in the repeat is active
+         */
+        $scope.isActive = function (id) {
+            if ($scope.report)
+                return $scope.report.ID == id;
+
+            return false;
+        }
+
+        $scope.updateReport = function () {
+            $scope.working = true;
+            ReportService
+                .update($scope.report)
+                .then(
+                function success(response, status, headers, config) {
+                    $scope.working = false;
+                    toaster.pop('success', 'Success', 'Report saved successfuly');
+                },
+                function error(response, status, headers, config) {
+                    $scope.working = false;
+                    //notify alert, could not connect to remote server
+                }
+            )
+        }
+
+        $scope.verifyReport = function () {
+            $scope.report.verified = !$scope.report.verified;
+            $scope.updateReport();
+        }
+
+        // mark a given location as trusted
+        $scope.trustSrc = function (src) {
+            return $sce.trustAsResourceUrl(src);
+        }
+
+        /**
+         * Remove an entity tag from a report
+         * @param  object term
+         * @return void
+         */
+        $scope.removeEntity = function (term) {
+            if (angular.isArray($scope.report.entities)) {
+                for (var i = 0; i < $scope.report.entities.length; i++) {
+                    if (angular.equals($scope.report.entities[i], term)) {
+                        $scope.report.entities.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /**
+         * Detach the media object from a report
+         * @param  integer id object ID
+         * @return void
+         */
+        $scope.detachMedia = function (id, $event) {
+            var elem = angular.element($event.target);
+            elem.parents('.media-item').fadeOut(500, function () {
+                this.remove()
+            });
+
+            ReportService
+                .detachMediaObject(id, $scope.report.ID)
+                .then(function (response, status, headers, config) {
+                    if (response.data.status == 'success') {
+                        $scope.getAllReports();
+                    }
+                });
+        };
+
+        // watch the entity select while filtering
+        $scope.$watch(function () {
+            return $scope.filter_entity_selected
+        }, function (newvalue, oldvalue, scope) {
+            if (typeof(newvalue) == 'undefined')
+                return
+
+            for (i = 0; i < $scope.filtercriteria.entities.length; i++) {
+                if (angular.equals(newvalue, $scope.filtercriteria.entities[i])) {
+                    $scope.tagexists = true;
+                    return;
+                }
+            }
+            $scope.filtercriteria.entities.push($scope.filter_entity_selected);
+
         });
 
-        ReportService
-          .detachMediaObject(id, $scope.report.ID)
-          .then(function(response, status, headers, config){
-            if( response.data.status == 'success'){
-              $scope.getAllReports();
+        // watch the entity select while adding new entities to select
+        $scope.$watch(function () {
+            if ($scope.report && typeof($scope.report.termselected) !== 'undefined')
+                return $scope.report.termselected
+        }, function (newvalue, oldvalue, scope) {
+            $scope.tagexists = false;
+            if (typeof(newvalue) == 'undefined')
+                return
+
+            if (angular.isArray($scope.report.entities)) {
+                for (i = 0; i < $scope.report.entities.length; i++) {
+                    if (angular.equals($scope.report.termselected, $scope.report.entities[i])) {
+                        $scope.tagexists = true;
+                        return;
+                    }
+                }
+                $scope.report.entities.push($scope.report.termselected);
             }
-          });
-      };
 
-      // watch the entity select while filtering
-      $scope.$watch(function(){
-        return $scope.filter_entity_selected
-      }, function(newvalue, oldvalue, scope){
-        if( typeof(newvalue) == 'undefined' )
-          return
+        });
 
-        for(i=0; i < $scope.filtercriteria.entities.length; i++){
-          if(angular.equals(newvalue, $scope.filtercriteria.entities[i])){
-            $scope.tagexists = true;
-            return;
-          }
-        }
-        $scope.filtercriteria.entities.push($scope.filter_entity_selected);
 
-      });
-
-      // watch the entity select while adding new entities to select
-      $scope.$watch(function(){
-        if( $scope.report && typeof($scope.report.termselected) !== 'undefined' )
-          return $scope.report.termselected
-      }, function(newvalue, oldvalue, scope){
-        $scope.tagexists = false;
-        if( typeof(newvalue) == 'undefined' )
-          return
-
-        if (angular.isArray($scope.report.entities)) {
-          for(i=0; i < $scope.report.entities.length; i++){
-            if(angular.equals($scope.report.termselected, $scope.report.entities[i])){
-              $scope.tagexists = true;
-              return;
+        $scope.removeEntityFilter = function (term) {
+            for (var i = 0; i < $scope.filtercriteria.entities.length; i++) {
+                if (angular.equals($scope.filtercriteria.entities[i], term)) {
+                    $scope.filtercriteria.entities.splice(i, 1);
+                    break;
+                }
             }
-          }
-          $scope.report.entities.push($scope.report.termselected);
-        }
-
-      });
-
-
-      $scope.removeEntityFilter = function(term){
-        for (var i = 0; i < $scope.filtercriteria.entities.length; i++) {
-          if (angular.equals($scope.filtercriteria.entities[i], term)) {
-            $scope.filtercriteria.entities.splice(i, 1);
-            break;
-          }
-        }
-      }
-
+        };
     }
   ]
 )
@@ -518,8 +676,7 @@ angular.module('timby.controllers', [])
               AuthService.user = {};
               AuthService.logged_in = false;
 
-              $window.sessionStorage.user_id = null;
-              $window.sessionStorage.user_token = null;
+              $window.sessionStorage.clear();
 
               $location.path('/');
             });
@@ -531,26 +688,19 @@ angular.module('timby.controllers', [])
   ]
 )
 .controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
-  $scope.report = {};
-  $scope.placeholderText = "Type your description here";
+  $scope.report = {
+    description : '' //must make description blank or textangular's wrap-p's won't function
+  };
+  $scope.formerrors = {};
 
-  $scope.placeholder = function(){
-    var editor = angular.element('#taTextElement');
-    var toolbar = angular.element('.ta-toolbar');
-    if (editor.text() == $scope.placeholderText){
-      editor.text('');
-    }
-    // console.log(angular.element('.ta-toolbar').hasClass('hide'));
-    if (toolbar.hasClass('hide') == 'true'){
-      toolbar.removeClass('hide');
-    }
+  // datepicker options
+  $scope.dateOptions = {
+    'year-format': "'yy'",
+    'starting-day': 1
   };
 
   // Enable the new Google Maps visuals until it gets enabled by default.
   google.maps.visualRefresh = true;
-
-
-
   angular.extend($scope, {
     map : {
       center: {
@@ -577,18 +727,15 @@ angular.module('timby.controllers', [])
     }
   });
 
-  $scope.dateOptions = {
-    'year-format': "'yy'",
-    'starting-day': 1
-  };
+
 
   $scope.createReport = function(evt){
 
     if( !$scope.report.lat || !$scope.report.lng ) {
-      $scope.location_error = 'Please select a location on the map';
+      $scope.formerrors.location = 'Please select a location on the map';
       return;
     } else{
-      $scope.location_error = null;
+      $scope.formerrors.location = null;
     }
 
     $scope.working = true;
@@ -597,6 +744,9 @@ angular.module('timby.controllers', [])
       .then(
         function success(response, status, headers, config) {
           if (response.data.status == 'success') {
+            // nothing to upload
+            if( !$scope.report.photos && !$scope.report.video && !$scope.report.audio )
+              $scope.working = false;
 
             $scope.filecount = 0;
 
@@ -608,7 +758,7 @@ angular.module('timby.controllers', [])
              */
             var uploadComplete = function(){
               uploadedcounter++
-              
+
               if( uploadedcounter == $scope.filecount){
                 $scope.working = false;
               }
@@ -629,10 +779,7 @@ angular.module('timby.controllers', [])
               ReportService.uploadMedia('audio', $scope.report.audio, response.data.report.ID, uploadComplete);
             }
 
-            // reset the form and
-            // mute the model
-            $scope.report = {};
-            evt.target.reset();
+            $scope.reset(evt); // reset the form
           }
         },
         function error(response, status, headers, config) {
@@ -641,15 +788,35 @@ angular.module('timby.controllers', [])
       );
   }
 
+  $scope.reset = function(e){
+    // peform some form cleanup
+
+    // mute the model
+    $scope.report = {};
+
+    // clear the marker off the map
+    $scope.map.clickedMarker.latitude = null;
+    $scope.map.clickedMarker.longitude = null;
+
+    // clear the error messages as well
+    $scope.formerrors = null
+
+    //set the form to pristine, i.e user hasn't interacted with it
+    $scope.addreportform.$setPristine();
+  }
 
   $scope.onFileSelect = function($type, $files){
-    $scope.invalid = {};
 
     if( $type == 'photo' ){
       if( ! files_are_valid($files, ['image/jpeg', 'image/png']) ){
-        $scope.invalid.photo = 'Select only valid image files.';
+        $scope.formerrors.photo = 'Select only valid image files.';
+        $scope.addreportform.$setValidity('photo', false);
         return;
       }
+      if( $scope.formerrors.photo)
+        $scope.formerrors.photo = null;
+
+      $scope.addreportform.$setValidity('photo', true);
       $scope.report.photos = $files;
     }
 
@@ -669,17 +836,25 @@ angular.module('timby.controllers', [])
               'video/x-matroska'
             ])
         ){
-        $scope.invalid.video = 'Sorry we can only accept .mov, .mp4, .avi and .mkv video files.';
+        $scope.formerrors.video = 'Sorry we can only accept .mov, .mp4, .avi and .mkv video files.';
+        $scope.addreportform.$setValidity('video', false);
         return;
       }
+      if( $scope.formerrors.video)
+        $scope.formerrors.video = null;
+      $scope.addreportform.$setValidity('video', true);
       $scope.report.video = $files;
     }
 
     if( $type == 'audio'){
       if( ! files_are_valid($files, ['audio/mpeg', 'video/mp4', 'audio/mp4a-latm', 'audio/ogg']) ){
-        $scope.invalid.audio = 'Sorry we can only accept mp3, mp4, m4a, m4b, m4p and ogg audio files.';
+        $scope.formerrors.audio = 'Sorry we can only accept mp3, mp4, m4a, m4b, m4p and ogg audio files.';
+        $scope.addreportform.$setValidity('audio', false);
         return;
       }
+      if( $scope.formerrors.audio)
+        $scope.formerrors.audio = null;
+      $scope.addreportform.$setValidity('audio', true);
       $scope.report.audio = $files;
     }
 
@@ -700,23 +875,179 @@ angular.module('timby.controllers', [])
       return valid;
     }
   }
+}])
+.controller('StoryController',['$scope', 'ReportService','StoryService','toaster', '$routeParams','$location', 'resolvedata', function($scope, ReportService, StoryService, toaster, $routeParams, $location, resolvedata){
+  $scope.working = false;
+
+  // fetch all verified reports
+  $scope.reports = [];
+  ReportService
+    .findAll(['verified=on'])
+    .then(function(response){
+      $scope.reports = response.data.reports;
+    })
 
 
+  // fetch the report by id if we are editing
+  if( resolvedata.story )
+    $scope.story = resolvedata.story
+
+
+  if( resolvedata.stories )
+    $scope.stories = resolvedata.stories
+
+
+  /**
+   * add report to story
+   *
+   * @param integer id  report ID
+   * @param object $event
+   */
+  $scope.addReportToStory = function(id, evt){
+
+    // do a lookup from the object cache
+    if( $scope.reports.length > 0){
+      // find this report from our report cache
+      for (var i = $scope.reports.length - 1; i >= 0; i--) {
+        if( id == $scope.reports[i].ID ){
+          $scope.report = $scope.reports[i];
+          break;
+        }
+      }
+    }
+
+    $scope.story.content.push({
+      type : 'report',
+      report : $scope.report
+    });
+
+    $scope.search = '';
+  }
+
+
+  /**
+   * Add a content editor
+   * onto the story structure
+   *
+   * @param object evt
+   */
+  $scope.addContentEditor = function(evt){
+    $scope.story.content.push({
+      type : 'editor',
+      text : ''
+    });
+  }
+
+
+  /**
+   * Remove content editor
+   *
+   * @param object evt
+   */
+  $scope.removeContentBlock = function($index, evt){
+    angular.forEach($scope.story.content, function(content, index){
+      if( $index == index )
+        $scope.story.content.splice(index, 1);
+    });
+    angular
+      .element(evt.target).parents('.l-group')
+      .fadeOut(500, function(){
+        this.remove()
+      });
+  }
+
+  /**
+   * Removes a report from the story
+   * removes the element from the DOM
+   * and updates the story manifest
+   *
+   * @param integer id  report ID
+   * @param object $event
+   * @todo: update the story json manifest
+   */
+  $scope.removeReportFromStory = function( reportid, evt){
+    angular.element(evt.target).parent().remove();
+  }
+
+
+  // this is called by both save() and publish
+  function save_story(){
+
+  }
+
+  $scope.save = function(){
+    // check if we are updating an
+    // existing story
+    var updating_story = false;
+    if( $scope.story.id )
+      updating_story = true;
+
+    $scope.working = true;
+    StoryService
+      .save($scope.story)
+      .then(function(response){
+        $scope.working = false;
+        toaster.pop('success', 'Success', 'Story saved successfuly');
+
+        if( ! updating_story ) {
+          // redirect to the edit story view
+          $location.path('/story/edit/'+response.data.id)
+        }
+
+      });
+  }
+
+  $scope.publish = function(){
+    $scope.working = true;
+
+    StoryService
+      .saveAndPublish($scope.story)
+      .then(function(response){
+        $scope.working = false;
+        if( response.data.published_story_id ) {
+          // remain at current state if we are editing the story
+          // navigate to /story/edit/{id} if this is a new story
+          if( ! $scope.story.id )
+            $location.path('/story/edit/'+response.data.id)
+
+          toaster.pop('success', 'Success', 'Story published successfuly!');
+        }
+      });
+  }
 
 }]);
 
 angular.module('timby.directives', [])
+.directive('reportcard', function(){
+  return  {
+    restrict: 'E',
+    templateUrl : 'report_template' // the id of the template
+  }
+})
 angular.module('timby.filters', [])
+.filter('searchVerifiedReportsFilter', function(){
+  return function(reports, search){
+    if( typeof(search) === 'undefined' ) return;
+
+    var r = new RegExp(search, 'i');
+    var result = [];
+
+    if(search.length > 0){
+      angular.forEach(reports, function(report, key){
+        if( report.verified && r.test(report.post_title)){
+          result.push(report);
+        }
+      });
+    }
+    return result;
+  }
+})
 .filter('searchFilter', function(){
   return function(reports, search){
     if( search.length === 0) return reports;
 
     var r = new RegExp(search, 'i');
     var result = [];
-
-    // filter via search
-    if( search.length === 0 ) 
-      return reports;
 
     if(search.length > 0){
       angular.forEach(reports, function(report, key){
@@ -815,6 +1146,48 @@ angular.module('timby.filters', [])
 function grab_object_id(item){
   return item.id
 }
+var ModalDemoCtrl = function ($scope, $modal, $log) {
+
+  $scope.items = ['item1', 'item2', 'item3'];
+
+  $scope.open = function () {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'myModalContent.html',
+      controller: ModalInstanceCtrl,
+      resolve: {
+        items: function () {
+          return $scope.items;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+};
+
+// Please note that $modalInstance represents a modal window (instance) dependency.
+// It is not the same as the $modal service used above.
+
+var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+
+  $scope.items = items;
+  $scope.selected = {
+    item: $scope.items[0]
+  };
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
 // $(document).ready(function(){
     // $('#filterbutton').toggle(function(e){
     //   e.preventDefault();
@@ -898,16 +1271,18 @@ $(function(){
 angular.module('timby.services', [])
 .factory('ReportService', ['$http','$window', '$upload','AuthService', function($http, $window, $upload, AuthService) {
   return {
-    findAll : function(){
-      return $http.get($window.wp_data.template_url + '/ajax.php?action=get_new_reports');
+    findAll : function(criteria){
+      criteria = criteria || [];
+
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=reports.all&' + criteria.join('&'));
     },
 
     findById : function(id){
-      return $http.get($window.wp_data.template_url + '/ajax.php?action=get_report&id='+id)
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=report.get&id='+id)
     },
     update : function(report){
       return $http.post(
-        $window.wp_data.template_url + '/ajax.php?action=update_report',
+        $window.wp_data.template_url + '/ajax.php?action=report.update',
         {
           'ID' : report.ID,
           'post_title' : report.post_title,
@@ -935,7 +1310,7 @@ angular.module('timby.services', [])
           reporter_id = AuthService.user.ID
 
       return $http.post(
-        $window.wp_data.template_url + '/ajax.php?action=create_report',
+        $window.wp_data.template_url + '/ajax.php?action=report.create',
         {
           'post_title' : report.title,
           'post_content' : report.description,
@@ -991,12 +1366,45 @@ angular.module('timby.services', [])
     }
   }
 }])
+.factory('StoryService', ['$http','$window', function($http, $window){
+  return {
+    findAll : function(criteria){
+      criteria = criteria || [];
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=stories.all&' + criteria.join('&'));
+    },
+    findById : function(id){
+      return $http.get($window.wp_data.template_url + '/ajax.php?action=story.get&id='+id)
+    },
+    save : function(story){
+      // clear the token
+      return $http.post(
+                $window.wp_data.template_url + '/ajax.php?action=story.save', 
+                {
+                  'story'           : story,
+                  'user_id'         : $window.sessionStorage.user_id,
+                  'nonce'           : $window.wp_data.nonce,
+                }
+              )
+    },
+    saveAndPublish : function(story){
+      // clear the token
+      return $http.post(
+                $window.wp_data.template_url + '/ajax.php?action=story.saveandpublish', 
+                {
+                  'story'           : story,
+                  'user_id'         : $window.sessionStorage.user_id,
+                  'nonce'           : $window.wp_data.nonce,
+                }
+              )
+    }
+  }
+}])
 .factory('AuthService', ['$http','$window', function($http, $window) {
   var _self = this, logged_in = false;
 
   return {
     user: {},
-    isAuthenticated : function(){
+    isLoggedIn : function(){
       return _self.logged_in
     },
     login : function(user, password){
@@ -1044,4 +1452,19 @@ angular.module('timby.services', [])
     };
   }];
 
-});
+})
+// this service is called by route resolve and checks
+// whether the current user is authorised to access a route
+// this is when a user loads a route location directly
+// and the browser does a page load
+.factory('checkAuthStatus', [
+  '$q', '$location', '$window','AuthService', 
+  function($q, $location, $window, AuthService){
+    var deferred = $q.defer();
+    if( !$window.sessionStorage.user_id && !$window.sessionStorage.user_token ) {
+      $location.path( "/" );
+    }
+    deferred.resolve();
+    return deferred.promise;
+  }
+])

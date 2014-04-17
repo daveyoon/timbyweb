@@ -13,26 +13,36 @@ angular.module('timby.controllers', [])
         };
         $scope.map = null;
 
-        $scope.selectedLayers = [];
+        $scope.activeLayers = [];
+
+        var layers = {
+            'allconcessions': {
+                url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
+                options: {
+                    query: "SELECT * FROM allconcessions"
+                }
+            }
+        };
 
         $scope.$watch('filtercriteria.layers', function (newValue, oldValue) {
-            var layers = {
-                'allconcessions': {
-                    url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
-                    options: {
-                        query: "SELECT * FROM allconcessions"
-                    }
+            newValue.forEach(function (element, index, array) {
+                if ($scope.activeLayers[element]) {
+                    $scope.activeLayers[element].show();
                 }
-            };
-
-            $scope.filtercriteria.layers.forEach(function (element, index, array) {
-                cartodb.createLayer($scope.map, layers[element].url, layers[element].options).addTo($scope.map)
-                    .on('done', function (layer) {
-                        $scope.map.addLayer(layer);
-                    }).on('error', function () {
-                    });
-            })
+                else {
+                    cartodb.createLayer($scope.map, layers[element].url, layers[element].options).addTo($scope.map)
+                        .on('done', function (layer) {
+                            $scope.map.addLayer(layer);
+                            $scope.activeLayers[element] = layer;
+                        }).on('error', function () {
+                        });
+                }
+            });
+            _.difference(_.keys($scope.activeLayers), newValue).forEach(function (element, index, array) {
+                $scope.activeLayers[element].hide();
+            });
         }, true);
+
 
         $rootScope.title = "Timby.org | Reporting and Visualization tool";
 
