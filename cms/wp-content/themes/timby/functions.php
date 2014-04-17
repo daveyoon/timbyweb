@@ -367,20 +367,72 @@ function get_page_by_name($page_title, $output = OBJECT) {
 }
 
 /**
- * Create default pages required for the theme
- *
+ * Create a list of default pages required by the app
+ * page-{slug}.php templates already exist in our theme
  */
 function timby_create_default_pages(){
-  if( is_null(get_page_by_name('dashboard'))) {
-    wp_insert_post(
-      array(
-        'post_type' => 'page',
-        'post_title' => 'Dashboard',
-        'post_name' => 'dashboard',
-        'post_status' => 'publish',
-        'post_content' => 'This page is required to load the angularjs dashboard app',
-      )
-    );      
-  }      
+  $pages_to_create = array('Dashboard', 'Stories', 'Story');
+
+  foreach( $pages_to_create as $page ) {
+    $slug = strtolower($page);
+    if( is_null(get_page_by_name($slug))) {
+      wp_insert_post(
+        array(
+          'post_type' => 'page',
+          'post_title' => $page,
+          'post_name' => $slug,
+          'post_status' => 'publish',
+          'post_content' => '',
+        )
+      );
+    }  
+  }
+    
 }
 add_action('admin_init', 'timby_create_default_pages');
+
+/**
+ * Get all stories 
+ */
+function fetch_all_stories(){
+  global $wpdb;
+  
+  $storiestable = $wpdb->prefix . 'stories';
+  $published_stories_table = $wpdb->prefix . 'published_stories';
+
+  $stories = $wpdb->get_results("
+    SELECT id, title, sub_title, created,  
+    (
+      SELECT COUNT(id)  FROM $published_stories_table 
+      WHERE master_story_id = $storiestable.id LIMIT 0, 1 
+    ) as published
+    FROM $storiestable ORDER BY created DESC
+  ");
+
+  foreach($stories as $key => $story){
+    $story = build_story_data($story); // in functions.php
+    $stories[$key] = $story;
+  }
+
+  return $stories;
+}
+
+/**
+ * Fetch published stories
+ * @return [type] [description]
+ */
+function fetch_published_stories(){
+  global $wpdb;
+  
+  $tablename = $wpdb->prefix . 'published_stories';
+
+  $stories = $wpdb->get_results("SELECT id, title, sub_title, created FROM $tablename ORDER BY created DESC");
+
+
+  foreach($stories as $key => $story){
+    $story = build_story_data($story); // in functions.php
+    $stories[$key] = $story;
+  }
+
+  return $stories;
+}

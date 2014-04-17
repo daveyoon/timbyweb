@@ -18,7 +18,7 @@ wp-content/*
 # json-api plugin
 wp-content/plugins/*
 !wp-content/plugins/json-api
-!wp-content/plugins/json-api
+!wp-content/plugins/google-analyticator
 
 
 # Ignore everything in the "themes" directory, except the timbyweb theme
