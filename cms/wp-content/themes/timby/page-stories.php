@@ -13,8 +13,8 @@
   <h1><?php the_title(); ?></h1>
   
   <?php if( count($stories = fetch_published_stories()) > 0) { ?>
+    <div class="row">
     <?php foreach($stories as $story) { ?>
-      <div class="row">
         <a href="<?php echo esc_url(home_url('/')) ?>/story/?id<?php echo $story->id ?>" class="four grid-item grid-item-simple grid-item-fixed">
           <div class="grid-item-top">
             <h4><?php echo $story->title ?></h4>
@@ -22,11 +22,11 @@
             <p><?php echo $story->sub_title ?></p>
           </div>
           <div class="grid-item-bottom">
-            <button class="btn-small btn-simple">Edit this story</button>
+            <button class="btn-small btn-simple">Open this story</button>
           </div>
         </a>
-      </div>
     <?php } ?>
+  </div>
   <?php } //end of loop ?>
 </section>
 <!-- /section -->
