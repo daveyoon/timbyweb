@@ -157,6 +157,17 @@ function fetch_attachments($type = '', $post_parent = '')
   foreach($attachments as $key=>$attachment) {
     $attachment->uploaded = get_post_meta($attachment->ID, '_uploaded', true ) == 'true';
 
+    if( $type == 'image' ){
+      if( $small = wp_get_attachment_image_src($attachment->ID, 'thumbnail', true) )
+        $attachment->small = $small[0];
+
+      if( $medium = wp_get_attachment_image_src($attachment->ID, 'medium', true) )
+        $attachment->medium = $medium[0];
+
+      if( $large = wp_get_attachment_image_src($attachment->ID, 'large', true) )
+        $attachment->large = $large[0];
+    }
+
     if( $type == 'audio' && get_post_meta($attachment->ID, '_uploaded', true ) == 'true'){
       $trackdata = json_decode(get_post_meta($attachment->ID, '_soundcloud_track_data', true ));
       $trackdata->embed_url = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/".$trackdata->id."%3Fsecret_token%3D".$trackdata->secret_token."&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true";

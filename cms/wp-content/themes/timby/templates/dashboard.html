@@ -207,7 +207,7 @@
         <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0" >
           <h5 class="header-underline">IMAGES</h5>
           <div class="three media-item" ng-repeat="photo in report.media.photos">
-            <img ng-src="{{photo.guid}}">
+            <img ng-src="{{photo.small}}">
             <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Image</button>
             <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
               <h6>Remove this image?</h6>
