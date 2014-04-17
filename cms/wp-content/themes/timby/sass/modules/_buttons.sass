@@ -56,8 +56,16 @@ button, .btn
   width: 100%
 
 .btn-outline
+  
+  &.btn-edit
+    background: white
+    border: 1px solid $edit-color
+    color: $edit-color
+    &:hover
+      background: $edit-color
+      color: white
   &.btn-delete
-    background: none
+    background: white
     border: 1px solid $delete-color
     color: $delete-color
     &:hover

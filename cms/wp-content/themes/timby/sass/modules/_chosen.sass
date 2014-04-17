@@ -36,7 +36,7 @@
     position: relative
     display: block
     overflow: hidden
-    padding: .5em .5em
+    padding: .66em .66em
     border: 1px solid $med-gray
     border-radius: 2px
     background-color: #fff
@@ -48,13 +48,14 @@
     background-repeat: no-repeat
     background-position: 97% center
   .chosen-default
-    color: #999
+    color: $med-gray
   .chosen-single span
     display: block
     overflow: hidden
     margin-right: 26px
     text-overflow: ellipsis
     white-space: nowrap
+    font-size: 14px
   .chosen-single-with-deselect span
     margin-right: 38px
   .chosen-single abbr
@@ -239,7 +240,7 @@
 
 .chosen-container-active
   .chosen-single
-    border: 1px solid #5897fb
+    // border: 1px solid #5897fb 
     //box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
   &.chosen-with-drop .chosen-single
     border: 1px solid #aaa
@@ -250,7 +251,7 @@
       b
         background-position: -18px 2px
   .chosen-choices
-    border: 1px solid #5897fb
+    // border: 1px solid #5897fb
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
     li.search-field input[type="text"]
       color: #111 !important

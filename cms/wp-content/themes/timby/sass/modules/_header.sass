@@ -22,12 +22,15 @@
       font-weight: 100
       font-size: $tiny + px
       height: $header-height
-    &.active
+    &.active, &.active:hover
       background: $yellow
+      cursor: default
       a
         color: white
+        cursor: default
     &:hover
       background: darken($green,10%)
+      color: white
 
 .logo
   padding: .65em .65em .65em 2em

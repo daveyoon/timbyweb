@@ -47,7 +47,7 @@
       <form role="form">
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
-            <div class="checkbox checkbox-lined" ng-repeat="term in wordpress.terms.sector">
+            <div class="checkbox " ng-repeat="term in wordpress.terms.sector">
               <input id="term_{{term.id}}" type="checkbox" checklist-model="filtercriteria.sectors" checklist-value="term">
               <label for="term_{{term.id}}">{{term.name}}</label>
             </div>
@@ -84,11 +84,11 @@
         <!-- Tags -->
         <div class="form-group">
           <h6 class="form-title">Verification Status</h6>
-          <div class="checkbox checkbox-lined">
+          <div class="checkbox ">
             <input type="checkbox" name="" id="verified" checklist-model="filtercriteria.status" checklist-value="'verified'" >
             <label for="verified">Verified</label>
           </div>
-          <div class="checkbox checkbox-lined">
+          <div class="checkbox ">
             <input type="checkbox" name="" id="unverified" checklist-model="filtercriteria.status" checklist-value="'unverified'">
             <label for="unverified">Unverified</label>
           </div>
@@ -110,7 +110,7 @@
   </section>
 
   <section class="results l-column">
-    <ul class="list"  ng-class="{ loading : working }">
+    <ul class="list list-unlined"  ng-class="{ loading : working }">
       <li class="list-item">
         <div class="form-group">
           <div>
@@ -162,66 +162,70 @@
         <h4>Loading</h4></div>
         <!-- <h4 class="page-loader-message">Loading</h4> -->
       </div>
-      <span ng-show="report.verified" class="top-right-triangle triangle-good"></span>
-      <span ng-show="!report.verified" class="top-right-triangle triangle-bad"></span>
-
       <div class="l-padding-item">
         <div class="row l-group">
-            <div class="nine">
-              <div class="pull-left" style="position:relative; margin: -5px 12px 0 0;">
-                <a href="" ng-click="showList=!showList" class="tag tag-small tag-edit">EDIT SECTOR</a>
-                <div class="edit-pane" ng-show="showList">
-                  <div class="checkbox"  ng-repeat="term in wordpress.terms.sector" >
-                    <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
-                    <label for="{{term.id}}">{{term.name}}</label>
-                  </div>
-                  <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
-                    <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
-                  </label> -->
-                  <div>
-                    <button ng-click="showList=!showList" class="small">Close</button>
-                  </div>
-                </div>
-              </div>
-              <div class="kicker pull-left clearfix" ng-repeat="term in report.sectors">
-                <h6 class="">{{term.name}}&nbsp;</h6>
-              </div>
-              <!-- <h3>{{report.post_title}}</h3> -->
-              <input type="text" ng-model="report.post_title" class="h3-input">
-              <h6 class="subhead">{{report.date_reported}} by {{report.reporter.name}}</h6>
-              <!-- <div>
-                <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
-              </div> -->
-              <div class="l-group">
-                <div class="six">
-                  <select chosen
-                          ng-model="report.termselected"
-                          data-placeholder="Click to add a tag"
-                          ng-options="term.name for term in wordpress.terms.entity"
-                          width="'100%'">
-                          <option value=""></option>
-                  </select>
-                </div>
-                <span ng-show="tagexists">Report has already been tagged with this entity, please select another entity</span>
-              </div>
-              <div class="entity-list l-group">
-                <span class="tag tag-remove tag-rounded" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
-                  {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i>&nbsp; </a>
-                </span>
+          <div class="twelve">
+            <span ng-show="report.verified" class="tag tag-positive tag-small">VERIFIED</span>
+            <span ng-show="!report.verified" class="tag tag-negative tag-small">UNVERIFIED</span>
+            <!-- <h3>{{report.post_title}}</h3> -->
+            <input type="text" ng-model="report.post_title" class="h3-input">
+            <h6 class="subhead text-muted">{{report.date_reported}} by {{report.reporter.name}}</h6>
+            <!-- <div>
+              <span class="tag" ng-repeat="term in report.categories">{{term.name}} </span>
+            </div> -->
+          </div>
+        <div class="row l-group">
+          <div class="four">
+            <div class="l-group">
+              <select chosen
+                      ng-model="report.termselected"
+                      data-placeholder="Choose Tags"
+                      ng-options="term.name for term in wordpress.terms.entity"
+                      width="'100%'">
+                      <option value=""></option>
+              </select>
+            </div>
+            <span ng-show="tagexists">Report has already been tagged with this tag</span>
+            <div class="entity-list l-group">
+              <span class="tag tag-remove tag-rounded tag-dark" ng-repeat="term in report.entities" ng-click="removeEntity(term)">
+                {{term.name}} <a href="" title="removetag" ><i class="fa fa-times"></i>&nbsp; </a>
+              </span>
+            </div>
+          </div>
+          <div class="four">
+            <div class="l-group">
+              <div class="select" ng-click="showList=!showList">
+                 Choose Sectors
               </div>
             </div>
-            <div class="three">
-              <div id="report-location"></div>
+            <div class="edit-pane" ng-show="showList">
+                <div class="checkbox"  ng-repeat="term in wordpress.terms.sector" >
+                  <input id="{{term.id}}" type="checkbox" checklist-model="report.sectors" checklist-value="term">
+                  <label for="{{term.id}}">{{term.name}}</label>
+                </div>
+                <!-- <label ng-repeat="term in terms.sector" class="checkbox-label">
+                  <input type="checkbox" checklist-model="report.sectors" checklist-value="term" ><span>{{term.name}}</span>
+                </label> -->
+                <div>
+                  <button ng-click="showList=!showList" class="btn-small pull-right">Close</button>
+                </div>
             </div>
+            <div class="l-group">
+              <div class="tag tag-remove tag-rounded tag-dark" ng-repeat="term in report.sectors">{{term.name}}</div>
+            </div>
+          </div>
+          <div class="four">
+            <div id="report-location"></div>
+          </div>
         </div>
         
         <div class="row l-group dashboard-content" id="report_content" text-angular ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-model="report.post_content" placeholder="Type your description here"></div><!-- end description -->
         
         <div  class="row l-media-grid l-group" ng-if="report.media.photos.length > 0" >
-          <h5 class="header-underline">IMAGES</h5>
-          <div class="three media-item" ng-repeat="photo in report.media.photos">
+          <h5>IMAGES</h5>
+          <div class="three media-item media-item-lined" ng-repeat="photo in report.media.photos">
             <a href="" ng-click="viewPhoto(photo)"><img ng-src="{{photo.small}}"></a>
-            <button class="btn-delete" ng-click="showChoice = ! showChoice">Remove Image</button>
+            <button class="btn-delete btn-small" ng-click="showChoice = ! showChoice">Remove Image</button>
             <div ng-class="{ 'choice-alive': showChoice }" class="choice-pop">
               <h6>Remove this image?</h6>
               <button ng-click="detachMedia(photo.ID, $event)">Yes</button>
@@ -231,7 +235,7 @@
         </div><!-- end photos -->
         
         <div  class="row l-media-grid l-group" ng-if="report.media.audio.length > 0">
-          <h5 class="header-underline">AUDIO</h5>
+          <h5>AUDIO</h5>
           <div class="three media-item" ng-repeat="audio in report.media.audio">
             <div ng-if="audio.uploaded">
               <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="166" scrolling="no" frameborder="no"></iframe>
@@ -271,7 +275,7 @@
         </div> -->
 
         <div class="row l-media-grid l-group" ng-if="report.media.video.length > 0">
-          <h5 class="header-underline">VIDEO</h5>
+          <h5>VIDEO</h5>
           <div class="six media-item" ng-repeat="video in report.media.video">
             <div ng-if="video.uploaded">
               <iframe
@@ -300,13 +304,13 @@
       <h5>Embed this report</h5>
       <textarea name="" id="" cols="30" rows="10">{{report.embed_code}}</textarea>
     </div> -->
-    <div class="action-bar">
+    <div class="action-bar action-bar-dashboard">
         <div>
-          <button ng-class="report.verified ? 'verified' : 'unverified'" class="pull-left" style="margin-right:2em;">
+          <button ng-class="report.verified ? 'verified' : 'unverified'" class="btn-edit btn-outline pull-left" style="margin-right:2em;">
             <span ng-show="!report.verified" ng-click="verifyReport()">Verify this Report</span>
             <span ng-show="report.verified" ng-click="verifyReport()">Unverify this Report</span>
           </button>
-          <button href="" ng-click="updateReport()" class="btn-edit pull-left">Save</button>
+          <button href="" ng-click="updateReport()" class="btn-edit pull-right">Save</button>
         </div>
     </div>
     </div>

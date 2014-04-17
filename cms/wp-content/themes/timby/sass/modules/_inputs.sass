@@ -30,7 +30,7 @@ input[type="text"].h4-input
   display: block
   margin-bottom: 1em
 
-select
+select, .select
   @include appearance(none)
   padding: .75em
   border-color: $med-gray
@@ -41,3 +41,8 @@ select
   &:hover
     background-color: $light-gray
     cursor: pointer
+
+.select
+  border: 1px $med-gray solid
+  @include fill-parent
+  color: $med-gray
