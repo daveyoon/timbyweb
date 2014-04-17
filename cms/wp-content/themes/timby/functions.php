@@ -346,12 +346,44 @@ function timby_create_custom_tables(){
 }
 add_action('admin_init', 'timby_create_custom_tables');
 
+
+/**
+ * Builds essential fields for display 
+ * 
+ * @param  stdClass $story a database row object
+ * @return stdClass $story
+ */
 function build_story_data($story){
 
-  // report date
+  // format story created date
   $story->created = date('jS F, Y', strtotime($story->created) );
 
   $story->published = ($story->published == '1');
+
+  // return the latest copy of reports embedded in this story
+  // if we queried the content field
+  if( $story->content ) {
+    $content = json_decode($story->content);
+    
+    foreach ($content as $key => $content_block) {
+      if( $content_block->type == 'report'){
+        $report = get_post($content_block->report->ID);
+
+        if( count($report) > 0 ) {
+          // get report data and add keys to our report object
+          $report = build_report_data($report);
+          $content[$key]->report = $report;
+        } else{
+          // report was either unpublished or
+          $content[$key]->report = null;
+        }
+      }
+    }
+
+    // once done, encode the object and assign it
+    $story->content = json_encode($content);
+
+  }
 
   return $story;
 }
@@ -419,7 +451,7 @@ function fetch_all_stories(){
 
 /**
  * Fetch published stories
- * @return [type] [description]
+ * @return array $stories
  */
 function fetch_published_stories(){
   global $wpdb;
