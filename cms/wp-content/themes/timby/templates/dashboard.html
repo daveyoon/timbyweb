@@ -40,10 +40,7 @@
     </div>
 
     <div class="filters-alive">
-      <div class="clearfix">
-        <h4 class="pull-left">Filters</h4>
-        <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button pull-right btn-small"></button>
-      </div>
+      
       <form role="form">
         <div class="form-group">
             <h6 class="form-title">Sector</h6>
@@ -106,6 +103,9 @@
           </div>
         </div> --><!--end Dates-->
       </form>
+      <div class="clearfix">
+        <button ng-click="showFilters = ! showFilters" ng-class="{ 'filters-hidden': showFilters }" class="filter-control-button btn-small btn-full-width">Hide Filters</button>
+      </div>
     </div>
   </section>
 
