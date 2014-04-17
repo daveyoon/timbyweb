@@ -9,7 +9,7 @@ angular.module('timby.controllers', [])
         $scope.filtercriteria = {
             sectors: [],
             entities: [],
-            status: ['verified', 'unverified'],
+            status: [],
             search: '',
             layers: []
         };

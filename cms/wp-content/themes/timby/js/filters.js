@@ -40,9 +40,10 @@ angular.module('timby.filters', [])
 
     if( sectors.length === 0) return reports;
 
+    var result = [];
   
     if( sectors.length > 0 ){
-      var result = [];
+    
       var _sector_ids = sectors.map(grab_object_id);
 
       angular.forEach(reports, function(report, key){
@@ -101,7 +102,7 @@ angular.module('timby.filters', [])
 })
 .filter('verifiedStatusFilter', function(){
   return function(reports, status){
-    if( typeof(status) === 'undefined' ) return reports;
+    if( typeof(status) === 'undefined' || status.length === 0 ) return reports;
 
     var result = [];
   
