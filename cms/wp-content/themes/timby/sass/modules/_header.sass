@@ -1,10 +1,32 @@
 .main-header
-  background: $dark-gray
-  height: 113px
+  background: $green
+  height: $header-height
   width: 100%
   position: fixed
   z-index: 4
-  div.clearfix
-    padding: 1em
-    h3
-      color: white !important
+  h3
+    color: white !important
+
+.menu-right
+  @include clearfix
+  li
+    list-style: none
+    float: left
+  .menu-item 
+    a
+      display: block
+      color: rgba(255,255,255,.6)
+      padding: 1em 1.5em
+      border-left: 1px solid rgba(255,255,255,.2)
+      font-weight: 100
+      font-size: $tiny + px
+      height: $header-height
+    &.active
+      background: $yellow
+      a
+        color: white
+    &:hover
+      background: darken($green,10%)
+
+.logo
+  padding: .65em .65em .65em 2em
