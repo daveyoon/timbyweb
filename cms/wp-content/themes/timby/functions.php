@@ -403,7 +403,7 @@ function fetch_all_stories(){
   $stories = $wpdb->get_results("
     SELECT id, title, sub_title, created,  
     (
-      SELECT COUNT(id)  FROM published_stories_table 
+      SELECT COUNT(id)  FROM $published_stories_table 
       WHERE master_story_id = $storiestable.id LIMIT 0, 1 
     ) as published
     FROM $storiestable ORDER BY created DESC
