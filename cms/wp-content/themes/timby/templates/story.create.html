@@ -71,7 +71,10 @@
                   <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="120" scrolling="no" frameborder="no"></iframe>
                 </div>
                 <div class="three" ng-repeat="video in report.media.video">
-                  <div class="item-overlay-center item-overlay-video"><span class="fa fa-play-circle"></span></div>
+                  <a href="" ng-click="viewVideo(video)">
+                    <img ng-show="video.vimeo.thumbnails" src="{{video.vimeo.thumbnails.medium}}" alt="">
+                    <span ng-show="!video.vimeo.thumbnails" class="fa fa-play-circle"></span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -99,7 +102,6 @@
         <ul class="reports dropdown-menu" ng-show="results.length > 0">
           <li ng-repeat="report in (results = (reports | searchVerifiedReportsFilter:search))" class="list-item" ng-click="addReportToStory(report.ID, $event)">
             <h6 class="list-title">{{report.post_title}}</h6>
-
             <p class="list-content text-muted">
               {{report.date_reported}} by {{report.reporter.name}}
             </p>

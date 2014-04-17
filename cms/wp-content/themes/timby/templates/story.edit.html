@@ -77,7 +77,10 @@
                   <iframe ng-src="{{trustSrc(audio.soundcloud.embed_url)}}" width="100%"  height="120" scrolling="no" frameborder="no"></iframe>
                 </div>
                 <div class="three" ng-repeat="video in content.report.media.video">
-                  <div class="item-overlay-center item-overlay-video"><span class="fa fa-play-circle"></span></div>
+                  <a href="" ng-click="viewVideo(video)">
+                    <img ng-show="video.vimeo.thumbnails" src="{{video.vimeo.thumbnails.medium}}" alt="">
+                    <span ng-show="!video.vimeo.thumbnails" class="fa fa-play-circle"></span>
+                  </a>
                 </div>
               </div>
             </div>

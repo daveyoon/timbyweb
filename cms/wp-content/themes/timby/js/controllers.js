@@ -1,8 +1,8 @@
 angular.module('timby.controllers', [])
 
 .controller('MainController',
-  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile', '$modal',
-    function($scope, $rootScope,ReportService, $sce, toaster, $compile, $modal) {
+  ['$scope', '$rootScope', 'ReportService', '$sce', 'toaster', '$compile',
+    function($scope, $rootScope,ReportService, $sce, toaster, $compile) {
         $scope.authenticated = false;
         $scope.filtercriteria = {
             sectors: [],
@@ -107,16 +107,6 @@ angular.module('timby.controllers', [])
                 });
 
         });
-
-
-        /**
-         * View fullsize photo in the bootstrap modal in a lightbox
-         */
-        $rootScope.viewPhoto = function(photo){
-          var modalInstance = $modal.open({
-            template: '<img src="'+photo.large+'" />'
-          });
-        }
 
 
         $scope.getAllReports = function () {
@@ -557,7 +547,7 @@ angular.module('timby.controllers', [])
     }
   }
 }])
-.controller('StoryController',['$scope', 'ReportService','StoryService','toaster', '$routeParams','$location', 'resolvedata', function($scope, ReportService, StoryService, toaster, $routeParams, $location, resolvedata){
+.controller('StoryController',['$scope', 'ReportService','StoryService','toaster', '$routeParams','$location', 'resolvedata', '$modal', function($scope, ReportService, StoryService, toaster, $routeParams, $location, resolvedata, $modal){
   $scope.working = false;
 
   // fetch all verified reports
@@ -577,6 +567,24 @@ angular.module('timby.controllers', [])
   if( resolvedata.stories )
     $scope.stories = resolvedata.stories
 
+
+  /**
+   * View video on overlay
+   */
+  $scope.viewVideo = function(video){
+    var modalInstance = $modal.open({
+      template: '<iframe ng-src="'+video.vimeo.embed_url+'" width="100%"  height="500" scrolling="no" frameborder="no"></iframe>'
+    });
+  }
+
+  /**
+   * View fullsize photo in the bootstrap modal in a lightbox
+   */
+  $scope.viewPhoto = function(photo){
+    var modalInstance = $modal.open({
+      template: '<img src="'+photo.large+'" />'
+    });
+  }
 
   /**
    * add report to story
