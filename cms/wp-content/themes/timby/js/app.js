@@ -152,6 +152,8 @@ angular.module('timby',[
 }])
 .run(['$rootScope', '$window', 'wordpress','$location','$sce', function($rootScope, $window, wordpressProvider, $location, $sce){
 
+  $rootScope.baseURL = angular.element('body').attr('data-template-url');
+
   // redirect all non logged in users
   // this is when a route changes
   $rootScope.$on('$routeChangeStart', function(event, next, current){
