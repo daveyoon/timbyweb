@@ -1,4 +1,11 @@
-<div class="l-main-unit">
+<header class="clearfix main-header">
+  <div class="clearfix">
+    <div class="pull-left logo">
+      <img src="{{baseURL}}/images/logo.png">
+    </div>
+  </div>
+</header>
+<div class="l-main-unit l-padding-item">
   <form class="form-horizontal row" ng-submit="login()" novalidate ng-controller="LoginController">
     <div class="five">
       <div class="page-loader" ng-show="working">
