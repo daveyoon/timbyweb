@@ -51,7 +51,13 @@ angular.module('timby.controllers', [])
                 var reportsIds = $scope.filteredReports.map(function(report){
                     return report.ID;
                 });
-                var query = "SELECT * FROM reports WHERE post_id IN (" + reportsIds.join(",") + ")";
+                var query = "SELECT * FROM reports";
+                if (reportsIds.length > 0) {
+                    query += " WHERE post_id IN (" + reportsIds.join(",") + ")"
+                }
+                else {
+                    query += " WHERE post_id = 0";
+                }
                 if ($scope.markerLayer) {
                     $scope.markerLayer.getSubLayer(0).setSQL(query);
                 }
