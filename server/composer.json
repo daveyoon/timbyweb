@@ -5,6 +5,7 @@
     "illuminate/database": "*",
     "fzaninotto/faker": "1.4.*@dev",
     "aws/aws-sdk-php": "2.6.0",
-    "alchemy/zippy": " ~0.1"
+    "alchemy/zippy": " ~0.1",
+    "ext-gd" : "*"
   }
 }

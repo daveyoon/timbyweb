@@ -476,6 +476,7 @@ function save_story($data){
     // perfom an update
     $where = array( 'id' => (int) $data->story->id );
     if( $wpdb->update( $table, $d, $where ) !== false ) {
+      do_action('story_transition','updated', $data->story);
       return $data->story->id;
     }
   } else {
@@ -484,8 +485,10 @@ function save_story($data){
     $d['created']   = date('c', time());
 
     if( $wpdb->insert( $table, $d ) ) {
+      do_action('story_transition','created', $data->story);
       return $wpdb->insert_id;
     }
+    
   }
 
   return false;
@@ -527,6 +530,7 @@ function publish_story($story_id, $data){
   $d['created']   = date('c', time() );
 
   if( $wpdb->insert( $table, $d ) ) {
+    do_action('story_transition','published', $data->story);
     return $wpdb->insert_id;
   }
 

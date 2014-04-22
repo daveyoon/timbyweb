@@ -19,6 +19,7 @@ wp-content/*
 wp-content/plugins/*
 !wp-content/plugins/json-api
 !wp-content/plugins/google-analyticator
+!wp-content/plugins/aryo-activity-log
 
 
 # Ignore everything in the "themes" directory, except the timbyweb theme
