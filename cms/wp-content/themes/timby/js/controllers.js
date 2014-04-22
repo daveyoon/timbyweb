@@ -18,6 +18,8 @@ angular.module('timby.controllers', [])
         $scope.markerLayer = null;
         $scope.activeLayers = [];
 
+        $scope.modifiedReports = [];
+
         var layers = {
             'allconcessions': {
                 url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
@@ -51,7 +53,13 @@ angular.module('timby.controllers', [])
                 var reportsIds = $scope.filteredReports.map(function(report){
                     return report.ID;
                 });
-                var query = "SELECT * FROM reports WHERE post_id IN (" + reportsIds.join(",") + ")";
+                var query = "SELECT * FROM reports";
+                if (reportsIds.length > 0) {
+                    query += " WHERE post_id IN (" + reportsIds.join(",") + ")"
+                }
+                else {
+                    query += " WHERE post_id = 0";
+                }
                 if ($scope.markerLayer) {
                     $scope.markerLayer.getSubLayer(0).setSQL(query);
                 }
@@ -140,6 +148,25 @@ angular.module('timby.controllers', [])
         };
         $scope.getAllReports();
 
+        window.onbeforeunload = function() {
+            if ($scope.modifiedReports.length == 0) {
+                return null;
+            }
+
+            return "Some reports are changed but not saved."
+        };
+
+        $scope.$watch('report', function(newValue, oldValue){
+            if (oldValue && oldValue.ID == newValue.ID && JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+                if (!_.contains($scope.modifiedReports, oldValue.ID)) {
+                    $scope.modifiedReports.push(oldValue.ID);
+                    _.select($scope.reports, function (rep) {
+                        return rep.ID == oldValue.ID;
+                    })[0].modified = true
+                }
+            }
+        }, true);
+
         $scope.viewReport = function (id) {
 
             // do a lookup from the object cache
@@ -177,7 +204,8 @@ angular.module('timby.controllers', [])
                 document.getElementById('report-location'),
                 {
                     zoom: 7,
-                    center: new google.maps.LatLng($scope.report.lat, $scope.report.lng)
+                    center: new google.maps.LatLng($scope.report.lat, $scope.report.lng),
+                    disableDefaultUI: true
                 }
             );
 
