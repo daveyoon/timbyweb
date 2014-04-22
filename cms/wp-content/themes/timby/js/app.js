@@ -1,5 +1,6 @@
 angular.module('timby',[
     'ngRoute',
+    'ngIdle',
     'ngSanitize',
     'ngAnimate',
     'textAngular',
@@ -16,7 +17,13 @@ angular.module('timby',[
   ]
 )
 .constant('BASE_URL', document.body.getAttribute('data-template-url'))
-.config(['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', '$provide', function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig, $provide){
+.config(
+  ['$routeProvider', 'wordpressProvider','BASE_URL', '$sceDelegateProvider','datepickerConfig', '$provide', '$keepaliveProvider', '$idleProvider',
+  function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig, $provide, $keepaliveProvider, $idleProvider){
+
+  // configure ng-idle
+  $idleProvider.idleDuration(1800);
+  $idleProvider.warningDuration(0);
 
   $sceDelegateProvider.resourceUrlWhitelist([
    'self',
@@ -150,7 +157,7 @@ angular.module('timby',[
   }]);
 
 }])
-.run(['$rootScope', '$window', 'wordpress','$location','$sce', function($rootScope, $window, wordpressProvider, $location, $sce){
+.run(['$rootScope', '$window', 'wordpress','$location','$sce','$idle', function($rootScope, $window, wordpressProvider, $location, $sce, $idle){
 
   $rootScope.baseURL = angular.element('body').attr('data-template-url');
 
@@ -163,6 +170,13 @@ angular.module('timby',[
     }
 
   });
+
+  $idle.watch();
+  $rootScope.$on('$idleTimeout', function(){
+    $window.sessionStorage.clear();
+    $location.path( "/" );
+  });
+
 
   // fetches necessary wordpress data
   // we require for our app to run,

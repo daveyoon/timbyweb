@@ -206,7 +206,9 @@ function timby_scripts() {
   wp_enqueue_script( 'angular-sanitize', get_template_directory_uri() .'/bower_components/angular-sanitize/angular-sanitize.min.js', false, false, true );
   wp_enqueue_script( 'angular-checklist-model', get_template_directory_uri() .'/bower_components/checklist-model/checklist-model.js', false, false, true );
 
-
+  // ngIdle
+  wp_enqueue_script( 'ng-idle', get_template_directory_uri() .'/bower_components/ng-idle/angular-idle.min.js', false, false, true );
+  
   // chosen
   wp_enqueue_script( 'chosen', get_template_directory_uri() .'/bower_components/chosen/chosen.jquery.js', false, false, true );
   wp_enqueue_script( 'angular-chosen', get_template_directory_uri() .'/bower_components/angular-chosen-localytics/chosen.js', false, false, true );
