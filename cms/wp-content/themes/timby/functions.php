@@ -468,3 +468,129 @@ function fetch_published_stories(){
 
   return $stories;
 }
+
+/*
+ * Options setup
+ */
+function setup_theme_admin_menus()
+{
+    add_menu_page('Timby Settings', 'Timby settings', 'manage_options',
+        'timby_settings', 'timby_settings');
+
+    add_submenu_page('timby_settings',
+        'Services', 'Services', 'manage_options',
+        'services', 'timby_settings_services');
+}
+
+function timby_settings()
+{
+    echo "Timby settings";
+}
+
+function timby_settings_services()
+{
+    if (!current_user_can('manage_options')) {
+        wp_die('You do not have sufficient permissions to access this page.');
+    }
+
+    $options = array(
+        'cartodb_key' => array(
+            'type' => 'text',
+            'label' => 'CartoDB Key'
+        ),
+        'cartodb_secret' => array(
+            'type' => 'text',
+            'label' => 'CartoDB Secret'
+        ),
+        'cartodb_email' => array(
+            'type' => 'text',
+            'label' => 'CartoDB email'
+        ),
+        'cartodb_password' => array(
+            'type' => 'text',
+            'label' => 'CartoDB Password'
+        ),
+        'cartodb_subdomain' => array(
+            'type' => 'text',
+            'label' => 'CartoDB Subdomain'
+        ),
+        'cartodb_visualisation_api_url' => array(
+            'type' => 'text',
+            'label' => 'CartoDB visualization URL'
+        ),
+        'vimeo_client_key' => array(
+            'type' => 'text',
+            'label' => 'Vimeo Client ID'
+        ), //client id
+        'vimeo_client_secret' => array(
+            'type' => 'text',
+            'label' => 'Vimeo Client Secret'
+        ), //client secret
+        'vimeo_access_token' => array(
+            'type' => 'text',
+            'label' => 'Vimeo Access Token'
+        ), //access token,
+        'vimeo_access_token_secret' => array(
+            'type' => 'text',
+            'label' => 'Vimeo Token Secret'
+        ),
+        'soundcloud_client_key' => array(
+            'type' => 'text',
+            'label' => 'SoundCloud Client Key'
+        ),
+        'soundcloud_client_secret' => array(
+            'type' => 'text',
+            'label' => 'SoundCloud Client Secret'
+        ),
+        'soundcloud_username' => array(
+            'type' => 'text',
+            'label' => 'SoundCloud Username'
+        ),
+        'soundcloud_password' => array(
+            'type' => 'text',
+            'label' => 'SoundCloud Password'
+        ),
+        'amazons3_access_key' => array(
+            'type' => 'text',
+            'label' => 'Amazon S3 access key'
+        ),
+        'amazons3_access_secret' => array(
+            'type' => 'text',
+            'label' => 'Amazon S3 access secret'
+        ),
+    );
+
+    if (array_key_exists('update_settings', $_POST)) {
+        foreach ($options as $option => $fields) {
+            if (array_key_exists($option, $_POST)) {
+                update_option($option, esc_attr($_POST[$option]));
+            }
+        }
+    }
+?>
+<div class="wrap">
+    <?php get_screen_icon('themes'); ?><h2>Services settings</h2>
+
+    <form action="" method="post">
+        <table class="form-table">
+            <?php foreach ($options as $option => $field): ?>
+            <tr valign="top">
+                <th scope="row">
+                    <label for="<?php echo $option ?>"><?php echo $field['label'] ?></label>
+                </th>
+                <td>
+                    <input type="<?php echo $field['type'] ?>" name="<?php echo $option ?>" id="<?php echo $option ?>" value="<?php echo get_option($option) ?>"/>
+                </td>
+            </tr>
+    <?php endforeach; ?>
+        </table>
+        <input type="hidden" name="update_settings" value="Y"/>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
+<?php
+}
+
+// This tells WordPress to call the function named "setup_theme_admin_menus"
+// when it's time to create the menu pages.
+add_action("admin_menu", "setup_theme_admin_menus");
