@@ -48,6 +48,7 @@
 
     
     <div class="content-blocks l-group" ng-repeat="content in story.content">
+      
       <div ng-if="content.type == 'editor'">
         <div class="l-group">
           <div class="text-editor text-editor-lined text-editor-height" id="report_content" text-angular placeholder="{{placeholderText}}" ta-toolbar="[['bold','italics','underline'],['ul','ol','quote','insertLink', 'unlink'],['redo','undo']]" ng-click="placeholder()" ng-model="content.text" ></div><!-- end description -->

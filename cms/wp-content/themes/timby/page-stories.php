@@ -15,7 +15,7 @@
   <?php if( count($stories = fetch_published_stories()) > 0) { ?>
     <div class="row">
     <?php foreach($stories as $story) { ?>
-        <a href="<?php echo esc_url(home_url('/')) ?>/story/?id<?php echo $story->id ?>" class="four grid-item grid-item-simple grid-item-fixed">
+        <a href="<?php echo esc_url(home_url('/')) ?>/story/?id=<?php echo $story->id ?>" class="four grid-item grid-item-simple grid-item-fixed">
           <div class="grid-item-top">
             <h4><?php echo $story->title ?></h4>
             <h6 class="subhead"><?php echo $story->created ?></h6>

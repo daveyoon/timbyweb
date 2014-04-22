@@ -259,7 +259,7 @@ switch($_REQUEST['action']){
     break;
 
   case 'story.get':
-    $ID = (int) $_REQUEST['id'];
+    $ID = (int) sanitize_text_field($_REQUEST['id']);
 
     global $wpdb;
     $tablename = $wpdb->prefix . 'stories';
