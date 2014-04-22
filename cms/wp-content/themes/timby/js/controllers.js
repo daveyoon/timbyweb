@@ -183,7 +183,8 @@ angular.module('timby.controllers', [])
                 document.getElementById('report-location'),
                 {
                     zoom: 7,
-                    center: new google.maps.LatLng($scope.report.lat, $scope.report.lng)
+                    center: new google.maps.LatLng($scope.report.lat, $scope.report.lng),
+                    disableDefaultUI: true
                 }
             );
 
