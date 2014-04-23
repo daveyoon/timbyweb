@@ -212,7 +212,21 @@ angular.module('timby.controllers', [])
     };
 
 }])
-.controller('MapViewController', ['$scope','$compile','CartoDBService', function($scope, $compile, CartoDBService){
+.controller('MapViewController', ['$scope','$compile','CartoDBService','ReportService', function($scope, $compile, CartoDBService, ReportService){
+    
+    ReportService
+        .findAll()
+        .then(
+        function success(response, status, headers, config) {
+            if (response.data.status == 'success') {
+                $scope.working = false;
+                $scope.reports = response.data.reports;
+            }
+        },
+        function error(response, status, headers, config) {
+            //notify alert, could not connect to remote server
+        }
+    );
 
     $scope.markerLayer = null;
     $scope.activeLayers = [];
@@ -339,7 +353,7 @@ angular.module('timby.controllers', [])
                         }
                     }
                 };
-                
+
                 CartoDBService
                     .createLayer(layers[element].url, layers[element].options)
                     .on('done', function (layer) {
