@@ -89,25 +89,6 @@ angular.module('timby.controllers', [])
                     }
                 )
             }
-
-            // initialize the map
-            var map = new google.maps.Map(
-                document.getElementById('report-location'),
-                {
-                    zoom: 7,
-                    center: new google.maps.LatLng($scope.report.lat, $scope.report.lng),
-                    disableDefaultUI: true
-                }
-            );
-
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(
-                    $scope.report.lat,
-                    $scope.report.lng
-                ),
-                map: map
-            });
-
         }
 
         /**

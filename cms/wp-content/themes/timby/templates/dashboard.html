@@ -215,7 +215,13 @@
             </div>
           </div>
           <div class="four">
-            <div id="report-location"></div>
+            <google-map 
+              center="{latitude: report.lat,longitude: report.lng}" 
+              zoom="8"
+              draggable="true"
+              >
+              <marker coords="{latitude: report.lat,longitude: report.lng}"></marker>
+            </google-map>
           </div>
         </div>
         
