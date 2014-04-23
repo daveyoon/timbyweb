@@ -72,7 +72,6 @@ angular.module('timby.filters', [])
 })
 .filter('entityFilter', function(){
   return function(reports, entities){
-
     if( entities.length === 0) return reports;
 
     var result = [];
