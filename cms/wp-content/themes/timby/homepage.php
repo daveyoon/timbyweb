@@ -22,7 +22,7 @@
         <div class="watercolor-sprite watercolor-rice"></div>
       </div>
     <div class="six">
-        <div class="l-group">
+        <div class="l-group-big">
           <h2 class="yellow text-center text-light">We are grassroots activists using cutting edge technology to hold the Liberian government to its commitments</h2>
           <!-- <a href="about-us/" class="btn btn-yellow btn-center" style="width:110px;">Learn more</a> -->
         </div>
