@@ -14,7 +14,9 @@
     <!-- Bootstrap -->
     <!-- <link href="<?php echo get_template_directory_uri() ?>/css/bootstrap.css" rel="stylesheet"> -->
     <link href="<?php echo get_template_directory_uri() ?>/css/global.css" rel="stylesheet">
-
+      <script type="text/javascript">
+          window.Config = <?php echo get_timby_options_json(); ?>;
+      </script>
     <?php wp_head() ?>
 
   
