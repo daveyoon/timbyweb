@@ -18,7 +18,7 @@ $story = build_story_data($story);
 $story->content = json_decode($story->content);
 ?>
 <!-- section -->
-<section role="main" class="row">
+<section role="main" class="row-big">
   
   <div class="header-group l-group">
     <h1><?php echo $story->title ?></h1>

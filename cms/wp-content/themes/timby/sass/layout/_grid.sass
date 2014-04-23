@@ -3,6 +3,9 @@
 
 .row
   @include outer-container
+.row-big
+  @include outer-container
+  max-width: 75em
 
 .row-small
   max-width: 48em
@@ -13,7 +16,10 @@
   position: relative
   img, iframe
     @include fill-parent
-
+.shift-three
+  @include shift(3)
+.shift-one
+  @include shift(1)
 
 
 .one

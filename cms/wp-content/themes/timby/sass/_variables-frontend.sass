@@ -1,0 +1,109 @@
+
+
+//TIMBY COLORS
+$beige: #efe4d5
+$blue: #0c3965
+$orange: #ff450a
+$yellow: #fcac2c
+$green: #199675
+
+//INCLUDES TYPEPLATE
+$light-gray: #f3f3f3
+$med-gray: #ccc
+$gray: #aaa
+$dark-gray: #333
+$black: #444
+$text-gray: #999
+$edit-color: $green
+$delete-color: #C1272d
+$error-color: #C1272d
+$light-green: #e4f1e0
+$light-red: #f0c9bb
+
+
+
+$header-height: 50px
+
+//TYPEPLATE
+
+$serif-boolean: false !default
+
+$font-family: if($serif-boolean, serif, sans-serif) !default
+// Non-font-face font-stack
+
+$font-weight: normal !default
+$line-height: 1.5 !default
+$font-size: 87.5 !default
+// percentage value (16 * 112.5% = 18px)
+$font-base: 14 * ($font-size/100) !default
+// converts our percentage to a pixel value
+$custom-font-family: "Apercu" !default
+// Custom font-face stack, if set will be added to the $base-font-family
+$measure: $font-base * $line-height
+
+// $font-family: "Apercu"
+// // Non-font-face font-stack
+
+$custom-font-family: true 
+// Custom font-face stack, if set will be added to the $font-family
+
+$tera: 90 !default
+// 117 = 18 × 6.5
+$giga: 70 !default
+// 90 = 18 × 5
+$mega: 64 !default
+// 72 = 18 × 4
+$alpha: 46 !default
+// 60 = 18 × 3.3333
+$beta: 38 !default
+// 48 = 18 × 2.6667
+$gamma: 32 !default
+// 36 = 18 × 2
+$delta: 18 !default
+// 24 = 18 × 1.3333
+$epsilon: 16 !default
+// 21 = 18 × 1.1667
+$zeta: 16 !default
+// 18 = 18 × 1
+$tiny: 12 !default
+
+// Text Indentation Value
+$indent-val: 0
+
+// Paragraph Styling Boolean
+// 'false' means no vertical whitespace
+// between subsequent paragraphs.
+$paragraph-vertical-whitespace: true
+
+
+//BASE STYLES
+.yellow
+  color: $yellow !important
+
+.orange
+  color: $orange !important
+
+.text-center
+  text-align: center
+
+.text-light
+  font-weight: 100
+
+h2
+  line-height: 37px !important
+  font-size: $gamma + px !important
+
+h3
+  font-size: $beta
+
+h4
+  line-height: 24px !important
+  font-family: 'ApercuBold'
+h4, h6
+  margin-bottom: .3em !important
+h6
+  color: $med-gray !important
+  text-transform: uppercase
+.p-big
+  font-size: 20px !important
+  line-height: 27px

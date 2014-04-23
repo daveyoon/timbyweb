@@ -1,8 +1,9 @@
 button, .btn
-  padding: .7em 1em .75em
+  padding: .5em 1em .65em
   background: white
   border: 1px $gray solid
   color: $dark-gray
+  border-radius: 2px
   &.active
     background: $dark-gray
     color: white
@@ -51,9 +52,33 @@ button, .btn
 
 .btn-simple
   border: none
+  background: none
+  padding: .25em 1em .25em
+  &.btn-orange
+    color: $orange
 
 .btn-full-width
   width: 100%
+
+.btn-center
+  margin-left: auto !important
+  margin-right: auto !important
+  display: block
+  text-align: center
+
+.btn-yellow
+  background: $yellow
+  color: white !important
+  border: none
+  &:hover
+    background: darken($yellow,10%)
+
+.btn-orange
+  background: $orange
+  color: white !important
+  border: none
+  &:hover
+    background: darken($orange,10%)
 
 .btn-outline
   
