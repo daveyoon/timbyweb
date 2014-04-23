@@ -22,7 +22,7 @@ angular.module('timby',[
   function($routeProvider, wordpressProvider, BASE_URL, $sceDelegateProvider, datepickerConfig, $provide, $keepaliveProvider, $idleProvider){
 
   // configure ng-idle
-  $idleProvider.idleDuration(1800);
+  $idleProvider.idleDuration(30000);
   $idleProvider.warningDuration(0);
 
   $sceDelegateProvider.resourceUrlWhitelist([

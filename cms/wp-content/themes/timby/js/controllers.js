@@ -20,115 +20,6 @@ angular.module('timby.controllers', [])
 
         $scope.modifiedReports = [];
 
-        var layers = {
-            'allconcessions': {
-                url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
-                options: {
-                    query: "SELECT * FROM allconcessions"
-                }
-            }
-        };
-
-        $scope.$watch('filtercriteria.layers', function (newValue, oldValue) {
-            newValue.forEach(function (element, index, array) {
-                if ($scope.activeLayers[element]) {
-                    $scope.activeLayers[element].show();
-                }
-                else {
-                    cartodb.createLayer($scope.map, layers[element].url, layers[element].options).addTo($scope.map)
-                        .on('done', function (layer) {
-                            $scope.map.addLayer(layer);
-                            $scope.activeLayers[element] = layer;
-                        }).on('error', function () {
-                        });
-                }
-            });
-            _.difference(_.keys($scope.activeLayers), newValue).forEach(function (element, index, array) {
-                $scope.activeLayers[element].hide();
-            });
-        }, true);
-
-        $scope.$watch('filteredReports', function(newValue, oldValue){
-            if ($scope.filteredReports) {
-                var reportsIds = $scope.filteredReports.map(function(report){
-                    return report.ID;
-                });
-                var query = "SELECT * FROM reports";
-                if (reportsIds.length > 0) {
-                    query += " WHERE post_id IN (" + reportsIds.join(",") + ")"
-                }
-                else {
-                    query += " WHERE post_id = 0";
-                }
-                if ($scope.markerLayer) {
-                    $scope.markerLayer.getSubLayer(0).setSQL(query);
-                }
-            }
-        }, true);
-
-
-        $scope.$on('$viewContentLoaded', function () {
-            $scope.map = L.map('map', {
-                center: new L.LatLng(6.4336999, -9.4217516),
-                zoom: 8
-            });
-
-            // base layer
-            L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
-                attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms & Feedback</a>'
-            }).addTo($scope.map);
-
-            // populated places layer
-            cartodb
-                .createLayer($scope.map, 'http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
-                .addTo($scope.map)
-                .on('done', function (layer) {
-                    $scope.markerLayer = layer;
-                    var sublayer = $scope.markerLayer.getSubLayer(0);
-                    sublayer.setInteraction(true);
-
-                    sublayer.set({
-                        sql: 'SELECT * FROM reports',
-                        cartocss: '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 10; marker-line-color: white; marker-line-width: 0;}'
-                        // interactivity : 'post_id'
-                    });
-
-                    sublayer.infowindow.set('template', function () {
-                        var fields = this.model.get('content').fields;
-                        if (fields && fields[0].type !== 'loading') {
-                            var _post_id = _.find(fields, function (obj) {
-                                return obj.title == 'post_id'
-                            }).value;
-
-                            // find a report with this id
-                            if ($scope.reports.length > 0) {
-                                // find this report from our report cache
-                                for (var i = $scope.reports.length - 1; i >= 0; i--) {
-                                    if (_post_id == $scope.reports[i].ID) {
-                                        $scope.report = $scope.reports[i];
-                                        break;
-                                    }
-                                }
-                            }
-                            var _compiled = $compile(angular.element('#infowindow_template').html())($scope);
-                            $scope.$apply();
-                            return _compiled.html();
-                        }
-
-                        return '';
-                    });
-                    // var _reports = $scope.reports;
-                    // sublayer.infowindow.set('template', angular.element('infowindow_template').html());
-
-                    // get sublayer 0 and set options
-                    //  the infowindow template
-                    // var sublayer = layer.getSubLayer(0);
-                    // sublayer.set(subLayerOptions);
-
-                });
-
-        });
-
 
         $scope.getAllReports = function () {
             $scope.working = true;
@@ -740,6 +631,106 @@ angular.module('timby.controllers', [])
         }
       });
   }
+
+
+}])
+.controller('MapController', ['$scope','$compile','CartoDBService', function($scope, $compile, CartoDBService){
+    CartoDBService.map =    L.map('map', 
+                                    {
+                                        center: new L.LatLng(6.4336999, -9.4217516),
+                                        zoom: 8
+                                    }
+                            );
+
+    CartoDBService.baseLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png');
+    CartoDBService
+        .createLayer('http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
+        .on('done', function (layer) {
+            $scope.markerLayer = layer;
+            var sublayer = $scope.markerLayer.getSubLayer(0);
+            sublayer.setInteraction(true);
+
+            sublayer.set({
+                sql: 'SELECT * FROM reports',
+                cartocss: '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 10; marker-line-color: white; marker-line-width: 0;}'
+                // interactivity : 'post_id'
+            });
+
+            sublayer.infowindow.set('template', function () {
+                var fields = this.model.get('content').fields;
+                if (fields && fields[0].type !== 'loading') {
+                    var _post_id = _.find(fields, function (obj) {
+                        return obj.title == 'post_id'
+                    }).value;
+
+                    // find a report with this id
+                    if ($scope.reports.length > 0) {
+                        // find this report from our report cache
+                        for (var i = $scope.reports.length - 1; i >= 0; i--) {
+                            if (_post_id == $scope.reports[i].ID) {
+                                $scope.report = $scope.reports[i];
+                                break;
+                            }
+                        }
+                    }
+                    var _compiled = $compile(angular.element('#infowindow_template').html())($scope);
+                    $scope.$apply();
+                    return _compiled.html();
+                }
+
+                return '';
+            });
+        });
+
+
+    var layers = {
+        'allconcessions': {
+            url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
+            options: {
+                query: "SELECT * FROM allconcessions"
+            }
+        }
+    };
+
+    // filter criteria
+    $scope.$watch('filtercriteria.layers', function (newValue, oldValue) {
+        newValue.forEach(function (element, index, array) {
+            if ($scope.activeLayers[element]) {
+                $scope.activeLayers[element].show();
+            }
+            else {
+                CartoDBService
+                    .createLayer(layers[element].url, layers[element].options)
+                    .on('done', function (layer) {
+                        CartoDBService.map.addLayer(layer);
+                        $scope.activeLayers[element] = layer;
+                    })
+                    .on('error', function () {
+                    });
+            }
+        });
+        _.difference(_.keys($scope.activeLayers), newValue).forEach(function (element, index, array) {
+            $scope.activeLayers[element].hide();
+        });
+    }, true);
+
+    $scope.$watch('filteredReports', function(newValue, oldValue){
+        if ($scope.filteredReports) {
+            var reportsIds = $scope.filteredReports.map(function(report){
+                return report.ID;
+            });
+            var query = "SELECT * FROM reports";
+            if (reportsIds.length > 0) {
+                query += " WHERE post_id IN (" + reportsIds.join(",") + ")"
+            }
+            else {
+                query += " WHERE post_id = 0";
+            }
+            if ($scope.markerLayer) {
+                $scope.markerLayer.getSubLayer(0).setSQL(query);
+            }
+        }
+    }, true);
 
 
 }]);

@@ -198,3 +198,28 @@ angular.module('timby.services', [])
     return deferred.promise;
   }
 ])
+
+
+.factory('CartoDBService', ['$window', function($window){
+  return {
+    /*
+     * Receives a leaflet object
+     */
+    baseLayer : function(layer){
+        // base layer
+        $window.L.tileLayer(
+        layer, 
+        {
+            attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms & Feedback</a>'
+        })
+        .addTo(this.map);
+    },
+    createLayer : function(layer, options){
+      options = options || {};
+      
+      // populated places layer
+      return $window.cartodb.createLayer(this.map, layer, options).addTo(this.map)
+    }
+
+  }
+}]);

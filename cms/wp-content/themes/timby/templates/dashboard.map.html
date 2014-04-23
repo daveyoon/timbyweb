@@ -127,7 +127,7 @@
     </div>
   </section>
 
-  <section class="map l-column">
+  <section class="map l-column" ng-controller="MapController">
     <div id="map"></div>
   </section>
     <div style="display: none" ng-repeat="report in (filteredReports = (reports | searchFilter:filtercriteria.search | sectorFilter:filtercriteria.sectors | entityFilter:filtercriteria.entities | verifiedStatusFilter:filtercriteria.status))"></div>
