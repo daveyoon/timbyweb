@@ -21,6 +21,11 @@ require get_template_directory() . '/inc/custom-taxonomies.php';
  */
 require get_template_directory() . '/inc/custom-api-logs-page/page.php';
 
+/**
+ * Timby src files
+ */
+require get_template_directory() . '/src/Timby/Configuration.php';
+
 
 if ( ! function_exists( 'timbyweb_setup' ) ) :
   /**
@@ -473,7 +478,9 @@ function fetch_published_stories(){
 }
 
 /*
- * Options setup
+ * ############################################
+ * Theme Options
+ * ############################################
  */
 function setup_theme_admin_menus()
 {
@@ -490,78 +497,23 @@ function timby_settings()
     echo "Timby settings";
 }
 
+function get_timby_options_json()
+{
+    $options = array();
+    foreach (Timby_Configuration::getPublicOptions() as $option) {
+        $options[$option] = get_option($option);
+    }
+
+    return json_encode($options, JSON_FORCE_OBJECT);
+}
+
 function timby_settings_services()
 {
     if (!current_user_can('manage_options')) {
         wp_die('You do not have sufficient permissions to access this page.');
     }
 
-    $options = array(
-        'cartodb_key' => array(
-            'type' => 'text',
-            'label' => 'CartoDB Key'
-        ),
-        'cartodb_secret' => array(
-            'type' => 'text',
-            'label' => 'CartoDB Secret'
-        ),
-        'cartodb_email' => array(
-            'type' => 'text',
-            'label' => 'CartoDB email'
-        ),
-        'cartodb_password' => array(
-            'type' => 'text',
-            'label' => 'CartoDB Password'
-        ),
-        'cartodb_subdomain' => array(
-            'type' => 'text',
-            'label' => 'CartoDB Subdomain'
-        ),
-        'cartodb_visualisation_api_url' => array(
-            'type' => 'text',
-            'label' => 'CartoDB visualization URL'
-        ),
-        'vimeo_client_key' => array(
-            'type' => 'text',
-            'label' => 'Vimeo Client ID'
-        ), //client id
-        'vimeo_client_secret' => array(
-            'type' => 'text',
-            'label' => 'Vimeo Client Secret'
-        ), //client secret
-        'vimeo_access_token' => array(
-            'type' => 'text',
-            'label' => 'Vimeo Access Token'
-        ), //access token,
-        'vimeo_access_token_secret' => array(
-            'type' => 'text',
-            'label' => 'Vimeo Token Secret'
-        ),
-        'soundcloud_client_key' => array(
-            'type' => 'text',
-            'label' => 'SoundCloud Client Key'
-        ),
-        'soundcloud_client_secret' => array(
-            'type' => 'text',
-            'label' => 'SoundCloud Client Secret'
-        ),
-        'soundcloud_username' => array(
-            'type' => 'text',
-            'label' => 'SoundCloud Username'
-        ),
-        'soundcloud_password' => array(
-            'type' => 'text',
-            'label' => 'SoundCloud Password'
-        ),
-        'amazons3_access_key' => array(
-            'type' => 'text',
-            'label' => 'Amazon S3 access key'
-        ),
-        'amazons3_access_secret' => array(
-            'type' => 'text',
-            'label' => 'Amazon S3 access secret'
-        ),
-    );
+    $options = Timby_Configuration::getOptions();
 
     if (array_key_exists('update_settings', $_POST)) {
         foreach ($options as $option => $fields) {
@@ -572,20 +524,22 @@ function timby_settings_services()
     }
 ?>
 <div class="wrap">
-    <?php get_screen_icon('themes'); ?><h2>Services settings</h2>
+    <h2>Services settings</h2>
 
     <form action="" method="post">
         <table class="form-table">
+            <tbody>
             <?php foreach ($options as $option => $field): ?>
             <tr valign="top">
                 <th scope="row">
                     <label for="<?php echo $option ?>"><?php echo $field['label'] ?></label>
                 </th>
                 <td>
-                    <input type="<?php echo $field['type'] ?>" name="<?php echo $option ?>" id="<?php echo $option ?>" value="<?php echo get_option($option) ?>"/>
+                    <input class="regular-text" type="<?php echo $field['type'] ?>" name="<?php echo $option ?>" id="<?php echo $option ?>" value="<?php echo get_option($option) ?>"/>
                 </td>
             </tr>
     <?php endforeach; ?>
+            </tbody>
         </table>
         <input type="hidden" name="update_settings" value="Y"/>
         <input type="submit" value="Save"/>
