@@ -25,12 +25,12 @@
         <header class="front-header">
             <div class="row-big">
                 <div class="logo-front pull-left">
-                    <a href="/timbyweb/cms/">
+                    <a href="/uat/cms/">
                         <img src="<?php echo get_template_directory_uri(); ?>/images/logo-orange.png" alt="" width="55" height="55">
                     </a>
                 </div>
                 <?php $args = array(    
-                'include'     => '135,137,146');
+                'include'     => '139,135,137,146');
                 ?>
                 <?php wp_page_menu( $args); ?>
             </div>
