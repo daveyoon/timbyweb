@@ -59,8 +59,10 @@
     <header class="clearfix l-group-big">
       <h3 class="text-center text-orange">Our Findings</h3>
       <div class="six shift-three text-center">
-        <p>We pull together all of our grassroots reporting into clear narratives that explain what is happening and why it is important</p>
-        <a href="stories" class="btn btn-orange btn-center" >See All Stories</a>
+        <p class="l-group-small">We pull together all of our grassroots reporting into clear narratives that explain what is happening and why it is important</p>
+        <div class="clearfix">
+          <a href="stories" class="btn btn-simple btn-orange btn-center" >See All Stories</a>
+        </div>
       </div>
     </header>
     <?php if( count($stories = fetch_published_stories()) > 0) { ?>
