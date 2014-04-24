@@ -15,13 +15,19 @@
 
 	
 <!-- section -->
-<section role="main" class="row">
+<section role="main" class="row-big">
 	
-	<h1><?php the_title(); ?></h1>
-	
-	<?php while (have_posts()) : the_post(); ?>
-		<?php get_template_part('content', 'page'); ?>		
-	<?php endwhile; //end of loop ?>
+	<header class="l-group">
+    <h1><?php the_title(); ?></h1>
+    <p class="p-big">
+        <?php while (have_posts()) : the_post(); ?>
+          <?php $content = $post -> post_content;
+                echo $content;
+           ?>
+        <?php endwhile; //end of loop ?>
+    </p>
+  </header>
+  
 </section>
 <!-- /section -->
 

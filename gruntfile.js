@@ -57,7 +57,7 @@ module.exports = function(grunt) {
                 }
             },
             css: {
-                files: ['cms/wp-content/themes/timby/sass/*','cms/wp-content/themes/timby/sass/modules/*','cms/wp-content/themes/timby/sass/layout/*', 'cms/wp-content/themes/timby/bower_components/typeplate/scss/_typeplate.scss', 'cms/wp-content/themes/timby/bower_components/typeplate/scss/*','cms/wp-content/themes/timby/bower_components/typeplate/scss/_vars-typeplate.scss'],
+                files: ['cms/wp-content/themes/timby/sass/*','cms/wp-content/themes/timby/sass/modules/*','cms/wp-content/themes/timby/sass/modules-front/*','cms/wp-content/themes/timby/sass/layout/*', 'cms/wp-content/themes/timby/bower_components/typeplate/scss/_typeplate.scss', 'cms/wp-content/themes/timby/bower_components/typeplate/scss/*','cms/wp-content/themes/timby/bower_components/typeplate/scss/_vars-typeplate.scss'],
                 tasks: ['sass'],
                 options: {
                     spawn: false,

@@ -1,0 +1,38 @@
+body
+  font-family: 'Apercu'
+
+p
+  font-size: 1.125em !important
+  font-family: 'Georgia' !important
+  color: $text-gray
+
+.front-header
+  border-top: 11px solid $orange
+  padding: 2em 0
+
+.menu
+  float: right
+  margin-top: 1em
+  ul
+    list-style: none
+    padding: 0
+    margin: 0
+    li
+      float: left
+      &.current_page_item
+        a
+          background: $orange
+          color: white
+          &:hover
+          cursor: default
+
+      a
+        margin: 0 1em
+        padding: .35em .7em
+        border-radius: 2px
+        text-transform: uppercase
+        color: $orange
+
+        &:hover
+          background: $orange
+          color: white
