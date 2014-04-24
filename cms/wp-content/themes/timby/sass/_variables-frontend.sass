@@ -77,11 +77,14 @@ $paragraph-vertical-whitespace: true
 
 
 //BASE STYLES
-.yellow
+.yellow, .text-yellow
   color: $yellow !important
 
-.orange
+.text-orange
   color: $orange !important
+
+.text-green
+  color: $green !important
 
 .text-center
   text-align: center
@@ -99,11 +102,19 @@ h3
 h4
   line-height: 24px !important
   font-family: 'ApercuBold'
-h4, h6
+h4, h6, h5
   margin-bottom: .3em !important
+h5
+  font-size: 20px
+  font-family: "ApercuRegular"
 h6
   color: $med-gray !important
   text-transform: uppercase
 .p-big
   font-size: 20px !important
   line-height: 27px
+.p-sans
+  font-family: "Apercu", Helvetica !important
+.p-limited
+  width: 60%
+  margin: 0 auto
