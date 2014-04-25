@@ -75,11 +75,21 @@ body, html
 .l-media-grid
   @include fill-parent
 
+.l-group-big
+  margin-bottom: 3em
+  @include clearfix
+
+.l-group-small
+  margin-bottom: .5em !important
+  @include clearfix
+
 .l-group
   margin-bottom: 1.5em
+  @include clearfix
   &:last-of-type
     margin-bottom: 0
-  @include clearfix
+  &:first-of-type
+    margin-bottom: 1.5em
 
 .l-group > p:only-child
   margin-bottom: 1em !important

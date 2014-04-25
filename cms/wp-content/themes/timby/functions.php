@@ -265,9 +265,11 @@ function timby_scripts() {
     array(
       'ajaxurl'      => admin_url( 'admin-ajax.php' ),
       'nonce'        => wp_create_nonce('timbyweb_front_nonce'),
-      'template_url' => get_template_directory_uri()
+      'template_url' => get_template_directory_uri(),
     )
   );
+  wp_localize_script('app', 'Config', get_timby_options_json());
+  
 }
 add_action( 'wp_enqueue_scripts', 'timby_scripts' );
 

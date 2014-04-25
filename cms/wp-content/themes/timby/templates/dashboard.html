@@ -28,9 +28,9 @@
   </div>
   
 </header>
-<section class="l-main-unit clearfix" ng-class="{ 'filters-hidden': showFilters }">
-  <section class="filters l-column">
-
+<section class="l-main-unit clearfix" ng-class="{ 'filters-hidden': showFilters }" ng-controller="ListViewController">
+  
+  <section class="filters l-column" ng-controller="FilterController">
     <div class="filters-hide">
       <div class="filters-button" ng-click="showFilters = ! showFilters">
         <span class="fa fa-tasks"></span>
@@ -215,7 +215,13 @@
             </div>
           </div>
           <div class="four">
-            <div id="report-location"></div>
+            <google-map 
+              center="{latitude: report.lat,longitude: report.lng}" 
+              zoom="8"
+              draggable="true"
+              >
+              <marker coords="{latitude: report.lat,longitude: report.lng}"></marker>
+            </google-map>
           </div>
         </div>
         

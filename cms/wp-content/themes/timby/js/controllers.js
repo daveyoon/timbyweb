@@ -3,8 +3,6 @@ angular.module('timby.controllers', [])
 .controller('MainController',
   ['$scope', '$rootScope', 'ReportService', 'toaster', '$compile',
     function($scope, $rootScope,ReportService, toaster, $compile) {
-        $scope.message_from_main = "hello";
-
         $scope.authenticated = false;
         $scope.filtercriteria = {
             sectors: [],
@@ -13,31 +11,10 @@ angular.module('timby.controllers', [])
             search: '',
             layers: []
         };
+
         $scope.map = null;
 
-        $scope.markerLayer = null;
-        $scope.activeLayers = [];
-
         $scope.modifiedReports = [];
-
-
-        $scope.getAllReports = function () {
-            $scope.working = true;
-            ReportService
-                .findAll()
-                .then(
-                function success(response, status, headers, config) {
-                    if (response.data.status == 'success') {
-                        $scope.working = false;
-                        $scope.reports = response.data.reports;
-                    }
-                },
-                function error(response, status, headers, config) {
-                    //notify alert, could not connect to remote server
-                }
-            )
-        };
-        $scope.getAllReports();
 
         window.onbeforeunload = function() {
             if ($scope.modifiedReports.length == 0) {
@@ -58,58 +35,6 @@ angular.module('timby.controllers', [])
             }
         }, true);
 
-        $scope.viewReport = function (id) {
-
-            // do a lookup from the object cache
-            if ($scope.reports.length > 0) {
-                // find this report from our report cache
-                for (var i = $scope.reports.length - 1; i >= 0; i--) {
-                    if (id == $scope.reports[i].ID) {
-                        $scope.report = $scope.reports[i];
-                        break;
-                    }
-                }
-            }
-
-            // if report still not found
-            // load it from the server
-            if (!$scope.report) {
-                ReportService
-                    .findById(id)
-                    .then(
-                    function success(response, status, headers, config) {
-                        $scope.working = false;
-
-                        if (response.data.status == 'success') {
-                            $scope.report = response.data.report;
-                        }
-                    },
-                    function error(response, status, headers, config) {
-                        //notify alert, could not connect to remote server
-                    }
-                )
-            }
-
-            // initialize the map
-            var map = new google.maps.Map(
-                document.getElementById('report-location'),
-                {
-                    zoom: 7,
-                    center: new google.maps.LatLng($scope.report.lat, $scope.report.lng),
-                    disableDefaultUI: true
-                }
-            );
-
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(
-                    $scope.report.lat,
-                    $scope.report.lng
-                ),
-                map: map
-            });
-
-        }
-
         /**
          * Checks whether the current item in the repeat is active
          */
@@ -119,113 +44,6 @@ angular.module('timby.controllers', [])
 
             return false;
         }
-
-        $scope.updateReport = function () {
-            $scope.working = true;
-            ReportService
-                .update($scope.report)
-                .then(
-                function success(response, status, headers, config) {
-                    $scope.working = false;
-                    toaster.pop('success', 'Success', 'Report saved successfuly');
-                },
-                function error(response, status, headers, config) {
-                    $scope.working = false;
-                    //notify alert, could not connect to remote server
-                }
-            )
-        }
-
-        $scope.verifyReport = function () {
-            $scope.report.verified = !$scope.report.verified;
-            $scope.updateReport();
-        }
-
-
-        /**
-         * Remove an entity tag from a report
-         * @param  object term
-         * @return void
-         */
-        $scope.removeEntity = function (term) {
-            if (angular.isArray($scope.report.entities)) {
-                for (var i = 0; i < $scope.report.entities.length; i++) {
-                    if (angular.equals($scope.report.entities[i], term)) {
-                        $scope.report.entities.splice(i, 1);
-                        break;
-                    }
-                }
-            }
-        }
-
-        /**
-         * Detach the media object from a report
-         * @param  integer id object ID
-         * @return void
-         */
-        $scope.detachMedia = function (id, $event) {
-            var elem = angular.element($event.target);
-            elem.parents('.media-item').fadeOut(500, function () {
-                this.remove()
-            });
-
-            ReportService
-                .detachMediaObject(id, $scope.report.ID)
-                .then(function (response, status, headers, config) {
-                    if (response.data.status == 'success') {
-                        $scope.getAllReports();
-                    }
-                });
-        };
-
-        // watch the entity select while filtering
-        $scope.$watch(function () {
-            return $scope.filter_entity_selected
-        }, function (newvalue, oldvalue, scope) {
-            if (typeof(newvalue) == 'undefined')
-                return
-
-            for (i = 0; i < $scope.filtercriteria.entities.length; i++) {
-                if (angular.equals(newvalue, $scope.filtercriteria.entities[i])) {
-                    $scope.tagexists = true;
-                    return;
-                }
-            }
-            $scope.filtercriteria.entities.push($scope.filter_entity_selected);
-
-        });
-
-        // watch the entity select while adding new entities to select
-        $scope.$watch(function () {
-            if ($scope.report && typeof($scope.report.termselected) !== 'undefined')
-                return $scope.report.termselected
-        }, function (newvalue, oldvalue, scope) {
-            $scope.tagexists = false;
-            if (typeof(newvalue) == 'undefined')
-                return
-
-            if (angular.isArray($scope.report.entities)) {
-                for (i = 0; i < $scope.report.entities.length; i++) {
-                    if (angular.equals($scope.report.termselected, $scope.report.entities[i])) {
-                        $scope.tagexists = true;
-                        return;
-                    }
-                }
-                $scope.report.entities.push($scope.report.termselected);
-            }
-
-        });
-
-
-        $scope.removeEntityFilter = function (term) {
-            for (var i = 0; i < $scope.filtercriteria.entities.length; i++) {
-                if (angular.equals($scope.filtercriteria.entities[i], term)) {
-                    $scope.filtercriteria.entities.splice(i, 1);
-                    break;
-                }
-            }
-        };
-
 
     }
   ]
@@ -286,10 +104,289 @@ angular.module('timby.controllers', [])
     }
   ]
 )
+.controller('ListViewController', ['$scope','ReportService','toaster', function($scope,ReportService, toaster){
+    $scope.working = true;
+    ReportService
+        .findAll()
+        .then(
+        function success(response, status, headers, config) {
+            if (response.data.status == 'success') {
+                $scope.working = false;
+                $scope.reports = response.data.reports;
+            }
+        },
+        function error(response, status, headers, config) {
+            //notify alert, could not connect to remote server
+        }
+    );
+
+    $scope.viewReport = function (id) {
+
+        // do a lookup from the object cache
+        if ($scope.reports.length > 0) {
+            // find this report from our report cache
+            for (var i = $scope.reports.length - 1; i >= 0; i--) {
+                if (id == $scope.reports[i].ID) {
+                    $scope.report = $scope.reports[i];
+                    break;
+                }
+            }
+        }
+
+        // if report still not found
+        // load it from the server
+        if (!$scope.report) {
+            ReportService
+                .findById(id)
+                .then(
+                function success(response, status, headers, config) {
+                    $scope.working = false;
+
+                    if (response.data.status == 'success') {
+                        $scope.report = response.data.report;
+                    }
+                },
+                function error(response, status, headers, config) {
+                    //notify alert, could not connect to remote server
+                }
+            )
+        }
+    }
+
+    $scope.updateReport = function () {
+        $scope.working = true;
+        ReportService
+            .update($scope.report)
+            .then(
+            function success(response, status, headers, config) {
+                $scope.working = false;
+                toaster.pop('success', 'Success', 'Report saved successfuly');
+            },
+            function error(response, status, headers, config) {
+                $scope.working = false;
+                //notify alert, could not connect to remote server
+            }
+        )
+    }
+
+    $scope.verifyReport = function () {
+        $scope.report.verified = !$scope.report.verified;
+        $scope.updateReport();
+    }
+
+
+    /**
+     * Remove an entity tag from a report
+     * @param  object term
+     * @return void
+     */
+    $scope.removeEntity = function (term) {
+        if (angular.isArray($scope.report.entities)) {
+            for (var i = 0; i < $scope.report.entities.length; i++) {
+                if (angular.equals($scope.report.entities[i], term)) {
+                    $scope.report.entities.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Detach the media object from a report
+     * @param  integer id object ID
+     * @return void
+     */
+    $scope.detachMedia = function (id, $event) {
+        var elem = angular.element($event.target);
+        elem.parents('.media-item').fadeOut(500, function () {
+            this.remove()
+        });
+
+        ReportService
+            .detachMediaObject(id, $scope.report.ID)
+            .then(function (response, status, headers, config) {
+                if (response.data.status == 'success') {
+                    // $scope.getAllReports();
+                }
+            });
+    };
+
+}])
+.controller('MapViewController', ['$scope','$compile','CartoDBService','ReportService', function($scope, $compile, CartoDBService, ReportService){
+    
+    ReportService
+        .findAll()
+        .then(
+        function success(response, status, headers, config) {
+            if (response.data.status == 'success') {
+                $scope.working = false;
+                $scope.reports = response.data.reports;
+            }
+        },
+        function error(response, status, headers, config) {
+            //notify alert, could not connect to remote server
+        }
+    );
+
+    $scope.markerLayer = null;
+    $scope.activeLayers = [];
+
+    CartoDBService.map =    L.map('map', 
+                                    {
+                                        center: new L.LatLng(6.4336999, -9.4217516),
+                                        zoom: 8
+                                    }
+                            );
+
+    CartoDBService.baseLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png');
+    CartoDBService
+        .createLayer('http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
+        .on('done', function (layer) {
+            $scope.markerLayer = layer;
+            var sublayer = $scope.markerLayer.getSubLayer(0);
+            sublayer.setInteraction(true);
+
+            sublayer.set({
+                sql: 'SELECT * FROM reports',
+                cartocss: '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 10; marker-line-color: white; marker-line-width: 0;}'
+                // interactivity : 'post_id'
+            });
+
+            sublayer.infowindow.set('template', function () {
+                var fields = this.model.get('content').fields;
+                if (fields && fields[0].type !== 'loading') {
+                    var _post_id = _.find(fields, function (obj) {
+                        return obj.title == 'post_id'
+                    }).value;
+
+                    // find a report with this id
+                    if ($scope.reports.length > 0) {
+                        // find this report from our report cache
+                        for (var i = $scope.reports.length - 1; i >= 0; i--) {
+                            if (_post_id == $scope.reports[i].ID) {
+                                $scope.report = $scope.reports[i];
+                                break;
+                            }
+                        }
+                    }
+                    var _compiled = $compile(angular.element('#infowindow_template').html())($scope);
+                    $scope.$apply();
+                    return _compiled.html();
+                }
+
+                return '';
+            });
+        });
+
+
+    $scope.$watch('filteredReports', function(newValue, oldValue){
+        if ($scope.filteredReports) {
+            var reportsIds = $scope.filteredReports.map(function(report){
+                return report.ID;
+            });
+            var query = "SELECT * FROM reports";
+            if (reportsIds.length > 0) {
+                query += " WHERE post_id IN (" + reportsIds.join(",") + ")"
+            }
+            else {
+                query += " WHERE post_id = 0";
+            }
+            if ($scope.markerLayer) {
+                $scope.markerLayer.getSubLayer(0).setSQL(query);
+            }
+        }
+    }, true);
+
+}])
+.controller('FilterController',['$scope','CartoDBService', function($scope, CartoDBService){
+    // watch the entity select while filtering
+    $scope.$watch(function () {
+        return $scope.filter_entity_selected
+    }, function (newvalue, oldvalue, scope) {
+        if (typeof(newvalue) == 'undefined')
+            return
+
+        for (i = 0; i < $scope.filtercriteria.entities.length; i++) {
+            if (angular.equals(newvalue, $scope.filtercriteria.entities[i])) {
+                $scope.tagexists = true;
+                return;
+            }
+        }
+        $scope.filtercriteria.entities.push($scope.filter_entity_selected);
+
+    });
+
+    // watch the entity select while adding new entities to select
+    $scope.$watch(function () {
+        if ($scope.report && typeof($scope.report.termselected) !== 'undefined')
+            return $scope.report.termselected
+    }, function (newvalue, oldvalue, scope) {
+        $scope.tagexists = false;
+        if (typeof(newvalue) == 'undefined')
+            return
+
+        if (angular.isArray($scope.report.entities)) {
+            for (i = 0; i < $scope.report.entities.length; i++) {
+                if (angular.equals($scope.report.termselected, $scope.report.entities[i])) {
+                    $scope.tagexists = true;
+                    return;
+                }
+            }
+            $scope.report.entities.push($scope.report.termselected);
+        }
+
+    });
+
+    // watch the layers filter
+    $scope.$watch('filtercriteria.layers', function (newValue, oldValue) {
+        newValue.forEach(function (element, index, array) {
+            if ($scope.activeLayers[element]) {
+                $scope.activeLayers[element].show();
+            }
+            else {
+
+                 var layers = {
+                    'allconcessions': {
+                        url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
+                        options: {
+                            query: "SELECT * FROM allconcessions"
+                        }
+                    }
+                };
+
+                CartoDBService
+                    .createLayer(layers[element].url, layers[element].options)
+                    .on('done', function (layer) {
+                        CartoDBService.map.addLayer(layer);
+                        $scope.activeLayers[element] = layer;
+                    })
+                    .on('error', function () {
+                    });
+            }
+        });
+        _.difference(_.keys($scope.activeLayers), newValue).forEach(function (element, index, array) {
+            $scope.activeLayers[element].hide();
+        });
+    }, true);
+
+    $scope.removeEntityFilter = function (term) {
+        for (var i = 0; i < $scope.filtercriteria.entities.length; i++) {
+            if (angular.equals($scope.filtercriteria.entities[i], term)) {
+                $scope.filtercriteria.entities.splice(i, 1);
+                break;
+            }
+        }
+    };
+
+
+
+}])
 .controller('ReportController', ['$scope','$upload','ReportService', function($scope, $upload, ReportService){
+
   $scope.report = {
     description : '' //must make description blank or textangular's wrap-p's won't function
   };
+  $scope.map = null;
   $scope.formerrors = {};
 
   // datepicker options
@@ -634,103 +731,4 @@ angular.module('timby.controllers', [])
 
 
 }])
-.controller('MapController', ['$scope','$compile','CartoDBService', function($scope, $compile, CartoDBService){
-    CartoDBService.map =    L.map('map', 
-                                    {
-                                        center: new L.LatLng(6.4336999, -9.4217516),
-                                        zoom: 8
-                                    }
-                            );
 
-    CartoDBService.baseLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png');
-    CartoDBService
-        .createLayer('http://kaam.cartodb.com/api/v2/viz/8f75f1ea-c172-11e3-ac41-0e73339ffa50/viz.json')
-        .on('done', function (layer) {
-            $scope.markerLayer = layer;
-            var sublayer = $scope.markerLayer.getSubLayer(0);
-            sublayer.setInteraction(true);
-
-            sublayer.set({
-                sql: 'SELECT * FROM reports',
-                cartocss: '#example_cartodbjs_1{marker-fill: #109DCD; marker-width: 10; marker-line-color: white; marker-line-width: 0;}'
-                // interactivity : 'post_id'
-            });
-
-            sublayer.infowindow.set('template', function () {
-                var fields = this.model.get('content').fields;
-                if (fields && fields[0].type !== 'loading') {
-                    var _post_id = _.find(fields, function (obj) {
-                        return obj.title == 'post_id'
-                    }).value;
-
-                    // find a report with this id
-                    if ($scope.reports.length > 0) {
-                        // find this report from our report cache
-                        for (var i = $scope.reports.length - 1; i >= 0; i--) {
-                            if (_post_id == $scope.reports[i].ID) {
-                                $scope.report = $scope.reports[i];
-                                break;
-                            }
-                        }
-                    }
-                    var _compiled = $compile(angular.element('#infowindow_template').html())($scope);
-                    $scope.$apply();
-                    return _compiled.html();
-                }
-
-                return '';
-            });
-        });
-
-
-    var layers = {
-        'allconcessions': {
-            url: 'http://kaam.cartodb.com/api/v2/viz/a46166f8-c496-11e3-9920-0e10bcd91c2b/viz.json',
-            options: {
-                query: "SELECT * FROM allconcessions"
-            }
-        }
-    };
-
-    // filter criteria
-    $scope.$watch('filtercriteria.layers', function (newValue, oldValue) {
-        newValue.forEach(function (element, index, array) {
-            if ($scope.activeLayers[element]) {
-                $scope.activeLayers[element].show();
-            }
-            else {
-                CartoDBService
-                    .createLayer(layers[element].url, layers[element].options)
-                    .on('done', function (layer) {
-                        CartoDBService.map.addLayer(layer);
-                        $scope.activeLayers[element] = layer;
-                    })
-                    .on('error', function () {
-                    });
-            }
-        });
-        _.difference(_.keys($scope.activeLayers), newValue).forEach(function (element, index, array) {
-            $scope.activeLayers[element].hide();
-        });
-    }, true);
-
-    $scope.$watch('filteredReports', function(newValue, oldValue){
-        if ($scope.filteredReports) {
-            var reportsIds = $scope.filteredReports.map(function(report){
-                return report.ID;
-            });
-            var query = "SELECT * FROM reports";
-            if (reportsIds.length > 0) {
-                query += " WHERE post_id IN (" + reportsIds.join(",") + ")"
-            }
-            else {
-                query += " WHERE post_id = 0";
-            }
-            if ($scope.markerLayer) {
-                $scope.markerLayer.getSubLayer(0).setSQL(query);
-            }
-        }
-    }, true);
-
-
-}]);
