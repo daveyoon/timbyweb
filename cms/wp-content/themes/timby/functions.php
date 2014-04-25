@@ -51,6 +51,8 @@ if ( ! function_exists( 'timbyweb_setup' ) ) :
      */
     add_theme_support( 'automatic-feed-links', 'post-thumbnails' );
 
+
+    timby_create_custom_tables();
   }
 endif; // timbyweb_setup
 add_action( 'after_setup_theme', 'timbyweb_setup' );
@@ -354,8 +356,6 @@ function timby_create_custom_tables(){
   );
 
 }
-add_action('admin_init', 'timby_create_custom_tables');
-
 
 /**
  * Builds essential fields for display 
