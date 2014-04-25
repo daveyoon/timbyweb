@@ -8,12 +8,16 @@ class JSON_API_Posts_Controller {
 
   public function create_post() {
     global $json_api;
-
-    // does the author of this post have a valid token
-    if (!$this->author_has_valid_token($_POST['author'], $_POST['token'])) {
-      $json_api->error("Your token has expired, please try logging in again");
+    if (!current_user_can('edit_posts')) {
+      $json_api->error("You need to login with a user that has 'edit_posts' capacity.");
     }
-
+    if (!$json_api->query->nonce) {
+      $json_api->error("You must include a 'nonce' value to create posts. Use the `get_nonce` Core API method.");
+    }
+    $nonce_id = $json_api->get_nonce_id('posts', 'create_post');
+    if (!wp_verify_nonce($json_api->query->nonce, $nonce_id)) {
+      $json_api->error("Your 'nonce' value was incorrect. Use the 'get_nonce' API method.");
+    }
     nocache_headers();
     $post = new JSON_API_Post();
     $id = $post->create($_REQUEST);
@@ -25,53 +29,22 @@ class JSON_API_Posts_Controller {
     );
   }
   
-  public function create_attachment(){
-    global $json_api;
-    
-    if (!$this->author_has_valid_token($_POST['author'], $_POST['token'])) {
-      $json_api->error("Your token has expired, please try logging in again");
-    }   
-
-    $post_data = array(
-      'post_parent'  => $_POST['id'],
-      'post_title'   => $_POST['title'],
-      'post_content' => $_POST['content']
-    );
-
-    if (!empty($_FILES['attachment'])) {
-
-      include_once ABSPATH . '/wp-admin/includes/file.php';
-      include_once ABSPATH . '/wp-admin/includes/media.php';
-      include_once ABSPATH . '/wp-admin/includes/image.php';
-      $attachment_id = media_handle_upload('attachment', $_POST['id'], $post_data);
-      unset($_FILES['attachment']);
-
-      // set the media type as a meta
-      update_post_meta($attachment_id, '_media_type', $_POST['media_type']);
-
-      return array(
-        'id' => $attachment_id
-      );
-
-    } else {
-      $json_api->error("Please attach a file to upload.");
-    }
-
-  }
-
-
   public function update_post() {
     global $json_api;
-
-    if( !$this->user_is_valid($_POST['user_id'],$_POST['key'], $_POST['token']) ) {
-      $json_api->error("Invalid user");
-    }
-
     $post = $json_api->introspector->get_current_post();
     if (empty($post)) {
       $json_api->error("Post not found.");
     }
-
+    if (!current_user_can('edit_post', $post->ID)) {
+      $json_api->error("You need to login with a user that has the 'edit_post' capacity for that post.");
+    }
+    if (!$json_api->query->nonce) {
+      $json_api->error("You must include a 'nonce' value to update posts. Use the `get_nonce` Core API method.");
+    }
+    $nonce_id = $json_api->get_nonce_id('posts', 'update_post');
+    if (!wp_verify_nonce($json_api->query->nonce, $nonce_id)) {
+      $json_api->error("Your 'nonce' value was incorrect. Use the 'get_nonce' API method.");
+    }
     nocache_headers();
     $post = new JSON_API_Post($post);
     $post->update($_REQUEST);
@@ -82,37 +55,31 @@ class JSON_API_Posts_Controller {
   
   public function delete_post() {
     global $json_api;
-
-    if( !$this->user_is_valid($_POST['user_id'],$_POST['key'], $_POST['token']) ) {
-      $json_api->error("Invalid user");
-    }
-
     $post = $json_api->introspector->get_current_post();
     if (empty($post)) {
       $json_api->error("Post not found.");
     }
-
+    if (!current_user_can('edit_post', $post->ID)) {
+      $json_api->error("You need to login with a user that has the 'edit_post' capacity for that post.");
+    }
+    if (!current_user_can('delete_posts')) {
+      $json_api->error("You need to login with a user that has the 'delete_posts' capacity.");
+    }
+    if ($post->post_author != get_current_user_id() && !current_user_can('delete_other_posts')) {
+      $json_api->error("You need to login with a user that has the 'delete_other_posts' capacity.");
+    }
+    if (!$json_api->query->nonce) {
+      $json_api->error("You must include a 'nonce' value to update posts. Use the `get_nonce` Core API method.");
+    }
+    $nonce_id = $json_api->get_nonce_id('posts', 'delete_post');
+    if (!wp_verify_nonce($json_api->query->nonce, $nonce_id)) {
+      $json_api->error("Your 'nonce' value was incorrect. Use the 'get_nonce' API method.");
+    }
     nocache_headers();
-    return wp_trash_post($post->ID);
+    wp_delete_post($post->ID);
+    return array();
   }
-
-  private function user_is_valid($userid, $apikey, $token){
-    $user = get_user_by('id', $userid );
-    if ( $user && 
-        get_user_meta($user->ID,'api_key', true) == $apikey && 
-        get_user_meta($user->ID,'api_token', true) == $token ) {
-      return true;
-    }
-    return false;
-  }
-
-  private function author_has_valid_token($author, $token){
-    $user = get_user_by('id', $author );
-    if ( $user && get_user_meta($user->ID,'api_token', true) == $token ) {
-      return true;
-    }
-    return false;
-  }
+  
 }
 
 ?>

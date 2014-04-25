@@ -16,7 +16,6 @@ $dir = json_api_dir();
 @include_once "$dir/models/post.php";
 @include_once "$dir/models/comment.php";
 @include_once "$dir/models/category.php";
-@include_once "$dir/models/term.php";
 @include_once "$dir/models/tag.php";
 @include_once "$dir/models/author.php";
 @include_once "$dir/models/attachment.php";

@@ -6,22 +6,6 @@ Controller description: Basic introspection methods
 
 class JSON_API_Core_Controller {
   
-
-  private function iskeyvalid($key, $user_id){
-    if( $user = get_user_by('id', $user_id) ) {
-      return (get_user_meta( $user->ID, 'api_key', true) == $key);
-    }
-    return false;
-  }
-
-  private function istokenvalid($token, $user_id){
-    if( $user = get_user_by('id', $user_id) ) {
-      return (get_user_meta( $user->ID, 'api_token', true) == $token);
-    }
-    return false;
-  }
-
-
   public function info() {
     global $json_api;
     $php = '';
@@ -222,40 +206,21 @@ class JSON_API_Core_Controller {
     );
   }
   
-  public function get_all_terms_for_taxonomy() {
+  public function get_category_index() {
     global $json_api;
-
-    $args = array();
-
-    if(!$this->iskeyvalid($json_api->query->key, $json_api->query->user_id) )
-    {
-      $json_api->error("Invalid key, please try logging in again");
-    }    
-
-    if(!$this->istokenvalid($json_api->query->token, $json_api->query->user_id) )
-    {
-      $json_api->error("Your token has expired, please try logging in again");
-    }
-
+    $args = null;
     if (!empty($json_api->query->parent)) {
-      $args['parent'] = $json_api->query->parent;
+      $args = array(
+        'parent' => $json_api->query->parent
+      );
     }
-    // default get terms for 'category' taxonomy
-    if( empty($json_api->query->taxonomy) ) {
-      $json_api->query->taxonomy = 'category';
-    }
-
-    $args['hide_empty'] = 0; //do not hide empty args
-
-    $terms = $json_api->introspector->get_terms_for($json_api->query->taxonomy, $args);
-
+    $categories = $json_api->introspector->get_categories($args);
     return array(
-      'count' => count($terms),
-      'terms' => $terms
+      'count' => count($categories),
+      'categories' => $categories
     );
   }
-
-
+  
   public function get_tag_index() {
     global $json_api;
     $tags = $json_api->introspector->get_tags();
