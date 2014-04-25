@@ -67,24 +67,16 @@ class JSON_API_Introspector {
     return $this->month_archives["$year$month"];
   }
   
-  /**
-   * Get terms for a given taxonomy
-   *   
-   * @param  string $taxonomy
-   * @param  string|array $args
-   * @return array  An array of terms, see http://codex.wordpress.org/Function_Reference/get_terms
-   */
-  public function get_terms_for($taxonomy, $args = '' ) {
-    $wp_terms = get_terms($taxonomy, $args);
-
-    $terms = array();
-    foreach ($wp_terms as $term) {
-      if ($term->term_id == 1 && $term->slug == 'uncategorized') {
+  public function get_categories($args = null) {
+    $wp_categories = get_categories($args);
+    $categories = array();
+    foreach ($wp_categories as $wp_category) {
+      if ($wp_category->term_id == 1 && $wp_category->slug == 'uncategorized') {
         continue;
       }
-      $terms[] = $this->get_term_object($term);
+      $categories[] = $this->get_category_object($wp_category);
     }
-    return $terms;
+    return $categories;
   }
   
   public function get_current_post() {
@@ -301,13 +293,6 @@ class JSON_API_Introspector {
     }
     return new JSON_API_Category($wp_category);
   }
-
-  protected function get_term_object($term) {
-    if (!$term) {
-      return null;
-    }
-    return new JSON_API_TERM($term);
-  }
   
   protected function get_tag_object($wp_tag) {
     if (!$wp_tag) {
@@ -334,7 +319,7 @@ class JSON_API_Introspector {
     if (!$query) {
       $query = array();
     }
-
+    
     $query = array_merge($query, $wp_query->query);
     
     if ($json_api->query->page) {
@@ -348,7 +333,7 @@ class JSON_API_Introspector {
     if ($json_api->query->post_type) {
       $query['post_type'] = $json_api->query->post_type;
     }
-
+    
     if (!empty($query)) {
       query_posts($query);
       do_action('json_api_query', $wp_query);

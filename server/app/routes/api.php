@@ -56,7 +56,7 @@ $app->hook('upload', function ($params) use($app) {
     $params['attachment'] = '@'. $upload_file_path; // attachment will be available to wordpress in $_FILES
 
     //upload the attachment
-    $ch = curl_init($app->config('wordpress_site_url').'/api/posts/create_attachment');
+    $ch = curl_init($app->config('wordpress_site_url').'/api/timbyposts/create_attachment');
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -138,7 +138,7 @@ $app->group('/api', function () use ($app) {
     $password = $app->request->post('password');
 
     $response = Requests::post(
-      $app->config('wordpress_site_url').'/api/users.authenticate',
+      $app->config('wordpress_site_url').'/api/timbyusers.authenticate',
       array('Accept' => 'application/json'),
       array(
         'username' => $user_name,
@@ -153,7 +153,8 @@ $app->group('/api', function () use ($app) {
         array(
           "user_id" => $data->user_id,
           "key"     => $data->api_key,
-          "token"   => $data->api_token
+          "token"   => $data->api_token,
+            "sanity_check" => true
         )
       );
     } else {
@@ -460,7 +461,7 @@ $app->group('/api', function () use ($app) {
 
     // response
     $response = Requests::post(
-      $app->config('wordpress_site_url').'/api/posts/delete_post',
+      $app->config('wordpress_site_url').'/api/timbyposts/delete_post',
       array('Accept' => 'application/json'),
       $params
     );
@@ -494,7 +495,7 @@ $app->group('/api', function () use ($app) {
     );
 
     $response = Requests::post(
-      $app->config('wordpress_site_url').'/api/get_all_terms_for_taxonomy',
+      $app->config('wordpress_site_url').'/api/timby/get_all_terms_for_taxonomy',
       array('Accept' => 'application/json'),
       $params
     );
@@ -539,7 +540,7 @@ $app->group('/api', function () use ($app) {
     );
 
     $response = Requests::post(
-      $app->config('wordpress_site_url').'/api/get_all_terms_for_taxonomy',
+      $app->config('wordpress_site_url').'/api/timby/get_all_terms_for_taxonomy',
       array('Accept' => 'application/json'),
       $params
     );
