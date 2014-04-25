@@ -487,11 +487,7 @@ function fetch_published_stories(){
 function setup_theme_admin_menus()
 {
     add_menu_page('Timby Settings', 'Timby settings', 'manage_options',
-        'timby_settings', 'timby_settings');
-
-    add_submenu_page('timby_settings',
-        'Services', 'Services', 'manage_options',
-        'services', 'timby_settings_services');
+        'timby_settings', 'timby_settings_services');
 }
 
 function timby_settings()
@@ -526,7 +522,10 @@ function timby_settings_services()
     }
 ?>
 <div class="wrap">
-    <h2>Services settings</h2>
+    <div class="update-nag">
+        <p>Go to <a href="<?php echo get_site_url() ?>/dashboard" target="_blank">Timby Dashboard</a></p>
+    </div>
+    <h2>Timby settings</h2>
 
     <form action="" method="post">
         <table class="form-table">
