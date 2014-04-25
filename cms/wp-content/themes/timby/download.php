@@ -1,8 +1,12 @@
 <?php
 require_once __DIR__ . '/../../../wp-load.php';
 
-require __DIR__ . '/../../../../server/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
+if (!array_key_exists('id', $_GET)) {
+    echo "Bad request";
+    exit;
+}
 
 
 $reportid = (int) sanitize_text_field($_GET['id']);
@@ -19,6 +23,12 @@ $args = array(
   )
 );
 $report = get_posts($args);
+
+if (empty($report)) {
+    echo "Report doesn't exists";
+    exit;
+}
+
 $report = $report[0];
 $report = build_report_data($report);
 
