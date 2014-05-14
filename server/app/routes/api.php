@@ -185,7 +185,7 @@ $app->group('/api', function () use ($app) {
 
     if( empty($user_id) || empty($token) || empty($user_name) || empty($password) ){
       error('Missing parameters in request.');
-      return;      
+      return;
     }
 
 
@@ -215,7 +215,7 @@ $app->group('/api', function () use ($app) {
 
 
   });
-  
+
   /**
    * Create Report
    *
